@@ -633,11 +633,143 @@ a, button, .project-item, .nav-link {
   background: #f8f9fa;
 }
 
-.services-grid {
+/* Services Section */
+.services-section {
+  background: white;
+  color: #1A202C;
+  position: relative;
+  overflow: hidden;
+}
+
+.services-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.service-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: 100vh;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.8s ease;
+}
+
+.service-row.animate-slide-up {
+  animation: slideUpFadeIn 0.8s ease-out forwards;
+}
+
+.service-image-section {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.service-image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.service-row:hover .service-image-section img {
+  transform: scale(1.05);
+}
+
+.service-content-section {
+  padding: 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+  position: relative;
+}
+
+.service-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4a7c59;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  font-family: 'Arial', sans-serif;
+}
+
+.service-main-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #1A202C;
+  margin-bottom: 2rem;
+  font-family: 'Times New Roman', serif;
+}
+
+.service-description {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #4a5568;
+  margin-bottom: 2.5rem;
+  max-width: 500px;
+}
+
+.service-cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 2rem;
+  border: 2px solid #4a7c59;
+  border-radius: 5px;
+  background: white;
+  color: #4a7c59;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.service-cta-btn:hover {
+  background: #4a7c59;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(74, 124, 89, 0.3);
+}
+
+.service-cta-btn .btn-icon {
+  width: 16px;
+  height: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+.service-cta-btn .orange-dots {
+  background: #4a7c59;
+  mask: radial-gradient(circle at 2px 2px, transparent 1px, black 1px),
+        radial-gradient(circle at 6px 2px, transparent 1px, black 1px),
+        radial-gradient(circle at 2px 6px, transparent 1px, black 1px),
+        radial-gradient(circle at 6px 6px, transparent 1px, black 1px);
+  mask-size: 8px 8px;
+  transition: background 0.3s ease;
+}
+
+.service-cta-btn:hover .orange-dots {
+  background: white;
+}
+
+@keyframes slideUpFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .service-item {
@@ -909,6 +1041,37 @@ a, button, .project-item, .nav-link {
     grid-template-columns: 1fr;
   }
 
+  /* Services Section Mobile */
+  .service-row {
+    grid-template-columns: 1fr;
+    height: 100vh;
+  }
+
+  .service-content-section {
+    padding: 2rem 1.5rem;
+    order: 2;
+    flex: 1;
+  }
+
+  .service-image-section {
+    order: 1;
+    height: 50vh;
+  }
+
+  .service-main-title {
+    font-size: 2.5rem;
+  }
+
+  .service-description {
+    font-size: 1rem;
+    max-width: none;
+  }
+
+  .service-cta-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
   /* Excellence Section Mobile */
   .excellence-container {
     grid-template-columns: 1fr;
@@ -986,6 +1149,28 @@ a, button, .project-item, .nav-link {
     font-size: 1.3rem;
   }
 
+  /* Services Section Small Mobile */
+  .service-content-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .service-image-section {
+    height: 45vh;
+  }
+
+  .service-main-title {
+    font-size: 2rem;
+  }
+
+  .service-description {
+    font-size: 0.9rem;
+  }
+
+  .service-cta-btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+  }
+
   .circular-emblem {
     width: 100px;
     height: 100px;
@@ -1028,6 +1213,28 @@ a, button, .project-item, .nav-link {
   }
 
   .emblem-text {
+    font-size: 0.8rem;
+  }
+
+  /* Services Section Extra Small Mobile */
+  .service-content-section {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .service-image-section {
+    height: 40vh;
+  }
+
+  .service-main-title {
+    font-size: 1.8rem;
+  }
+
+  .service-description {
+    font-size: 0.85rem;
+  }
+
+  .service-cta-btn {
+    padding: 0.6rem 1rem;
     font-size: 0.8rem;
   }
 }
