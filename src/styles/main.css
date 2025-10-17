@@ -358,8 +358,11 @@ a, button, .project-item, .nav-link {
   background: white;
   color: #1A202C;
   position: relative;
-  padding: 4rem 0;
+  padding: 3rem 0;
   border-top: 2px solid #4a7c59;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
 .excellence-container {
@@ -368,15 +371,17 @@ a, button, .project-item, .nav-link {
   padding: 0 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 3rem;
   align-items: center;
   position: relative;
+  width: 100%;
 }
 
 .excellence-left {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
+  justify-content: center;
 }
 
 .excellence-title {
@@ -472,7 +477,7 @@ a, button, .project-item, .nav-link {
 }
 
 .circular-text {
-  font-size: 12px;
+  font-size: 12.8px;
   font-weight: 600;
   fill: #1A202C;
   font-family: 'Arial', sans-serif;
@@ -527,7 +532,8 @@ a, button, .project-item, .nav-link {
 .excellence-right {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
+  justify-content: center;
 }
 
 .excellence-subtitle {
@@ -627,6 +633,165 @@ a, button, .project-item, .nav-link {
 .work-hero,
 .projects-section {
   padding: 4rem 0;
+}
+
+/* Client Experience Section */
+.client-experience-section {
+  background: white;
+  color: #1A202C;
+  padding: 0;
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+}
+
+.client-experience-container {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.client-experience-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  height: 100vh;
+  min-height: 600px;
+}
+
+/* Left Side - Client Logos */
+.client-experience-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4rem 3rem;
+  height: 100%;
+  background: white;
+}
+
+.client-experience-header {
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.client-experience-title {
+  font-size: 4rem;
+  font-weight: 700;
+  color: #1A202C;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 2px;
+}
+
+.client-experience-subtitle {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #4a5568;
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 1px;
+}
+
+.client-logos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 500px;
+}
+
+.client-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: transparent;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  min-height: 100px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.client-logo:hover {
+  transform: translateY(-3px);
+  background: #f8f9fa;
+  border-color: #4a7c59;
+}
+
+.client-logo.active {
+  background: #4a7c59;
+  border-color: #4a7c59;
+  transform: translateY(-3px);
+}
+
+.client-logo img {
+  max-width: 100%;
+  max-height: 60px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transition: all 0.3s ease;
+}
+
+.client-logo:hover img,
+.client-logo.active img {
+  filter: grayscale(0%);
+}
+
+/* Right Side - Laptop Image */
+.client-experience-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  min-height: 600px;
+  width: 100%;
+}
+
+.laptop-image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 20px;
+  position: relative;
+}
+
+.laptop-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.laptop-image:hover {
+  transform: scale(1.05);
+}
+
+.client-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 2rem;
+  border-radius: 0 0 20px 20px;
+}
+
+.client-name {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .about-section {
@@ -1015,6 +1180,11 @@ a, button, .project-item, .nav-link {
     font-size: 3rem;
   }
   
+  .excellence-section {
+    min-height: 100vh;
+    padding: 2.5rem 0;
+  }
+  
   .excellence-container {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -1173,6 +1343,11 @@ a, button, .project-item, .nav-link {
   }
 
   /* Excellence Section Mobile */
+  .excellence-section {
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+  
   .excellence-container {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -1202,6 +1377,10 @@ a, button, .project-item, .nav-link {
     font-size: 0.9rem;
   }
 
+  .circular-text {
+    font-size: 12px;
+  }
+
   .excellence-subtitle {
     font-size: 1.5rem;
     text-align: center;
@@ -1226,6 +1405,73 @@ a, button, .project-item, .nav-link {
 
   .excellence-scroll-indicator {
     display: none;
+  }
+
+  /* Client Experience Section Mobile */
+  .client-experience-section {
+    height: auto;
+    min-height: auto;
+  }
+
+  .client-experience-split {
+    grid-template-columns: 1fr;
+    gap: 0;
+    height: auto;
+    min-height: auto;
+  }
+
+  .client-experience-left {
+    padding: 3rem 2rem;
+    height: auto;
+    min-height: 50vh;
+  }
+
+  .client-experience-header {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .client-experience-title {
+    font-size: 2.5rem;
+  }
+
+  .client-experience-subtitle {
+    font-size: 1rem;
+  }
+
+  .client-logos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: none;
+  }
+
+  .client-logo {
+    padding: 1rem;
+    min-height: 80px;
+  }
+
+  .client-logo img {
+    max-height: 50px;
+  }
+
+  .client-name {
+    font-size: 1.5rem;
+  }
+
+  .client-overlay {
+    padding: 1.5rem;
+  }
+
+  .client-experience-right {
+    height: 50vh;
+    min-height: 300px;
+  }
+
+  .laptop-image-container {
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -1296,6 +1542,52 @@ a, button, .project-item, .nav-link {
   .nav-link {
     font-size: 0.9rem;
   }
+
+  /* Client Experience Section Small Mobile */
+  .client-experience-title {
+    font-size: 2rem;
+  }
+
+  .client-experience-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .client-logos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .client-logo {
+    padding: 0.8rem;
+    min-height: 70px;
+  }
+
+  .client-logo img {
+    max-height: 40px;
+  }
+
+  .client-name {
+    font-size: 1.2rem;
+  }
+
+  .client-overlay {
+    padding: 1rem;
+  }
+
+  .client-experience-left {
+    padding: 2rem 1.5rem;
+    min-height: 45vh;
+  }
+
+  .client-experience-right {
+    height: 45vh;
+    min-height: 250px;
+  }
+
+  .laptop-image-container {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 /* Extra Small Mobile Screens (up to 360px) */
@@ -1323,6 +1615,10 @@ a, button, .project-item, .nav-link {
 
   .emblem-text {
     font-size: 0.8rem;
+  }
+
+  .circular-text {
+    font-size: 12px;
   }
 
   /* Services Section Extra Small Mobile */

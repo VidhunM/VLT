@@ -13,6 +13,56 @@ const Home = () => {
   const [service2Visible, setService2Visible] = useState(false)
   const [service3Visible, setService3Visible] = useState(false)
   const [service4Visible, setService4Visible] = useState(false)
+  const [selectedClient, setSelectedClient] = useState(0)
+
+  // Client data with different images
+  const clients = [
+    {
+      name: "HBO",
+      logo: "https://logos-world.net/wp-content/uploads/2020/11/HBO-Logo.png",
+      image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
+    },
+    {
+      name: "Disney",
+      logo: "https://logos-world.net/wp-content/uploads/2020/11/Disney-Logo.png",
+      image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80"
+    },
+    {
+      name: "Stanford",
+      logo: "https://logos-world.net/wp-content/uploads/2020/11/Stanford-University-Logo.png",
+      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+    },
+    {
+      name: "The Salvation Army",
+      logo: "https://logos-world.net/wp-content/uploads/2020/11/Salvation-Army-Logo.png",
+      image: "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+    },
+    {
+      name: "FENWICK",
+      logo: "https://logos-world.net/wp-content/uploads/2020/11/Fenwick-Logo.png",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80"
+    },
+    {
+      name: "Ludeo",
+      logo: "https://logos-world.net/wp-content/uploads/2020/11/Ludeo-Logo.png",
+      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+    },
+    {
+      name: "PlayStation",
+      logo: "https://logos-world.net/wp-content/uploads/2020/11/PlayStation-Logo.png",
+      image: "https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80"
+    },
+    {
+      name: "Kaiser Permanente",
+      logo: "https://logos-world.net/wp-content/uploads/2020/11/Kaiser-Permanente-Logo.png",
+      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80"
+    },
+    {
+      name: "Hasbro",
+      logo: "https://logos-world.net/wp-content/uploads/2020/11/Hasbro-Logo.png",
+      image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80"
+    }
+  ]
 
   useEffect(() => {
     const emblemObserver = new IntersectionObserver(
@@ -143,7 +193,7 @@ const Home = () => {
           </div>
           <div className="excellence-right">
             <h3 className="excellence-subtitle">
-              Build success in , Software Engineer and Property Services
+              Build success in Software Engineer and Property Services
             </h3>
             <p className="excellence-description">
             If you mind thinks about mobile/website development, then we have created a niche for ourselves. We started in 2021 with just 3 employees and now have expanded ourselves to 20+ which shows about the growth and the quality of work that we did over the years.
@@ -177,19 +227,19 @@ Our team comprises highly skilled IT professionals whose target is to provide to
           {/* Service 1: Web Development */}
           <div className={`service-overlay service-1 ${service1Visible ? 'animate-overlay-slide' : 'animate-overlay-slide-reverse'}`}>
             <div className="service-row">
-              <div className="service-image-section">
-                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80" alt="Web Development" />
-              </div>
-              <div className="service-content-section">
-                <div className="service-label">Our Services</div>
-                <h2 className="service-main-title">Web Development</h2>
-                <p className="service-description">
-                  We specialize in creating custom websites and web applications using modern technologies and best practices. Our development team ensures your digital presence is both functional and visually appealing, delivering solutions that drive business growth and user engagement.
-                </p>
-                <button className="service-cta-btn">
-                  <span>Find Out More</span>
-                  <div className="btn-icon orange-dots"></div>
-                </button>
+            <div className="service-image-section">
+              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80" alt="Web Development" />
+            </div>
+            <div className="service-content-section">
+              <div className="service-label">Our Services</div>
+              <h2 className="service-main-title">Web Development</h2>
+              <p className="service-description">
+                We specialize in creating custom websites and web applications using modern technologies and best practices. Our development team ensures your digital presence is both functional and visually appealing, delivering solutions that drive business growth and user engagement.
+              </p>
+              <button className="service-cta-btn">
+                <span>Find Out More</span>
+                <div className="btn-icon orange-dots"></div>
+              </button>
               </div>
             </div>
           </div>
@@ -197,19 +247,19 @@ Our team comprises highly skilled IT professionals whose target is to provide to
           {/* Service 2: Mobile Apps */}
           <div className={`service-overlay service-2 ${service2Visible ? 'animate-overlay-slide' : 'animate-overlay-slide-reverse'}`}>
             <div className="service-row">
-              <div className="service-image-section">
-                <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Mobile Apps" />
-              </div>
-              <div className="service-content-section">
-                <div className="service-label">Our Services</div>
-                <h2 className="service-main-title">Mobile Apps</h2>
-                <p className="service-description">
-                  Native and cross-platform mobile applications for iOS and Android devices. We create intuitive, high-performance mobile solutions that provide seamless user experiences across all devices and platforms.
-                </p>
-                <button className="service-cta-btn">
-                  <span>Find Out More</span>
-                  <div className="btn-icon orange-dots"></div>
-                </button>
+            <div className="service-image-section">
+              <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Mobile Apps" />
+            </div>
+            <div className="service-content-section">
+              <div className="service-label">Our Services</div>
+              <h2 className="service-main-title">Mobile Apps</h2>
+              <p className="service-description">
+                Native and cross-platform mobile applications for iOS and Android devices. We create intuitive, high-performance mobile solutions that provide seamless user experiences across all devices and platforms.
+              </p>
+              <button className="service-cta-btn">
+                <span>Find Out More</span>
+                <div className="btn-icon orange-dots"></div>
+              </button>
               </div>
             </div>
           </div>
@@ -217,19 +267,19 @@ Our team comprises highly skilled IT professionals whose target is to provide to
           {/* Service 3: UI/UX Design */}
           <div className={`service-overlay service-3 ${service3Visible ? 'animate-overlay-slide' : 'animate-overlay-slide-reverse'}`}>
             <div className="service-row">
-              <div className="service-image-section">
-                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80" alt="UI/UX Design" />
-              </div>
-              <div className="service-content-section">
-                <div className="service-label">Our Services</div>
-                <h2 className="service-main-title">UI/UX Design</h2>
-                <p className="service-description">
-                  Beautiful and intuitive user interfaces designed for optimal user experience. Our design team focuses on creating engaging, accessible, and conversion-focused designs that resonate with your target audience.
-                </p>
-                <button className="service-cta-btn">
-                  <span>Find Out More</span>
-                  <div className="btn-icon orange-dots"></div>
-                </button>
+            <div className="service-image-section">
+              <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80" alt="UI/UX Design" />
+            </div>
+            <div className="service-content-section">
+              <div className="service-label">Our Services</div>
+              <h2 className="service-main-title">UI/UX Design</h2>
+              <p className="service-description">
+                Beautiful and intuitive user interfaces designed for optimal user experience. Our design team focuses on creating engaging, accessible, and conversion-focused designs that resonate with your target audience.
+              </p>
+              <button className="service-cta-btn">
+                <span>Find Out More</span>
+                <div className="btn-icon orange-dots"></div>
+              </button>
               </div>
             </div>
           </div>
@@ -237,19 +287,59 @@ Our team comprises highly skilled IT professionals whose target is to provide to
           {/* Service 4: Property Services */}
           <div className={`service-overlay service-4 ${service4Visible ? 'animate-overlay-slide' : 'animate-overlay-slide-reverse'}`}>
             <div className="service-row">
-              <div className="service-image-section">
-                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80" alt="Property Services" />
+            <div className="service-image-section">
+              <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80" alt="Property Services" />
+            </div>
+            <div className="service-content-section">
+              <div className="service-label">Our Services</div>
+              <h2 className="service-main-title">Property Services</h2>
+              <p className="service-description">
+                Comprehensive property management and real estate technology solutions. We provide innovative digital tools and platforms that streamline property operations and enhance tenant experiences.
+              </p>
+              <button className="service-cta-btn">
+                <span>Find Out More</span>
+                <div className="btn-icon orange-dots"></div>
+              </button>
+            </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Client Experience Section */}
+      <section className="client-experience-section">
+        <div className="client-experience-container">
+          <div className="client-experience-split">
+            {/* Left Side - Client Logos */}
+            <div className="client-experience-left">
+              <div className="client-experience-header">
+                <h2 className="client-experience-title">CLIENT EXPERIENCE</h2>
+                <span className="client-experience-subtitle">PAST & PRESENT</span>
               </div>
-              <div className="service-content-section">
-                <div className="service-label">Our Services</div>
-                <h2 className="service-main-title">Property Services</h2>
-                <p className="service-description">
-                  Comprehensive property management and real estate technology solutions. We provide innovative digital tools and platforms that streamline property operations and enhance tenant experiences.
-                </p>
-                <button className="service-cta-btn">
-                  <span>Find Out More</span>
-                  <div className="btn-icon orange-dots"></div>
-                </button>
+              <div className="client-logos-grid">
+                {clients.map((client, index) => (
+                  <div 
+                    key={index}
+                    className={`client-logo ${selectedClient === index ? 'active' : ''}`}
+                    onClick={() => setSelectedClient(index)}
+                  >
+                    <img src={client.logo} alt={client.name} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Side - Client Image */}
+            <div className="client-experience-right">
+              <div className="laptop-image-container">
+                <img 
+                  src={clients[selectedClient].image} 
+                  alt={`${clients[selectedClient].name} project`} 
+                  className="laptop-image"
+                />
+                <div className="client-overlay">
+                  <h3 className="client-name">{clients[selectedClient].name}</h3>
+                </div>
               </div>
             </div>
           </div>
