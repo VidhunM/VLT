@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import HeroThree from '../components/HeroThree'
+import ProjectSection from '../components/ProjectSection'
 
 const Home = () => {
   const emblemRef = useRef(null)
@@ -345,6 +346,9 @@ Our team comprises highly skilled IT professionals whose target is to provide to
           </div>
         </div>
       </section>
+
+      {/* Projects Showcase Section */}
+      <ProjectSection />
 
           </div>
   )
