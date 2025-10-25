@@ -1,19 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import HeroThree from '../components/HeroThree'
 import ProjectSection from '../components/ProjectSection'
+import StatisticsSection from '../components/StatisticsSection'
+import MinimalistNav from '../components/MinimalistNav'
+import FlowAnimation from '../components/FlowAnimation'
 
 const Home = () => {
   const emblemRef = useRef(null)
   const servicesRef = useRef(null)
-  const service1Ref = useRef(null)
   const service2Ref = useRef(null)
   const service3Ref = useRef(null)
-  const service4Ref = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
-  const [service1Visible, setService1Visible] = useState(false)
   const [service2Visible, setService2Visible] = useState(false)
   const [service3Visible, setService3Visible] = useState(false)
-  const [service4Visible, setService4Visible] = useState(false)
   const [selectedClient, setSelectedClient] = useState(0)
 
   // Client data with different images
@@ -77,58 +77,38 @@ const Home = () => {
       { threshold: 0.3 }
     )
 
-    // Create individual observers for each service with bidirectional logic
-    const service1Observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setService1Visible(true)
-        } else {
-          setService1Visible(false)
-        }
-      },
-      { threshold: 0.1 }
-    )
-
+    // Create observers only for middle service cards (Mobile Apps and UI/UX Design)
     const service2Observer = new IntersectionObserver(
       ([entry]) => {
+        console.log('Service 2 intersection:', entry.isIntersecting, 'Current state:', service2Visible)
         if (entry.isIntersecting) {
           setService2Visible(true)
+          console.log('Setting service2Visible to true')
         } else {
           setService2Visible(false)
+          console.log('Setting service2Visible to false')
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.5 }
     )
 
     const service3Observer = new IntersectionObserver(
       ([entry]) => {
+        console.log('Service 3 intersection:', entry.isIntersecting, 'Current state:', service3Visible)
         if (entry.isIntersecting) {
           setService3Visible(true)
+          console.log('Setting service3Visible to true')
         } else {
           setService3Visible(false)
+          console.log('Setting service3Visible to false')
         }
       },
-      { threshold: 0.1 }
-    )
-
-    const service4Observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setService4Visible(true)
-        } else {
-          setService4Visible(false)
-        }
-      },
-      { threshold: 0.1 }
+      { threshold: 0.5 }
     )
 
     // Observe elements
     if (emblemRef.current) {
       emblemObserver.observe(emblemRef.current)
-    }
-
-    if (service1Ref.current) {
-      service1Observer.observe(service1Ref.current)
     }
 
     if (service2Ref.current) {
@@ -139,16 +119,9 @@ const Home = () => {
       service3Observer.observe(service3Ref.current)
     }
 
-    if (service4Ref.current) {
-      service4Observer.observe(service4Ref.current)
-    }
-
     return () => {
       if (emblemRef.current) {
         emblemObserver.unobserve(emblemRef.current)
-      }
-      if (service1Ref.current) {
-        service1Observer.unobserve(service1Ref.current)
       }
       if (service2Ref.current) {
         service2Observer.unobserve(service2Ref.current)
@@ -156,14 +129,12 @@ const Home = () => {
       if (service3Ref.current) {
         service3Observer.unobserve(service3Ref.current)
       }
-      if (service4Ref.current) {
-        service4Observer.unobserve(service4Ref.current)
-      }
     }
   }, [])
 
   return (
     <div className="page home">
+      <MinimalistNav />
       <HeroThree />
       
       <section className="excellence-section">
@@ -202,10 +173,10 @@ const Home = () => {
 Our team comprises highly skilled IT professionals whose target is to provide top-notch yet cost-effective solutions to SMEs. We have expertise in designing and developing custom-made websites and apps for all industries. So if there’s a specific requirement you can reach to us.
             </p>
             <div className="excellence-buttons">
-              <button className="btn-our-people">
+              <Link to="/our-team" className="btn-our-people">
                 <span>Our People</span>
                 <div className="btn-icon orange-dots"></div>
-              </button>
+              </Link>
               <button className="btn-join-team">
                 <span>Join The Team</span>
                 <div className="btn-icon white-dots"></div>
@@ -217,16 +188,19 @@ Our team comprises highly skilled IT professionals whose target is to provide to
       </section>
 
       {/* Services Section */}
-      <section className="services-section" ref={servicesRef}>
+      <section 
+        id="services" 
+        className="services-section" 
+        ref={servicesRef}
+        style={{ scrollMarginTop: '80px' }}
+      >
         <div className="services-container">
-          {/* Trigger elements for scroll detection */}
-          <div ref={service1Ref} style={{ position: 'absolute', top: '100vh', height: '1px', width: '100%' }}></div>
-          <div ref={service2Ref} style={{ position: 'absolute', top: '200vh', height: '1px', width: '100%' }}></div>
-          <div ref={service3Ref} style={{ position: 'absolute', top: '300vh', height: '1px', width: '100%' }}></div>
-          <div ref={service4Ref} style={{ position: 'absolute', top: '400vh', height: '1px', width: '100%' }}></div>
+          {/* Trigger elements for scroll detection - only for middle cards */}
+          <div ref={service2Ref} style={{ position: 'absolute', top: '100vh', height: '1px', width: '100%' }}></div>
+          <div ref={service3Ref} style={{ position: 'absolute', top: '200vh', height: '1px', width: '100%' }}></div>
 
           {/* Service 1: Web Development */}
-          <div className={`service-overlay service-1 ${service1Visible ? 'animate-overlay-slide' : 'animate-overlay-slide-reverse'}`}>
+          <div className="service-overlay service-1">
             <div className="service-row">
             <div className="service-image-section">
               <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80" alt="Web Development" />
@@ -286,7 +260,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
           </div>
 
           {/* Service 4: Property Services */}
-          <div className={`service-overlay service-4 ${service4Visible ? 'animate-overlay-slide' : 'animate-overlay-slide-reverse'}`}>
+          <div className="service-overlay service-4">
             <div className="service-row">
             <div className="service-image-section">
               <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80" alt="Property Services" />
@@ -348,8 +322,63 @@ Our team comprises highly skilled IT professionals whose target is to provide to
       </section>
 
       {/* Projects Showcase Section */}
-      <ProjectSection />
+      <section id="projects">
+        <ProjectSection />
+      </section>
 
+      {/* Statistics Section */}
+      <StatisticsSection />
+
+      {/* Feed Section */}
+      <section id="feed" className="feed-section">
+        <div className="feed-container">
+          <h2 className="feed-title">Our Feed</h2>
+          <p className="feed-description">
+            Stay updated with our latest news, insights, and project updates.
+          </p>
+          <div className="feed-content">
+            <div className="feed-item">
+              <h3>Latest Project Launch</h3>
+              <p>We're excited to announce the launch of our latest web application project.</p>
+            </div>
+            <div className="feed-item">
+              <h3>Team Expansion</h3>
+              <p>We're growing! Welcome our new team members who bring fresh perspectives.</p>
+            </div>
+            <div className="feed-item">
+              <h3>Technology Update</h3>
+              <p>We've upgraded our development stack with the latest technologies.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="contact-section">
+        <div className="contact-container">
+          <h2 className="contact-title">Get In Touch</h2>
+          <p className="contact-description">
+            Ready to start your next project? Let's discuss how we can help bring your ideas to life.
+          </p>
+          <div className="contact-info">
+            <div className="contact-item">
+              <h3>Email</h3>
+              <p>hello@vulturelines.com</p>
+            </div>
+            <div className="contact-item">
+              <h3>Phone</h3>
+              <p>+1 (555) 123-4567</p>
+            </div>
+            <div className="contact-item">
+              <h3>Location</h3>
+              <p>San Francisco, CA</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Flow Animation */}
+      <FlowAnimation />
           </div>
   )
 }

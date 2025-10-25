@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Home from './pages/Home'
 import Work from './pages/Work'
+import OurTeam from './pages/OurTeam'
+import Contact from './pages/Contact'
 import CustomCursor from './components/CustomCursor'
 
 function App() {
@@ -15,6 +17,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/work" element={<Work />} />
+            <Route path="/our-team" element={<OurTeam />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
       </div>
