@@ -23,9 +23,9 @@ const Header = () => {
             </Link>
           </li>
           <li className="nav-item">
-            <a href="#services" className="nav-link" onClick={() => setIsMenuOpen(false)}>
-              Service
-            </a>
+            <Link to="/our-service" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+              Our Service
+            </Link>
           </li>
           <li className="nav-item">
             <Link to="/work" className="nav-link" onClick={() => setIsMenuOpen(false)}>

@@ -1358,7 +1358,7 @@ a.btn-our-people {
   color: #1A202C;
   position: relative;
   overflow: hidden;
-  height: 300vh; /* Reduced height since only 2 cards animate */
+  height: 400vh; /* Full height for 4 service cards */
   scroll-margin-top: 80px; /* Ensures proper scroll positioning */
 }
 
@@ -1383,9 +1383,8 @@ a.btn-our-people {
   will-change: transform, opacity;
 }
 
-/* Service 1 and Service 4 - Always visible, no animation (override base styles) */
-.service-overlay.service-1,
-.service-overlay.service-4 {
+/* Service 1 - Always visible, no animation (override base styles) */
+.service-overlay.service-1 {
   position: relative !important;
   transform: translateY(0) !important;
   opacity: 1 !important;
@@ -1393,32 +1392,28 @@ a.btn-our-people {
   display: flex;
   align-items: center;
   transition: none !important;
-}
-
-.service-overlay.service-1 {
   z-index: 1;
 }
 
-.service-overlay.service-4 {
-  z-index: 4;
-}
-
-/* Animation classes for service 2 and 3 only */
+/* Animation classes for service 2, 3, and 4 */
 .service-overlay.service-2.animate-overlay-slide,
-.service-overlay.service-3.animate-overlay-slide {
+.service-overlay.service-3.animate-overlay-slide,
+.service-overlay.service-4.animate-overlay-slide {
   animation: overlaySlideUp 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .service-overlay.service-2.animate-overlay-slide-reverse,
-.service-overlay.service-3.animate-overlay-slide-reverse {
+.service-overlay.service-3.animate-overlay-slide-reverse,
+.service-overlay.service-4.animate-overlay-slide-reverse {
   animation: overlaySlideDown 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
 }
 
 /* Ensure smooth transitions for reverse scrolling */
 .service-overlay.service-2,
-.service-overlay.service-3 {
+.service-overlay.service-3,
+.service-overlay.service-4 {
   animation-fill-mode: both;
 }
 
@@ -2146,7 +2141,7 @@ a.btn-our-people {
 
   /* Services Section Mobile */
   .services-section {
-    height: 300vh; /* Reduced height for mobile */
+    height: 400vh; /* Full height for 4 service cards */
   }
   
   .service-overlay {

@@ -6,6 +6,7 @@ import Work from './pages/Work'
 import OurTeam from './pages/OurTeam'
 import Contact from './pages/Contact'
 import CustomCursor from './components/CustomCursor'
+import OurService from './pages/OurService'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/work" element={<Work />} />
+            <Route path="/our-service" element={<OurService />} />
             <Route path="/our-team" element={<OurTeam />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
