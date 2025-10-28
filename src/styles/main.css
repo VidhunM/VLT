@@ -98,10 +98,10 @@ a, button, .project-item, .nav-link {
 }
 
 .logo-image {
-  height: 70px;
+  height: 80px;
   width: auto;
   object-fit: contain;
-  margin-left: -20px;
+  margin-left: -120px;
 }
 
 .nav-menu {
