@@ -101,7 +101,7 @@ a, button, .project-item, .nav-link {
   height: 80px;
   width: auto;
   object-fit: contain;
-  margin-left: -120px;
+  margin-left: -100px;
 }
 
 .nav-menu {
