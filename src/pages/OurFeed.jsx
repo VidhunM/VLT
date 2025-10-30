@@ -24,32 +24,49 @@ function OurFeed() {
   const groupRef = useRef(null)
   const [tab, setTab] = useState('VIBES')
 
-  // Precompute scattered positions in 3D around a center
+  // Deterministic 3D circular rows: row1 (6 equal), row2 (5 odd slots of 10), row3 (6 even slots of 12)
   const items = useMemo(() => {
-    const radiusX = 480
-    const radiusY = 220
-    const radiusZ = 320
-    const list = []
-    for (let i = 0; i < IMAGES.length; i++) {
-      const t = (i / IMAGES.length) * Math.PI * 2
-      const jitterX = (Math.sin(i * 1.73) * 70)
-      const jitterY = (Math.cos(i * 2.11) * 60)
-      const jitterZ = (Math.sin(i * 0.91) * 90)
-      const x = Math.cos(t) * radiusX + jitterX
-      const y = Math.sin(t) * radiusY + jitterY
-      const z = Math.sin(t) * radiusZ + jitterZ
-      const rotY = (Math.atan2(x, radiusZ) * 180) / Math.PI
-      const size = i === 5 ? 300 : i % 5 === 0 ? 220 : 140 + ((i * 37) % 40)
-      list.push({
-        src: IMAGES[i % IMAGES.length],
-        x,
-        y,
-        z,
-        rotY,
-        size
-      })
+    const result = []
+    const baseZ = 280 // push slightly farther for a zoomed-out feel
+    const radii = { x: 520, z: 260 }
+    const yLevels = [-160, 0, 160]
+    const sizes = [120, 120, 120] // smaller circles for a zoomed-out look
+
+    let imgIdx = 0
+
+    // Row 1: 6 equally spaced
+    const r1Count = 6
+    for (let i = 0; i < r1Count; i++) {
+      const t = (i / r1Count) * Math.PI * 2
+      const x = radii.x * Math.sin(t)
+      const z = baseZ + radii.z * Math.cos(t)
+      const rotY = (-t * 180) / Math.PI * 0.7
+      result.push({ src: IMAGES[imgIdx++ % IMAGES.length], x, y: yLevels[0], z, rotY, size: sizes[0] })
     }
-    return list
+
+    // Row 2: 5 images at odd indices of a 10-slot ring → angles at (2k+1)/10 * 2π
+    const r2Slots = 10
+    for (let k = 0; k < 5; k++) {
+      const slot = 2 * k + 1 // 1,3,5,7,9
+      const t = (slot / r2Slots) * Math.PI * 2
+      const x = radii.x * Math.sin(t)
+      const z = baseZ + radii.z * Math.cos(t)
+      const rotY = (-t * 180) / Math.PI * 0.7
+      result.push({ src: IMAGES[imgIdx++ % IMAGES.length], x, y: yLevels[1], z, rotY, size: sizes[1] })
+    }
+
+    // Row 3: 6 images at even indices of a 12-slot ring → angles at 2k/12 * 2π
+    const r3Slots = 12
+    for (let k = 1; k <= 6; k++) { // even indices: 2,4,6,8,10,12
+      const slot = 2 * k
+      const t = (slot / r3Slots) * Math.PI * 2
+      const x = radii.x * Math.sin(t)
+      const z = baseZ + radii.z * Math.cos(t)
+      const rotY = (-t * 180) / Math.PI * 0.7
+      result.push({ src: IMAGES[imgIdx++ % IMAGES.length], x, y: yLevels[2], z, rotY, size: sizes[2] })
+    }
+
+    return result.slice(0, 17) // ensure we use 17 images total
   }, [])
 
   useEffect(() => {
@@ -183,36 +200,7 @@ function OurFeed() {
             </div>
           ))}
 
-          {/* Bottom Tabs */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 28,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              display: 'flex',
-              gap: 14
-            }}
-          >
-            {['VIBES', 'HIGHLIGHTS', 'ARTICLES'].map((t) => (
-              <button
-                key={t}
-                onClick={() => setTab(t)}
-                style={{
-                  padding: '12px 20px',
-                  borderRadius: 999,
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  background: tab === t ? '#fff' : 'transparent',
-                  color: tab === t ? '#000' : '#fff',
-                  fontWeight: 700,
-                  letterSpacing: 0.5,
-                  cursor: 'pointer'
-                }}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+          
         </div>
         </div>
       </section>
