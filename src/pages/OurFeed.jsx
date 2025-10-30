@@ -28,9 +28,9 @@ function OurFeed() {
   const items = useMemo(() => {
     const result = []
     const baseZ = 280 // push slightly farther for a zoomed-out feel
-    const radii = { x: 520, z: 260 }
+    const radii = { x: 380, z: 190 } // reduced from 520/260 to bring images closer together
     const yLevels = [-160, 0, 160]
-    const sizes = [120, 120, 120] // smaller circles for a zoomed-out look
+    const sizes = [100, 100, 100] // smaller circles for a zoomed-out look
 
     let imgIdx = 0
 
