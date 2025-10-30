@@ -11,7 +11,7 @@ const MinimalistNav = () => {
     { name: 'HOME', href: '/', sectionId: 'home' },
     { name: 'OUR SERVICE', href: '#services', sectionId: 'services' },
     { name: 'PROJECTS', href: '/work', sectionId: 'projects' },
-    { name: 'OUR FEED', href: '#feed', sectionId: 'feed' },
+    { name: 'OUR FEED', href: '/our-feed', sectionId: 'feed' },
     { name: 'CONTACT', href: '/contact', sectionId: 'contact' }
   ]
 

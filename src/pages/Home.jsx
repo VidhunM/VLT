@@ -20,6 +20,7 @@ const Home = () => {
   const [activeCapability, setActiveCapability] = useState(0)
   const [scrollDirection, setScrollDirection] = useState('down')
   const [lastScrollY, setLastScrollY] = useState(0)
+  const lastScrollRef = useRef(0)
 
   // Client data with different images
   const clients = [
@@ -70,20 +71,22 @@ const Home = () => {
     }
   ]
 
+  // Scroll direction detection (set up once)
   useEffect(() => {
-    // Scroll direction detection
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      if (currentScrollY > lastScrollY) {
-        setScrollDirection('down')
-      } else {
-        setScrollDirection('up')
-      }
+      setScrollDirection(currentScrollY > lastScrollRef.current ? 'down' : 'up')
+      lastScrollRef.current = currentScrollY
       setLastScrollY(currentScrollY)
     }
-
     window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
+  // IntersectionObservers for emblem and service overlays (set up once)
+  useEffect(() => {
     const emblemObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -95,16 +98,12 @@ const Home = () => {
       { threshold: 0.3 }
     )
 
-    // Create observers only for middle service cards (Mobile Apps and UI/UX Design)
     const service2Observer = new IntersectionObserver(
       ([entry]) => {
-        console.log('Service 2 intersection:', entry.isIntersecting, 'Current state:', service2Visible)
         if (entry.isIntersecting) {
           setService2Visible(true)
-          console.log('Setting service2Visible to true')
         } else {
           setService2Visible(false)
-          console.log('Setting service2Visible to false')
         }
       },
       { threshold: 0.5 }
@@ -112,13 +111,10 @@ const Home = () => {
 
     const service3Observer = new IntersectionObserver(
       ([entry]) => {
-        console.log('Service 3 intersection:', entry.isIntersecting, 'Current state:', service3Visible)
         if (entry.isIntersecting) {
           setService3Visible(true)
-          console.log('Setting service3Visible to true')
         } else {
           setService3Visible(false)
-          console.log('Setting service3Visible to false')
         }
       },
       { threshold: 0.5 }
@@ -126,37 +122,29 @@ const Home = () => {
 
     const service4Observer = new IntersectionObserver(
       ([entry]) => {
-        console.log('Service 4 intersection:', entry.isIntersecting, 'Current state:', service4Visible)
         if (entry.isIntersecting) {
           setService4Visible(true)
-          console.log('Setting service4Visible to true')
         } else {
           setService4Visible(false)
-          console.log('Setting service4Visible to false')
         }
       },
       { threshold: 0.5 }
     )
 
-    // Observe elements
     if (emblemRef.current) {
       emblemObserver.observe(emblemRef.current)
     }
-
     if (service2Ref.current) {
       service2Observer.observe(service2Ref.current)
     }
-
     if (service3Ref.current) {
       service3Observer.observe(service3Ref.current)
     }
-
     if (service4Ref.current) {
       service4Observer.observe(service4Ref.current)
     }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll)
       if (emblemRef.current) {
         emblemObserver.unobserve(emblemRef.current)
       }
@@ -170,7 +158,7 @@ const Home = () => {
         service4Observer.unobserve(service4Ref.current)
       }
     }
-  }, [lastScrollY])
+  }, [])
 
   return (
     <div className="page home">
@@ -374,10 +362,10 @@ Our team comprises highly skilled IT professionals whose target is to provide to
       <section id="feed" className="capabilities-section" style={{ padding: '80px 0' }}>
         <div className="capabilities-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 48, alignItems: 'start' }}>
-            {/* Left: Heading */}
-            <div style={{ 
-              transform: `translateY(${scrollDirection === 'up' ? '-100px' : '300px'})`,
-              transition: 'transform 1.2s ease-out'
+            {/* Left: Heading (sticky at top) */}
+            <div style={{
+              position: 'sticky',
+              top: 0
             }}>
               <div style={{ color: '#8c8c8c', fontWeight: 700, letterSpacing: 1.2, marginBottom: 12 }}>CAPABILITIES</div>
               <h2 style={{ fontSize: 36, lineHeight: 1.2, margin: 0 }}>

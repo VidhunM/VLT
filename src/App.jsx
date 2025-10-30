@@ -7,6 +7,7 @@ import OurTeam from './pages/OurTeam'
 import Contact from './pages/Contact'
 import CustomCursor from './components/CustomCursor'
 import OurService from './pages/OurService'
+import OurFeed from './pages/OurFeed'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/work" element={<Work />} />
             <Route path="/our-service" element={<OurService />} />
+            <Route path="/our-feed" element={<OurFeed />} />
             <Route path="/our-team" element={<OurTeam />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>

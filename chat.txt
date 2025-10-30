@@ -1,0 +1,90 @@
+Date: 2025-10-30
+Topics: Capabilities section layout update; conversation log setup
+Code changes: Updated `src/pages/Home.jsx` to make Capabilities left column sticky (position: sticky; top: 0) replacing previous translate-based animation.
+Decisions: Keep inline styles (minimal edits), keep id="feed" and current content; apply stickiness across all breakpoints.
+Next steps: Verify responsive behavior; optionally move sticky rule to CSS class if reuse is desired.
+
+Date: 2025-10-30
+Topics: Home services overlay one-by-one slide-up on scroll; observer lifecycle fix
+Code changes: In `src/pages/Home.jsx`, split scroll listener and IntersectionObserver logic into two effects. Added `lastScrollRef` to avoid re-attaching listeners on scroll. Observers for service 2/3/4 now initialize once and clean up on unmount; emblem observer unchanged in behavior but moved to the one-time effect. No CSS/markup changes.
+Decisions: Minimal, targeted fix; keep existing thresholds and trigger markers; preserve current animation classes in CSS.
+Next steps: Visually verify scroll down/up behavior across breakpoints; optionally add small stagger delay if desired.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Service page background color update
+Code changes: In `src/pages/OurService.jsx`, changed top-level wrapper background from `#f8f9fa` to `#ffffff` to make the page background white.
+Decisions: Minimal, page-scoped inline style change to avoid affecting other routes.
+Next steps: Verify text and card contrast on white; adjust any section-specific backgrounds if needed.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Service page custom header (logo + menu)
+Code changes: 
+- `src/components/Header.jsx`: added `logoSrc` and `menuItems` props with safe defaults; menu renders `Link` or anchor based on href.
+- `src/pages/OurService.jsx`: replaced `MinimalistNav` with `Header`, passing `logoSrc` `/assets/Images/Vlt_logo1.png` and a page-specific menu.
+Decisions: Keep change scoped to Our Service; maintain defaults for other pages; no global CSS edits.
+Next steps: Confirm chosen logo and menu match branding; adjust items/links if needed.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Header circle button color update
+Code changes: In `src/styles/main.css`, updated `.nav-circle-btn` to dark blue background/border (`#0d47a1`), hover to `#0b3d91`, and kept `.circle-v` text white on hover.
+Decisions: Global style to match requested dark blue for the V menu circle; maintains contrast and hover feedback.
+Next steps: Verify on all pages that header contrast remains accessible on light/dark backgrounds.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Service page content section under 3D cards
+Code changes: In `src/pages/OurService.jsx`, added a responsive two-column section below the carousel (image left, title/metadata/description/link right) using inline styles and placeholder content.
+Decisions: Keep changes scoped with inline styles; dynamic image via Unsplash; easy to duplicate for more entries.
+Next steps: Replace placeholder text/link with real project details or map over data for multiple blocks.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Zigzag projects + scroll zoom animation
+Code changes: In `src/pages/OurService.jsx`, added `PROJECTS` array and mapped 4 zigzag sections (alternating layout). Implemented scroll-based zoom for project images using a page-scoped scroll handler that scales between 0.96–1.04, with `data-zoom` and inline `transition`.
+Decisions: Page-scoped JS (no global CSS); minimal DOM queries; passive scroll handler.
+Next steps: Fine-tune scale range/timing if you want a stronger/weaker effect.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Build error fix in OurService.jsx
+Code changes: Removed TypeScript-style casts in cleanup (`onScroll as any`) and used standard `removeEventListener` signatures.
+Decisions: Keep file as plain JS/JSX; no TS syntax.
+Next steps: Verify no further parser errors; adjust animation if needed.
+
+Date: 2025-10-30
+Time: N/A
+Topics: New OurFeed page (3D collage)
+Code changes: Created `src/pages/OurFeed.jsx` with fullscreen black background, perspective 3D scattered images, gentle auto-rotation with mouse parallax, and bottom tabs (VIBES/HIGHLIGHTS/ARTICLES). Added route `/our-feed` in `src/App.jsx`.
+Decisions: Page uses inline styles and Unsplash placeholders; header unchanged.
+Next steps: Optionally point header "Our Feed" menu to `/our-feed` and replace images/content as desired.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Update menu to navigate to Our Feed page
+Code changes: Updated `src/components/Header.jsx` default menu and `src/components/MinimalistNav.jsx` to link "Our Feed" to `/our-feed`.
+Decisions: Ensure consistent navigation across header variants; no other behavior changed.
+Next steps: Verify navigation from all pages; adjust menu ordering if needed.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Feed top header layout (FEED + tagline) added
+Code changes: In `src/pages/OurFeed.jsx`, added a white top section with left-aligned `FEED` title and right-aligned tagline “LESS NOISE ✦ MORE SUBSTANCE”. Wrapped the 3D collage in a black section with a top row showing `VIBES` on the left and an explanatory sentence on the right.
+Decisions: Page-scoped inline styles; preserved existing 3D scene and tabs.
+Next steps: Tweak font sizes/spacing to exactly match desired look if needed.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Adjust FEED header spacing
+Code changes: Increased top padding of Our Feed header section from 48px to 72px in `src/pages/OurFeed.jsx` to move “FEED / LESS NOISE ✦ MORE SUBSTANCE” slightly down.
+Decisions: Minimal, page-scoped tweak.
+Next steps: Fine-tune spacing if you want more/less offset.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Feed page header logo/menu like Our Service
+Code changes: In `src/pages/OurFeed.jsx`, rendered `Header` with `logoSrc` `/assets/Images/Vlt_logo1.png` and page menu (Home, Our Service, Projects, Our Feed, Contact).
+Decisions: Page-scoped header added to match Our Service styling.
+Next steps: If duplicate headers appear due to global header in `App.jsx`, we can remove the global header and render per-page instead.
