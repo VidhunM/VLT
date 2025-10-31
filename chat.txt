@@ -88,3 +88,24 @@ Topics: Our Feed page header logo/menu like Our Service
 Code changes: In `src/pages/OurFeed.jsx`, rendered `Header` with `logoSrc` `/assets/Images/Vlt_logo1.png` and page menu (Home, Our Service, Projects, Our Feed, Contact).
 Decisions: Page-scoped header added to match Our Service styling.
 Next steps: If duplicate headers appear due to global header in `App.jsx`, we can remove the global header and render per-page instead.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Our Feed Highlights section cleanup
+Code changes: Removed the chip/tag row under the second highlight card in `src/pages/OurFeed.jsx` that displayed “VIBES, HIGHLIGHTS, ARTICLES”.
+Decisions: Minimal and targeted removal; no other layout/content changes.
+Next steps: Confirm visual spacing looks good without the chips; adjust padding if desired.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Black section with fixed center and rotating image rings
+Code changes: In `src/pages/OurFeed.jsx`, added a new black section featuring a completely stationary blank center and three concentric rotating rings (8/10/12 items) using CSS `rotateY` keyframes and `translateZ(radius)` for even circular distribution.
+Decisions: Kept animation scoped and CSS-driven for smooth performance; center remains static; rings pause on hover.
+Next steps: Tune radii/speeds if desired; replace placeholder images with production assets.
+
+Date: 2025-10-30
+Time: N/A
+Topics: Scroll-driven rotation for circular carousel
+Code changes: Updated the black carousel section in `src/pages/OurFeed.jsx` to rotate rings based on page scroll. Removed autoplay `animation` on rings, added refs and a `requestAnimationFrame` loop that maps scroll progress to ring `rotateY` transforms (inner 360°, middle -270°, outer 180°). Center remains static.
+Decisions: Minimal, page-scoped change; smooth performance using rAF and passive scroll.
+Next steps: Adjust rotation multipliers if you want faster/slower scroll coupling.
