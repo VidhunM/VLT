@@ -17,6 +17,13 @@ Code changes: In `src/pages/OurService.jsx`, changed top-level wrapper backgroun
 Decisions: Minimal, page-scoped inline style change to avoid affecting other routes.
 Next steps: Verify text and card contrast on white; adjust any section-specific backgrounds if needed.
 
+Date: 2025-10-31
+Time: N/A (timestamp command unavailable)
+Topics: Our Feed carousel removal request
+Code changes: Removed circular carousel section and associated scroll animation refs from `src/pages/OurFeed.jsx`.
+Decisions: Preserve 3D gallery and highlights sections without replacements for carousel.
+Next steps: Review Our Feed layout for spacing gaps and confirm no lingering carousel styles.
+
 Date: 2025-10-30
 Time: N/A
 Topics: Our Service page custom header (logo + menu)

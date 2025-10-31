@@ -23,49 +23,6 @@ const IMAGES = [
 
 function OurFeed() {
   const groupRef = useRef(null);
-  const ringRefs = useRef([]);
-  // Scroll-driven rotation for the circular carousel rings
-  useEffect(() => {
-    const getScrollProgress = () => {
-      const h = document.documentElement;
-      const scrollTop = window.scrollY || h.scrollTop || document.body.scrollTop || 0;
-      const docHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight,
-        document.body.clientHeight,
-        document.documentElement.clientHeight
-      );
-      const winH = window.innerHeight || 1;
-      const maxScroll = Math.max(1, docHeight - winH);
-      return Math.min(1, Math.max(0, scrollTop / maxScroll));
-    };
-
-    let raf = 0;
-    const rotatePerProgress = [360, -270, 180]; // inner, middle, outer (degrees for full page scroll)
-
-    const tick = () => {
-      const p = getScrollProgress();
-      ringRefs.current.forEach((el, idx) => {
-        if (!el) return;
-        const deg = (rotatePerProgress[idx] || 0) * p;
-        el.style.transform = `rotateY(${deg}deg)`;
-        el.style.transformStyle = "preserve-3d";
-        el.style.willChange = "transform";
-      });
-      raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-    const onScroll = () => { /* scroll read happens in rAF */ };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
   // Build the 3D pattern (6 - 5 - 6)
   const items = useMemo(() => {
     const result = [];
@@ -136,7 +93,7 @@ function OurFeed() {
 
     // Pre-store each child's data-attributes for performance
     const children = Array.from(node.children);
-    children.forEach((child, i) => {
+    children.forEach((child) => {
       // Expect each child to have data attributes already set (we'll set them in render)
       // If not present, parse transforms from style (fallback)
       const dx = child.dataset.x ?? "0";
@@ -312,81 +269,6 @@ function OurFeed() {
                   />
                 </div>
               </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Black Circular Carousel Section (fixed center, rotating rings) */}
-      <section style={{ background: "#000", color: "#fff" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "48px 24px" }}>
-          <style>{`
-            @keyframes cc-rotate-y-cw { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
-            @keyframes cc-rotate-y-ccw { from { transform: rotateY(0deg); } to { transform: rotateY(-360deg); } }
-            .cc-ring { transform-style: preserve-3d; will-change: transform; }
-            .cc-item { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; will-change: transform; }
-            .cc-card { transform: translate(-50%, -50%); border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.45); background:#111; }
-            .cc-card img { width: 100%; height: 100%; object-fit: cover; display:block; backface-visibility:hidden; -webkit-backface-visibility:hidden; }
-            /* scroll-driven: no autoplay animation */
-          `}</style>
-
-          <div style={{ fontSize: 28, fontWeight: 800, letterSpacing: 1, marginBottom: 16 }}>CIRCULAR CAROUSEL</div>
-
-          <div
-            className="cc-root"
-            style={{
-              position: "relative",
-              width: "100%",
-              height: "70vh",
-              maxHeight: 720,
-              minHeight: 420,
-              perspective: "1600px",
-              overflow: "hidden"
-            }}
-          >
-            {/* Static center (blank) */}
-            <div
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                width: 240,
-                height: 240,
-                transform: "translate(-50%, -50%)",
-                borderRadius: "50%",
-                background: "transparent",
-                pointerEvents: "none",
-                zIndex: 2
-              }}
-            />
-
-            {/* Rings */}
-            {[
-              { count: 8, radius: 260, size: 90, speed: 40, dir: 1 },
-              { count: 10, radius: 340, size: 90, speed: 55, dir: -1 },
-              { count: 12, radius: 420, size: 90, speed: 70, dir: 1 }
-            ].map((ring, rIdx) => {
-              const imgs = new Array(ring.count).fill(null).map((_, i) => IMAGES[(i + rIdx * 3) % IMAGES.length]);
-              return (
-                <div
-                  key={`ring-${rIdx}`}
-                  className="cc-ring"
-                  ref={(el) => (ringRefs.current[rIdx] = el)}
-                  style={{ position: "absolute", inset: 0 }}
-                >
-                  {imgs.map((src, i) => {
-                    const angle = (i / ring.count) * Math.PI * 2;
-                    const transform = `rotateY(${(angle * 180) / Math.PI}deg) translateZ(${ring.radius}px)`;
-                    return (
-                      <div key={`item-${rIdx}-${i}`} className="cc-item" style={{ transform }}>
-                        <div className="cc-card" style={{ width: ring.size, height: ring.size }}>
-                          <img src={src} alt="carousel" />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
               );
             })}
           </div>
