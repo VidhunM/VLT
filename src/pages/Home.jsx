@@ -168,7 +168,7 @@ const Home = () => {
       <section className="excellence-section">
         <div className="excellence-container">
           <div className="excellence-left">
-            <h2 className="excellence-title">
+            <h2 className={`excellence-title ${isVisible ? 'animate-title' : ''}`}>
               <span>2+ Years of</span>
               <span>Excellence.</span>
             </h2>
@@ -192,15 +192,15 @@ const Home = () => {
             </div>
           </div>
           <div className="excellence-right">
-            <h3 className="excellence-subtitle">
+            <h3 className={`excellence-subtitle ${isVisible ? 'animate-subtitle' : ''}`}>
               Build success in Software Engineer and Property Services
             </h3>
-            <p className="excellence-description">
+            <p className={`excellence-description ${isVisible ? 'animate-description' : ''}`}>
             If you mind thinks about mobile/website development, then we have created a niche for ourselves. We started in 2021 with just 3 employees and now have expanded ourselves to 20+ which shows about the growth and the quality of work that we did over the years.
 
-Our team comprises highly skilled IT professionals whose target is to provide top-notch yet cost-effective solutions to SMEs. We have expertise in designing and developing custom-made websites and apps for all industries. So if there’s a specific requirement you can reach to us.
+Our team comprises highly skilled IT professionals whose target is to provide top-notch yet cost-effective solutions to SMEs. We have expertise in designing and developing custom-made websites and apps for all industries. So if there's a specific requirement you can reach to us.
             </p>
-            <div className="excellence-buttons">
+            <div className={`excellence-buttons ${isVisible ? 'animate-buttons' : ''}`}>
               <Link to="/our-team" className="btn-our-people">
                 <span>Our People</span>
                 <div className="btn-icon orange-dots"></div>
