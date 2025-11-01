@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 
 const SERVICES = [
@@ -63,6 +63,8 @@ const KLogo = () => (
 const OurService = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoRotate, setAutoRotate] = useState(true);
+  const [visibleProjects, setVisibleProjects] = useState({});
+  const zigzagRefs = useRef([]);
 
   useEffect(() => {
     if (!autoRotate) return;
@@ -99,6 +101,35 @@ const OurService = () => {
     setActiveIndex((idx) => (idx + (dir === 'next' ? 1 : -1) + CARD_COUNT) % CARD_COUNT);
     setTimeout(() => setAutoRotate(true), 5000);
   };
+
+  useEffect(() => {
+    if (!zigzagRefs.current.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = Number(entry.target.getAttribute('data-project-index'));
+            setVisibleProjects((prev) => {
+              if (prev[index]) return prev;
+              return { ...prev, [index]: true };
+            });
+          }
+        });
+      },
+      {
+        threshold: 0.25,
+      }
+    );
+
+    zigzagRefs.current.forEach((node) => {
+      if (node) observer.observe(node);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   return (
     <div style={{ background: '#ffffff', minHeight: '100vh', overflowX: 'hidden' }}>
@@ -137,7 +168,8 @@ const OurService = () => {
             width: 'min(90vw, 880px)',
             height: 'min(80vh, 600px)',
             transformStyle: 'preserve-3d',
-            overflow: 'visible'
+            overflow: 'visible',
+            paddingBottom: 120
           }}
         >
           {SERVICES.map((s, i) => {
@@ -145,7 +177,7 @@ const OurService = () => {
             if (pos > CARD_COUNT / 2) pos -= CARD_COUNT;
 
             const angle = pos * 45; // smoother separation
-            const radius = 600; // increased distance so all cards fit inside view
+            const radius = 540; // slightly tighter spacing between cards
             const rad = (angle * Math.PI) / 180;
             const translateZ = Math.cos(rad) * radius;
             const translateX = Math.sin(rad) * radius;
@@ -161,10 +193,10 @@ const OurService = () => {
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  width: 'clamp(260px, 30vw, 380px)',
-                  height: 'clamp(360px, 45vw, 500px)',
-                  marginLeft: 'calc(-1 * clamp(260px, 30vw, 380px) / 2)',
-                  marginTop: 'calc(-1 * clamp(360px, 45vw, 500px) / 2)',
+                  width: 'clamp(280px, 32vw, 410px)',
+                  height: 'clamp(390px, 48vw, 540px)',
+                  marginLeft: 'calc(-1 * clamp(280px, 32vw, 410px) / 2)',
+                  marginTop: 'calc(-1 * clamp(390px, 48vw, 540px) / 2)',
                   borderRadius: 30,
                   overflow: 'hidden',
                   background: '#111',
@@ -264,17 +296,26 @@ const OurService = () => {
             style={{
               width: '100%',
               maxWidth: 1200,
-              margin: '60px auto',
+              margin: '160px auto',
               padding: '0 24px'
             }}
           >
             <div
+              data-project-index={idx}
+              ref={(el) => {
+                zigzagRefs.current[idx] = el;
+              }}
               style={{
                 display: 'flex',
                 flexWrap: 'wrap',
                 alignItems: 'flex-start',
                 gap: 32,
-                flexDirection: isReversed ? 'row-reverse' : 'row'
+                flexDirection: isReversed ? 'row-reverse' : 'row',
+                opacity: visibleProjects[idx] ? 1 : 0,
+                transform: visibleProjects[idx]
+                  ? 'translateX(0)'
+                  : `translateX(${isReversed ? 80 : -80}px)`,
+                transition: 'opacity 0.7s ease, transform 0.7s ease'
               }}
             >
               <div

@@ -39,22 +39,6 @@ const Contact = () => {
 
           <div className="form-row">
             <div className="form-field">
-              <label htmlFor="company">Company name*</label>
-              <input type="text" id="company" required />
-            </div>
-            <div className="form-field">
-              <label htmlFor="relationship">Relationship with Spence</label>
-              <select id="relationship">
-                <option>Client</option>
-                <option>Prospect</option>
-                <option>Supplier</option>
-                <option>Other</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-field">
               <label htmlFor="sector">Sector / Service</label>
               <select id="sector">
                 <option>Select an option</option>
@@ -88,19 +72,10 @@ const Contact = () => {
             </h2>
             
             <div className="location-addresses">
-              <div className="location-item">
-                <div className="location-icon">📍</div>
-                <p>Tidle Neo, Kullagoundanoor, Karuppur, Salem, TamilNadu, 636011</p>
-              </div>
               
               <div className="location-item">
                 <div className="location-icon">📍</div>
                 <p>7th Floor, Centre Point, 2/4, Mount Pollamallee High Road, Manapakkam, Porur, Chennai, Tamil Nadu 600089</p>
-              </div>
-              
-              <div className="location-item">
-                <div className="location-icon">📍</div>
-                <p>Brown Road, Jaffna, Sri Lanka</p>
               </div>
             </div>
             
