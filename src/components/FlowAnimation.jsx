@@ -1,10 +1,213 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 const FlowAnimation = () => {
+  const canvasRef = useRef(null)
+  const containerRef = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const container = containerRef.current
+    if (!canvas || !container) return
+
+    let animationFrameId = null
+    let lastScrollY = window.scrollY
+    let isAnimating = false
+    let scrollThreshold = 50 // Minimum scroll distance to trigger animation
+
+    const drawRectangle = (ctx, width, height, progress) => {
+      const padding = 20
+      const rectX = padding
+      const rectY = padding
+      const rectWidth = width - padding * 2
+      const rectHeight = height - padding * 2
+
+      // Clear canvas
+      ctx.clearRect(0, 0, width, height)
+
+      // Set line style
+      ctx.strokeStyle = '#ffffff'
+      ctx.lineWidth = 3
+      ctx.lineCap = 'round'
+      ctx.lineJoin = 'round'
+
+      // Easing function for smooth animation
+      const easeInOutCubic = (t) => {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+      }
+      const easedProgress = easeInOutCubic(progress)
+
+      // Draw initial half rectangle (top half: top horizontal line and left/right vertical lines down to middle)
+      // Top horizontal line - always visible
+      ctx.beginPath()
+      ctx.moveTo(rectX, rectY)
+      ctx.lineTo(rectX + rectWidth, rectY)
+      ctx.stroke()
+
+      // Left vertical line down to middle - always visible
+      ctx.beginPath()
+      ctx.moveTo(rectX, rectY)
+      ctx.lineTo(rectX, rectY + rectHeight / 2)
+      ctx.stroke()
+
+      // Right vertical line down to middle - always visible
+      ctx.beginPath()
+      ctx.moveTo(rectX + rectWidth, rectY)
+      ctx.lineTo(rectX + rectWidth, rectY + rectHeight / 2)
+      ctx.stroke()
+
+      // Animate left vertical line completion (from middle to bottom)
+      const leftLineProgress = Math.min(easedProgress * 2, 1) // Completes at 50% of animation
+      if (leftLineProgress > 0) {
+        ctx.beginPath()
+        ctx.moveTo(rectX, rectY + rectHeight / 2)
+        ctx.lineTo(rectX, rectY + rectHeight / 2 + (rectHeight / 2) * leftLineProgress)
+        ctx.stroke()
+      }
+
+      // Animate right vertical line completion (from middle to bottom)
+      const rightLineProgress = Math.min(easedProgress * 2, 1) // Completes at 50% of animation
+      if (rightLineProgress > 0) {
+        ctx.beginPath()
+        ctx.moveTo(rectX + rectWidth, rectY + rectHeight / 2)
+        ctx.lineTo(rectX + rectWidth, rectY + rectHeight / 2 + (rectHeight / 2) * rightLineProgress)
+        ctx.stroke()
+      }
+
+      // Animate bottom horizontal line (from left to right)
+      const bottomLineProgress = Math.max(0, (easedProgress - 0.5) * 2) // Starts at 50% of animation
+      if (bottomLineProgress > 0) {
+        ctx.beginPath()
+        ctx.moveTo(rectX, rectY + rectHeight)
+        ctx.lineTo(rectX + rectWidth * bottomLineProgress, rectY + rectHeight)
+        ctx.stroke()
+      }
+    }
+
+    const startAnimation = () => {
+      // Don't restart if already animating
+      if (isAnimating) return
+      
+      // Cancel any ongoing animation
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+      }
+      
+      isAnimating = true
+      
+      const rect = container.getBoundingClientRect()
+      canvas.width = rect.width
+      canvas.height = rect.height
+      
+      const ctx = canvas.getContext('2d')
+      const width = canvas.width
+      const height = canvas.height
+
+      // Animation parameters
+      let animationProgress = 0
+      const animationDuration = 2000 // 2 seconds
+      const startTime = Date.now()
+
+      const animate = () => {
+        const elapsed = Date.now() - startTime
+        animationProgress = Math.min(elapsed / animationDuration, 1)
+
+        drawRectangle(ctx, width, height, animationProgress)
+
+        // Continue animation until complete
+        if (animationProgress < 1) {
+          animationFrameId = requestAnimationFrame(animate)
+        } else {
+          isAnimating = false
+        }
+      }
+
+      animate()
+    }
+
+    const updateCanvas = () => {
+      const rect = container.getBoundingClientRect()
+      canvas.width = rect.width
+      canvas.height = rect.height
+      
+      const ctx = canvas.getContext('2d')
+      // Draw final rectangle if not animating
+      if (!isAnimating) {
+        drawRectangle(ctx, canvas.width, canvas.height, 1)
+      }
+    }
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      const rect = container.getBoundingClientRect()
+      
+      // Check if container is in viewport
+      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0
+      
+      // Check if scrolling down with sufficient scroll distance and container is visible
+      const scrollDelta = currentScrollY - lastScrollY
+      if (scrollDelta > scrollThreshold && isInViewport && !isAnimating) {
+        startAnimation()
+        lastScrollY = currentScrollY
+      } else if (scrollDelta > 0) {
+        // Update lastScrollY even if not triggering animation
+        lastScrollY = currentScrollY
+      }
+    }
+
+    // Initial setup
+    updateCanvas()
+    
+    // Initial animation on mount if in viewport
+    const rect = container.getBoundingClientRect()
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      startAnimation()
+    }
+
+    // Add scroll listener
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    // Update on resize
+    const resizeObserver = new ResizeObserver(updateCanvas)
+    resizeObserver.observe(container)
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+      }
+      window.removeEventListener('scroll', handleScroll)
+      resizeObserver.disconnect()
+    }
+  }, [])
+
   return (
     <div style={{ background: '#0a2a1a', padding: '80px 48px 40px', color: '#fff' }}>
       <div style={{ maxWidth: 1400, margin: '0 auto' }}>
-        {/* Top Section */}
+        {/* Container with animated rectangle border */}
+        <div 
+          ref={containerRef}
+          style={{ 
+            position: 'relative', 
+            padding: '50px',
+            minHeight: '400px'
+          }}
+        >
+          {/* Canvas overlay for rectangle animation */}
+          <canvas
+            ref={canvasRef}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              pointerEvents: 'none',
+              zIndex: 1
+            }}
+          />
+
+          {/* Content inside rectangle */}
+          <div style={{ position: 'relative', zIndex: 0 }}>
+            {/* Top Section */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 60 }}>
           {/* Left: Logo & Tagline */}
           <div>
@@ -93,6 +296,10 @@ const FlowAnimation = () => {
             </div>
           </div>
         </div>
+          </div>
+          {/* End Content inside rectangle */}
+        </div>
+        {/* End Container with animated rectangle border */}
       </div>
     </div>
   )

@@ -224,7 +224,7 @@ const Home = () => {
   useEffect(() => {
     const handleCapabilitiesScroll = () => {
       if (!capabilitiesRef.current) return
-
+      
       const rect = capabilitiesRef.current.getBoundingClientRect()
       const windowHeight = window.innerHeight
       
@@ -313,7 +313,7 @@ const Home = () => {
         setShowNav(true)
       }
     }
-
+    
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
     
@@ -547,7 +547,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
             </div>
 
             {/* Center: Moving text */}
-            <div style={{ 
+            <div style={{
               position: 'relative',
               display: 'flex',
               alignItems: 'center',
@@ -557,11 +557,11 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                 transform: `translateY(${textTransform}px)`,
                 opacity: textOpacity,
                 transition: 'transform 0.1s ease-out, opacity 0.1s ease-out'
-              }}>
+            }}>
                 <div style={{ color: '#8c8c8c', fontWeight: 700, letterSpacing: 1.2, marginBottom: 12, fontSize: 14 }}>CAPABILITIES</div>
                 <h2 style={{ fontSize: 36, lineHeight: 1.2, margin: 0, fontWeight: 700, letterSpacing: -0.5 }}>
                   KUE DELIVERS BRAND STRATEGY, DESIGN, WEB, MOTION, AND AI-POWERED CREATIVE BUILT FOR SPEED, CLARITY, AND IMPACT.
-                </h2>
+              </h2>
               </div>
             </div>
 
@@ -585,45 +585,45 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                 return (
                   <>
                     {/* Active description */}
-                    <div style={{ marginBottom: 24 }}>
+                  <div style={{ marginBottom: 24 }}>
                       <div style={{ fontSize: 14, color: '#8c8c8c', marginBottom: 8 }}>— {items[activeCapability].title}</div>
                       <div style={{ fontSize: 16, lineHeight: 1.6 }}>{items[activeCapability].desc}</div>
-                    </div>
-                    {/* List */}
-                    <div style={{ borderTop: '1px solid #e6e6e6' }}>
-                      {[
-                        'Brand Identity',
-                        'Web Design & Development',
-                        'Shopify, Amazon, E–Commerce',
-                        'Motion Design',
-                        'AI Image & Video',
-                        'Automations, Integrations, APIs',
-                        'Direction & Consultation'
-                      ].map((label, idx) => {
-                        const computedIndex = idx + 1
-                        const isActive = activeCapability === computedIndex
-                        return (
-                          <button
-                            key={label}
-                            onClick={() => setActiveCapability(computedIndex)}
-                            style={{
-                              width: '100%',
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              padding: '18px 0',
-                              border: 'none',
-                              borderBottom: '1px solid #e6e6e6',
-                              background: 'transparent',
-                              cursor: 'pointer'
-                            }}
-                          >
-                            <span style={{ fontSize: 16, fontWeight: 600, textAlign: 'left' }}>{label}</span>
-                            <span style={{ fontSize: 22, lineHeight: 1, opacity: 0.9 }}>{isActive ? '−' : '+'}</span>
-                          </button>
-                        )
-                      })}
-                    </div>
+                  </div>
+              {/* List */}
+              <div style={{ borderTop: '1px solid #e6e6e6' }}>
+                {[
+                  'Brand Identity',
+                  'Web Design & Development',
+                  'Shopify, Amazon, E–Commerce',
+                  'Motion Design',
+                  'AI Image & Video',
+                  'Automations, Integrations, APIs',
+                  'Direction & Consultation'
+                ].map((label, idx) => {
+                  const computedIndex = idx + 1
+                  const isActive = activeCapability === computedIndex
+                  return (
+                    <button
+                      key={label}
+                      onClick={() => setActiveCapability(computedIndex)}
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        padding: '18px 0',
+                        border: 'none',
+                        borderBottom: '1px solid #e6e6e6',
+                        background: 'transparent',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <span style={{ fontSize: 16, fontWeight: 600, textAlign: 'left' }}>{label}</span>
+                      <span style={{ fontSize: 22, lineHeight: 1, opacity: 0.9 }}>{isActive ? '−' : '+'}</span>
+                    </button>
+                  )
+                })}
+              </div>
                   </>
                 )
               })()}
@@ -658,7 +658,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
           </div>
 
           {/* Main Text with Fill Animation */}
-          <div style={{ textAlign: 'center', position: 'relative', zIndex: 2 }}>
+          <div style={{ textAlign: 'center', position: 'relative', zIndex: 2, paddingLeft: '80px' }}>
             <h2 style={{ 
               fontSize: 'clamp(32px, 5vw, 64px)', 
               lineHeight: 1.2, 
@@ -674,7 +674,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
 
       {/* Flow Animation */}
       <div ref={flowAnimationRef}>
-        <FlowAnimation />
+      <FlowAnimation />
       </div>
           </div>
   )

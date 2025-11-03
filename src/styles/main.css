@@ -328,7 +328,7 @@ a, button, .project-item, .nav-link {
 .hero-three {
   position: relative;
   height: 100vh;
-  min-height: 600px;
+  min-height: 700px;
   color: white;
   display: flex;
   flex-direction: column;
@@ -374,16 +374,17 @@ a, button, .project-item, .nav-link {
   margin: 0;
   padding: 0 2rem;
   flex: 1;
-  padding-top: clamp(6rem, 12vh, 8rem);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: flex-start;
   transform: translate(2rem, 0);
+  padding-bottom: clamp(2rem, 4vh, 3rem);
 }
 
 .hero-content {
   max-width: 600px;
   text-align: left;
+  margin-bottom: -4rem;
 }
 
 .hero-title {
@@ -468,13 +469,14 @@ a, button, .project-item, .nav-link {
   position: relative;
   z-index: 2;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 1rem;
-  padding: clamp(1.5rem, 3vh, 2rem);
+  padding: clamp(2rem, 4vh, 3rem);
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   justify-content: flex-end;
+  padding-bottom: clamp(2rem, 4vh, 3rem);
 }
 
 .btn {
