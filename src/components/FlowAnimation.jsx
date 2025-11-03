@@ -18,11 +18,10 @@ const FlowAnimation = () => {
     const container = containerRef.current
     if (!canvas || !container) return
 
-    let animationFrameId = null
-    let lastScrollY = window.scrollY
-    let isAnimating = false
-    let hasAnimated = false // Track if animation has played
-    let scrollThreshold = 30 // Minimum scroll distance to trigger animation
+      let animationFrameId = null
+      let lastScrollY = window.scrollY
+      let isAnimating = false
+      let hasAnimated = false // Track if animation has played
 
     const drawRectangle = (ctx, width, height, progress) => {
       const padding = 20
@@ -128,7 +127,6 @@ const FlowAnimation = () => {
           animationFrameId = requestAnimationFrame(animate)
         } else {
           isAnimating = false
-          hasAnimated = true
         }
       }
 
@@ -150,35 +148,30 @@ const FlowAnimation = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
       const rect = container.getBoundingClientRect()
-      const windowHeight = window.innerHeight
       
-      // Check if container is in viewport
-      const isInViewport = rect.top < windowHeight && rect.bottom > 0
+      // Check if container is in viewport (when scrolling down into view)
+      const isInViewport = rect.top < window.innerHeight && rect.bottom > 0
+      const isEnteringViewport = rect.top < window.innerHeight * 0.8 && rect.top > -100
       
       // Check if scrolling down
       const scrollDelta = currentScrollY - lastScrollY
       const isScrollingDown = scrollDelta > 0
       
-      // Check if section is entering viewport (top edge just entered)
-      const isEnteringViewport = rect.top <= windowHeight && rect.top >= windowHeight - 100
-      
-      // Trigger animation when:
-      // 1. Scrolling down AND
-      // 2. Section is in viewport AND
-      // 3. Not already animating AND
-      // 4. Either entering viewport or hasn't animated yet
-      if (isScrollingDown && isInViewport && !isAnimating) {
-        if (!hasAnimated || isEnteringViewport) {
+      // Trigger animation when scrolling down and container enters viewport
+      if (isScrollingDown && isEnteringViewport && !isAnimating) {
+        // Trigger animation on first scroll into view
+        if (!hasAnimated) {
+          hasAnimated = true
           startAnimation()
         }
       }
       
-      // Reset hasAnimated when section scrolls out of view (above viewport)
-      if (rect.bottom < 0) {
+      // Reset hasAnimated if scrolled back up past the container
+      if (rect.top > window.innerHeight * 1.2) {
         hasAnimated = false
       }
       
-      // Update lastScrollY
+      // Always update lastScrollY
       lastScrollY = currentScrollY
     }
 
