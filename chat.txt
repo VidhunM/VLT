@@ -158,3 +158,10 @@ Topics: Hide MinimalistNav when FlowAnimation footer is in view
 Code changes: In `src/pages/Home.jsx`, added `flowAnimationRef` and `showNav` state. Wrapped FlowAnimation component in div with ref. Added useEffect to detect when FlowAnimation footer enters viewport (when rect.top < window.innerHeight) and hide MinimalistNav by setting showNav to false. Conditionally rendered MinimalistNav based on showNav state using {showNav && <MinimalistNav />}.
 Decisions: Navigation hidden when footer visible for cleaner footer presentation; nav automatically shows/hides based on scroll position.
 Next steps: Test behavior on scroll; verify nav doesn't interfere with footer content.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Increase FlowAnimation footer logo size
+Code changes: In `src/components/FlowAnimation.jsx`, increased logo dimensions from 60x60px to 200x200px for better visibility in footer. Simplified logo structure by removing extra wrapper divs and applying size directly to img element.
+Decisions: Larger logo improves brand presence in footer section; direct sizing ensures proper rendering.
+Next steps: Hard refresh browser to clear cache and see updated logo size.

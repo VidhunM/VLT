@@ -7,12 +7,10 @@ const FlowAnimation = () => {
         {/* Top Section */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 60 }}>
           {/* Left: Logo & Tagline */}
-          <div style={{ flex: '0 0 auto' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 30 }}>
+          <div>
+            <div style={{ marginBottom: 30 }}>
               {/* Vulturelines Logo */}
-              <div style={{ width: 60, height: 60, marginRight: 20 }}>
-                <img src="/assets/Images/Vlt_logo1.png" alt="Vulturelines" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-              </div>
+              <img src="/assets/Images/Vlt_logo1.png" alt="Vulturelines" style={{ width: 200, height: 200, objectFit: 'contain', display: 'block' }} />
             </div>
             <div style={{ fontSize: 48, fontWeight: 700, lineHeight: 1.2, color: '#000' }}>
               <div>Vulturelines</div>
