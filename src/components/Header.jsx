@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { navigateWithCircle } from '../utils/navigation'
 
 const Header = ({ logoSrc, menuItems }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const { body } = document
@@ -26,6 +28,13 @@ const Header = ({ logoSrc, menuItems }) => {
 
   const closeMenu = () => {
     setIsMenuOpen(false)
+  }
+
+  const handleNavClick = (event, href) => {
+    closeMenu()
+    navigateWithCircle(event, href, () => {
+      navigate(href)
+    })
   }
 
   const resolvedLogo = logoSrc || '/assets/Images/Vultureline_img1.png'
@@ -68,9 +77,13 @@ const Header = ({ logoSrc, menuItems }) => {
                     {item.label}
                   </a>
                 ) : (
-                  <Link to={item.href || '/'} className="nav-link" onClick={closeMenu}>
+                  <a 
+                    href={item.href || '/'} 
+                    className="nav-link" 
+                    onClick={(e) => handleNavClick(e, item.href || '/')}
+                  >
                     {item.label}
-                  </Link>
+                  </a>
                 )}
               </li>
             ))}

@@ -6,6 +6,7 @@ import Work from './pages/Work'
 import OurTeam from './pages/OurTeam'
 import Contact from './pages/Contact'
 import CustomCursor from './components/CustomCursor'
+import CircleTransition from './components/CircleTransition'
 import OurService from './pages/OurService'
 import OurFeed from './pages/OurFeed'
 
@@ -14,6 +15,7 @@ function App() {
     <Router>
       <div className="App">
         <CustomCursor />
+        <CircleTransition />
         <Header />
         <main>
           <Routes>

@@ -354,8 +354,19 @@ a, button, .project-item, .nav-link {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: all 0.8s ease-in-out;
+  animation: slideRightToLeft 2s ease-in-out forwards;
   transform: scale(1);
+}
+
+@keyframes slideRightToLeft {
+  0% {
+    transform: translateX(100%) scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
 }
 
 .hero-overlay {
@@ -5604,4 +5615,29 @@ a.btn-our-people {
   .ace-feature-list li::before {
     top: 8px;
   }
+}
+
+/* Circle Transition Styles */
+.circle-transition {
+  pointer-events: none;
+}
+
+.circle-transition-inner {
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* Enhanced navigation interaction */
+a, button {
+  position: relative;
+  overflow: visible;
+}
+
+/* Smooth page transitions */
+body {
+  transition: opacity 0.3s ease;
+}
+
+body.transitioning {
+  opacity: 0.95;
 }

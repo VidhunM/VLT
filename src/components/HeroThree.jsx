@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { navigateWithCircle } from '../utils/navigation'
 
 const HeroThree = () => {
   const [selectedProject, setSelectedProject] = useState(0)
+  const navigate = useNavigate()
+  
+  const handleNavigationClick = (event, path) => {
+    navigateWithCircle(event, path, () => {
+      navigate(path)
+    })
+  }
   
   const projects = [
     {
@@ -68,8 +77,18 @@ const HeroThree = () => {
       </div>
 
       <div className="hero-actions">
-        <button className="btn btn-outline">All Projects</button>
-        <button className="btn btn-outline-white">Our Services</button>
+        <button 
+          className="btn btn-outline"
+          onClick={(e) => handleNavigationClick(e, '/work')}
+        >
+          All Projects
+        </button>
+        <button 
+          className="btn btn-outline-white"
+          onClick={(e) => handleNavigationClick(e, '/our-service')}
+        >
+          Our Services
+        </button>
       </div>
     </section>
   )

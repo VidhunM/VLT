@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import HeroThree from '../components/HeroThree'
 import ProjectSection from '../components/ProjectSection'
 import StatisticsSection from '../components/StatisticsSection'
 import MinimalistNav from '../components/MinimalistNav'
 import FlowAnimation from '../components/FlowAnimation'
+import { navigateWithCircle } from '../utils/navigation'
 
 const Home = () => {
   const emblemRef = useRef(null)
@@ -30,6 +31,13 @@ const Home = () => {
   const [textFillProgress, setTextFillProgress] = useState(0)
   const flowAnimationRef = useRef(null)
   const [showNav, setShowNav] = useState(true)
+  const navigate = useNavigate()
+
+  const handleNavigationClick = (event, path) => {
+    navigateWithCircle(event, path, () => {
+      navigate(path)
+    })
+  }
 
   // Calculate text color based on fill progress (gray to black interpolation)
   const getTextColor = (progress) => {
@@ -363,10 +371,14 @@ const Home = () => {
 Our team comprises highly skilled IT professionals whose target is to provide top-notch yet cost-effective solutions to SMEs. We have expertise in designing and developing custom-made websites and apps for all industries. So if there's a specific requirement you can reach to us.
             </p>
             <div className={`excellence-buttons ${isVisible ? 'animate-buttons' : ''}`}>
-              <Link to="/our-team" className="btn-our-people">
+              <a 
+                href="/our-team" 
+                className="btn-our-people"
+                onClick={(e) => handleNavigationClick(e, '/our-team')}
+              >
                 <span>Our People</span>
                 <div className="btn-icon orange-dots"></div>
-              </Link>
+              </a>
               <button className="btn-join-team">
                 <span>Join The Team</span>
                 <div className="btn-icon white-dots"></div>

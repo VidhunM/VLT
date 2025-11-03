@@ -1,8 +1,17 @@
 import React, { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { navigateWithCircle } from '../utils/navigation'
 
 const FlowAnimation = () => {
   const canvasRef = useRef(null)
   const containerRef = useRef(null)
+  const navigate = useNavigate()
+
+  const handleFooterNavClick = (event, path) => {
+    navigateWithCircle(event, path, () => {
+      navigate(path)
+    })
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -231,11 +240,22 @@ const FlowAnimation = () => {
                 EXPLORA
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {['Our Service', 'Projects', 'Work', 'Our Team', 'Our Feed', 'Contact'].map((item, idx) => (
-                  <a key={idx} href="#" style={{ color: '#fff', textDecoration: 'none', fontSize: 16, transition: 'color 0.2s' }}
-                     onMouseEnter={(e) => e.target.style.color = '#ff6b35'}
-                     onMouseLeave={(e) => e.target.style.color = '#fff'}>
-                    {item}
+                {[
+                  { label: 'Our Service', path: '/our-service' },
+                  { label: 'Projects', path: '/work' },
+                  { label: 'Work', path: '/work' },
+                  { label: 'Our Team', path: '/our-team' },
+                  { label: 'Our Feed', path: '/our-feed' },
+                  { label: 'Contact', path: '/contact' }
+                ].map((item, idx) => (
+                  <a 
+                    key={idx} 
+                    href={item.path} 
+                    style={{ color: '#fff', textDecoration: 'none', fontSize: 16, transition: 'color 0.2s', cursor: 'pointer' }}
+                    onClick={(e) => handleFooterNavClick(e, item.path)}
+                    onMouseEnter={(e) => e.target.style.color = '#ff6b35'}
+                    onMouseLeave={(e) => e.target.style.color = '#fff'}>
+                    {item.label}
                   </a>
                 ))}
               </div>

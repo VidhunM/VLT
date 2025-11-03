@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { navigateWithCircle } from '../utils/navigation'
 
 const MinimalistNav = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [activeSection, setActiveSection] = useState('HOME')
   const [scrollDirection, setScrollDirection] = useState('down')
   const [lastScrollY, setLastScrollY] = useState(0)
+  const navigate = useNavigate()
 
   const menuItems = [
     { name: 'HOME', href: '/', sectionId: 'home' },
@@ -107,18 +109,22 @@ const MinimalistNav = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [lastScrollY])
 
-  const handleNavClick = (item) => {
+  const handleNavClick = (event, item) => {
     // Handle navigation
     if (item.href.startsWith('/')) {
-      // Route navigation - use React Router
-      window.location.href = item.href
+      // Route navigation with circle transition
+      navigateWithCircle(event, item.href, () => {
+        navigate(item.href)
+      })
     } else if (item.href.startsWith('#')) {
       // Check if we're on home page for section scrolling
       const currentPath = window.location.pathname
       
       if (currentPath !== '/') {
-        // Redirect to home page with hash
-        window.location.href = '/' + item.href
+        // Redirect to home page with hash using circle transition
+        navigateWithCircle(event, '/' + item.href, () => {
+          navigate('/' + item.href)
+        })
       } else {
         // Smooth scroll to section on current page
         const sectionId = item.href.substring(1) // Remove '#' from href
@@ -148,7 +154,7 @@ const MinimalistNav = () => {
           <button
             key={index}
             className={`nav-item ${activeSection === item.name ? 'active' : ''}`}
-            onClick={() => handleNavClick(item)}
+            onClick={(e) => handleNavClick(e, item)}
             style={{
               animationDelay: `${index * 0.1}s`
             }}
