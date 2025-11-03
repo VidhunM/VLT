@@ -123,3 +123,38 @@ Topics: Our Service carousel spacing tweak
 Code changes: In `src/pages/OurService.jsx`, reduced 3D carousel radius from 600 to 540 to slightly decrease gaps between rotating cards.
 Decisions: Keep all other carousel params unchanged for consistent animation behavior.
 Next steps: Visually confirm spacing across breakpoints; adjust radius further if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service zigzag section adjustments - image size reduction and "VIEW PROJECT" removal
+Code changes: In `src/pages/OurService.jsx`, reduced zigzag project image flex basis from `520px` to `380px` to decrease image size, and removed all "VIEW PROJECT →" links from all 4 project sections.
+Decisions: Minimal, targeted changes to improve layout proportions; removed redundant navigation elements.
+Next steps: Verify new layout proportions look balanced across all breakpoints.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Home Capabilities section redesign - three-column layout with parallax effects
+Code changes: In `src/pages/Home.jsx`, restructured Capabilities section from 2-column to 3-column grid (image left, moving text center, accordion right). Added parallax scroll effects: left image zooms in only (scale 1 to 1.2) without translation using only scale transform, center text scrolls vertically (300px down) and fades (opacity 1 to 0.2) as it exits, right accordion list remains static. Implemented scroll-based transform calculations using `capabilitiesRef`, scroll progress detection, and state management for imageScale, textTransform, and textOpacity. Fixed text animation to use `translateY` instead of `translateX` for correct vertical movement. Reduced main heading font size from 48px to 36px. Updated parallax logic to trigger only when section is fully in viewport (section top < 0 && bottom > 0), with progress calculated as absolute top / height. Moved descriptive text below image outside animated wrapper so it remains static.
+Decisions: Page-scoped parallax logic; 3 equal columns with 64px gaps; image and text move at different speeds based on scroll progress through section (minHeight 90vh, section padding 100px).
+Next steps: Verify parallax smoothness and responsiveness across breakpoints; test accordion interactions with new layout.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Contact section text fill-back animation with floating 3D icons
+Code changes: In `src/pages/Home.jsx`, replaced Contact section with new layout featuring large promotional text and floating 3D app icons (Photoshop, ChatGPT, monkey icon, S logo). Added text fill-back animation where text transitions from gray (#999) to black (#000) letter-by-letter across all rows based on scroll progress. Implemented scroll-based animation using `contactRef`, linear progress calculation (scrolled / scrollDistance where scrollDistance = viewport height + section height), and `textFillProgress` state. Created `renderAnimatedText()` helper function that combines all text lines into single string, calculates filledLetters count based on global progress, maps over textLines to render each letter with globalIndex calculation, and renders conditional `<br />` between lines. Icons positioned absolutely with perspective 3D transforms and semi-transparent styling. Letter-by-letter animation across all rows provides progressive reveal effect.
+Decisions: Animation triggers when section is in viewport; text fills progressively from left to right, top to bottom as section scrolls through viewport; floating icons provide visual interest without distraction.
+Next steps: Verify animation smoothness; adjust thresholds if needed; test responsiveness across breakpoints.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Footer section redesign - dark theme with logo, navigation, and social links
+Code changes: In `src/components/FlowAnimation.jsx`, completely redesigned footer section to match provided image. Removed scroll animation logic. Added dark green background (#0a2a1a). Created three-column layout: left side with Vulturelines logo (Vlt_logo1.png) and tagline "Vulturelines" in black (#000) with subtitle "With strategic design and Webflow development." in white, right side with EXPLORA navigation column and CONTACT info column. Bottom section includes social media icons (Instagram, LinkedIn, TikTok) with hover effects, copyright text, and legal links. All styling done inline with hover states for interactive elements. Updated tagline to "Vulturelines" with smaller subtitle text. Changed navigation links from Spanish to English: "Our Service, Projects, Work, Our Team, Our Feed, Contact". Replaced Spanish contact info with Vulturelines contact details: Chennai address, +91 9791670504 phone, sutheesh.s@vulturelines.com email. Replaced SVG "H" logo with Vulturelines logo image. Changed background from purple-black to dark green and heading color from orange to black.
+Decisions: Converted to static footer; dark green theme provides strong contrast; black heading provides emphasis; responsive grid layout for navigation sections.
+Next steps: Test responsive behavior on mobile; verify all links work; adjust colors/spacing if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hide MinimalistNav when FlowAnimation footer is in view
+Code changes: In `src/pages/Home.jsx`, added `flowAnimationRef` and `showNav` state. Wrapped FlowAnimation component in div with ref. Added useEffect to detect when FlowAnimation footer enters viewport (when rect.top < window.innerHeight) and hide MinimalistNav by setting showNav to false. Conditionally rendered MinimalistNav based on showNav state using {showNav && <MinimalistNav />}.
+Decisions: Navigation hidden when footer visible for cleaner footer presentation; nav automatically shows/hides based on scroll position.
+Next steps: Test behavior on scroll; verify nav doesn't interfere with footer content.

@@ -82,18 +82,6 @@ const StatisticsSection = () => {
   return (
     <section ref={sectionRef} className="statistics-section">
       <div className="statistics-container">
-        {/* Schedule a Call Button */}
-        <div className="statistics-header">
-          <button className="schedule-call-btn">
-            <span>SCHEDULE A CALL</span>
-            <div className="btn-arrow">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3.333 12.667L12.667 3.333M12.667 3.333H3.333M12.667 3.333V12.667" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-          </button>
-        </div>
-
         {/* Statistics Grid */}
         <div className="statistics-grid">
           <div className="statistic-item">

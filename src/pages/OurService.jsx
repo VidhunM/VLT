@@ -320,7 +320,7 @@ const OurService = () => {
             >
               <div
                 style={{
-                  flex: '1 1 520px',
+                  flex: '1 1 380px',
                   minWidth: 280,
                   borderRadius: 16,
                   overflow: 'hidden',
@@ -347,18 +347,6 @@ const OurService = () => {
                 <p style={{ fontSize: 16, lineHeight: 1.7, color: '#222', margin: '0 0 22px', maxWidth: 620 }}>
                   {p.description}
                 </p>
-                <a
-                  href={p.link}
-                  style={{
-                    textDecoration: 'none',
-                    color: '#111',
-                    fontWeight: 700,
-                    borderBottom: '2px solid #111',
-                    paddingBottom: 4
-                  }}
-                >
-                  VIEW PROJECT →
-                </a>
               </div>
             </div>
           </section>

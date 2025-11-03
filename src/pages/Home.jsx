@@ -21,6 +21,66 @@ const Home = () => {
   const [scrollDirection, setScrollDirection] = useState('down')
   const [lastScrollY, setLastScrollY] = useState(0)
   const lastScrollRef = useRef(0)
+  const capabilitiesRef = useRef(null)
+  const [imageTransform, setImageTransform] = useState(0)
+  const [imageScale, setImageScale] = useState(1)
+  const [textTransform, setTextTransform] = useState(0)
+  const [textOpacity, setTextOpacity] = useState(1)
+  const contactRef = useRef(null)
+  const [textFillProgress, setTextFillProgress] = useState(0)
+  const flowAnimationRef = useRef(null)
+  const [showNav, setShowNav] = useState(true)
+
+  // Calculate text color based on fill progress (gray to black interpolation)
+  const getTextColor = (progress) => {
+    const gray = [153, 153, 153] // #999
+    const black = [0, 0, 0]
+    const r = Math.round(gray[0] + (black[0] - gray[0]) * progress)
+    const g = Math.round(gray[1] + (black[1] - gray[1]) * progress)
+    const b = Math.round(gray[2] + (black[2] - gray[2]) * progress)
+    return `rgb(${r}, ${g}, ${b})`
+  }
+
+  // Render all text with letter-by-letter animation across all rows
+  const renderAnimatedText = () => {
+    const textLines = [
+      'THINK OF US AS YOUR',
+      'DEDICATED, IN-HOUSE CREATIVE',
+      'DEPARTMENT WITH NO SCOPE',
+      'LIMITATIONS. EASILY SUBMIT',
+      'AND MONITOR TASKS WITH',
+      'ENDLESS REVISIONS UNTIL YOU',
+      'ARE 100% SATISFIED WITH',
+      'EVERYTHING WE WORK ON'
+    ]
+    
+    // Combine all text into one string with line breaks preserved
+    const allText = textLines.join('\n')
+    const letters = allText.split('')
+    const totalLetters = letters.length
+    const filledLetters = Math.floor(totalLetters * textFillProgress)
+    
+    return textLines.map((line, lineIndex) => (
+      <React.Fragment key={lineIndex}>
+        {line.split('').map((letter, letterIndex) => {
+          // Calculate global index across all lines
+          const globalIndex = textLines.slice(0, lineIndex).join('').length + letterIndex
+          return (
+            <span
+              key={`${lineIndex}-${letterIndex}`}
+              style={{
+                color: globalIndex < filledLetters ? '#000' : '#999',
+                transition: 'color 0.1s linear'
+              }}
+            >
+              {letter}
+            </span>
+          )
+        })}
+        {lineIndex < textLines.length - 1 && <br />}
+      </React.Fragment>
+    ))
+  }
 
   // Client data with different images
   const clients = [
@@ -160,9 +220,111 @@ const Home = () => {
     }
   }, [])
 
+  // Parallax scroll effect for Capabilities section
+  useEffect(() => {
+    const handleCapabilitiesScroll = () => {
+      if (!capabilitiesRef.current) return
+
+      const rect = capabilitiesRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      // Calculate if section is fully in view (top edge past viewport top)
+      const isSectionInView = rect.top < 0 && rect.bottom > 0
+      
+      if (!isSectionInView) {
+        // Reset transforms when section not in view
+        setImageTransform(0)
+        setImageScale(1)
+        setTextTransform(0)
+        setTextOpacity(1)
+        return
+      }
+
+      // Calculate scroll progress only when section is fully in view
+      // Progress: 0 when section top enters viewport, 1 when bottom reaches viewport top
+      const scrollProgress = Math.abs(rect.top) / rect.height
+      
+      // Clamp between 0 and 1
+      const clampedProgress = Math.max(0, Math.min(1, scrollProgress))
+
+      // Image zooms in only (1 to 1.2) without translation
+      setImageTransform(0)
+      setImageScale(1 + (0.2 * clampedProgress))
+
+      // Text scrolls vertically and fades (0 to 300px down, opacity 1 to 0.2)
+      setTextTransform(300 * clampedProgress)
+      setTextOpacity(1 - 0.8 * clampedProgress)
+    }
+
+    window.addEventListener('scroll', handleCapabilitiesScroll, { passive: true })
+    handleCapabilitiesScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleCapabilitiesScroll)
+    }
+  }, [])
+
+  // Text fill-back animation for Contact section
+  useEffect(() => {
+    const handleContactScroll = () => {
+      if (!contactRef.current) return
+
+      const rect = contactRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      // Calculate if section is in view
+      const isInView = rect.top < windowHeight && rect.bottom > 0
+      
+      if (!isInView) {
+        setTextFillProgress(0)
+        return
+      }
+
+      // Simple linear progress based on section position
+      // 0 when section enters from bottom, 1 when section is fully scrolled past top
+      const sectionHeight = rect.height
+      const scrollDistance = windowHeight + sectionHeight
+      const scrolled = windowHeight - rect.top
+      const progress = Math.max(0, Math.min(1, scrolled / scrollDistance))
+      
+      setTextFillProgress(progress)
+    }
+
+    window.addEventListener('scroll', handleContactScroll, { passive: true })
+    handleContactScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleContactScroll)
+    }
+  }, [])
+
+  // Hide nav when FlowAnimation footer is in view
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!flowAnimationRef.current) return
+
+      const rect = flowAnimationRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      // Hide nav when footer is visible in viewport
+      if (rect.top < windowHeight) {
+        setShowNav(false)
+      } else {
+        setShowNav(true)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
     <div className="page home">
-      <MinimalistNav />
+      {showNav && <MinimalistNav />}
       <HeroThree />
       
       <section className="excellence-section">
@@ -359,23 +521,52 @@ Our team comprises highly skilled IT professionals whose target is to provide to
       <StatisticsSection />
 
       {/* Capabilities Section (replaces Feed) */}
-      <section id="feed" className="capabilities-section" style={{ padding: '80px 0' }}>
-        <div className="capabilities-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 48, alignItems: 'start' }}>
-            {/* Left: Heading (sticky at top) */}
-            <div style={{
-              position: 'sticky',
-              top: 0
-            }}>
-              <div style={{ color: '#8c8c8c', fontWeight: 700, letterSpacing: 1.2, marginBottom: 12 }}>CAPABILITIES</div>
-              <h2 style={{ fontSize: 36, lineHeight: 1.2, margin: 0 }}>
-                KUE delivers brand strategy, design, web, motion, and AI-powered
-                creative built for speed, clarity, and impact.
-              </h2>
-            </div>
-            {/* Right: Accordion */}
+      <section id="feed" className="capabilities-section" style={{ padding: '100px 0', background: '#fff' }} ref={capabilitiesRef}>
+        <div className="capabilities-container" style={{ maxWidth: 1400, margin: '0 auto', padding: '0 48px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 64, alignItems: 'start', minHeight: '90vh' }}>
+            {/* Left: Image with parallax */}
             <div>
-              {/* Active description */}
+              <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 16 }}>
+                <div style={{ transform: `scale(${imageScale})`, transition: 'transform 0.1s ease-out', transformOrigin: 'center center' }}>
+                  <img 
+                    src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80" 
+                    alt="Capabilities"
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                  />
+                </div>
+              </div>
+              <p style={{ 
+                fontSize: 16, 
+                lineHeight: 1.6, 
+                color: '#222', 
+                marginTop: 24,
+                fontWeight: 400
+              }}>
+                WE HELP BRANDS CUT THROUGH NOISE WITH BOLD IDEAS AND FAST EXECUTION. NO BLOATED PROCESSES, JUST RESULTS THAT MOVE YOUR BUSINESS FORWARD.
+              </p>
+            </div>
+
+            {/* Center: Moving text */}
+            <div style={{ 
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <div style={{ 
+                transform: `translateY(${textTransform}px)`,
+                opacity: textOpacity,
+                transition: 'transform 0.1s ease-out, opacity 0.1s ease-out'
+              }}>
+                <div style={{ color: '#8c8c8c', fontWeight: 700, letterSpacing: 1.2, marginBottom: 12, fontSize: 14 }}>CAPABILITIES</div>
+                <h2 style={{ fontSize: 36, lineHeight: 1.2, margin: 0, fontWeight: 700, letterSpacing: -0.5 }}>
+                  KUE DELIVERS BRAND STRATEGY, DESIGN, WEB, MOTION, AND AI-POWERED CREATIVE BUILT FOR SPEED, CLARITY, AND IMPACT.
+                </h2>
+              </div>
+            </div>
+
+            {/* Right: Accordion list */}
+            <div>
               {(() => {
                 const items = [
                   {
@@ -391,80 +582,100 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                   { title: 'Automations, Integrations, APIs', desc: 'Ops automation, CRM/ERP integrations, and custom API development.' },
                   { title: 'Direction & Consultation', desc: 'Executive creative direction and advisory for brand and product.' }
                 ]
-                const current = items[activeCapability]
                 return (
-                  <div style={{ marginBottom: 24 }}>
-                    <div style={{ fontSize: 14, color: '#8c8c8c', marginBottom: 8 }}>— {current.title}</div>
-                    <div style={{ fontSize: 16, lineHeight: 1.6 }}>{current.desc}</div>
-                  </div>
+                  <>
+                    {/* Active description */}
+                    <div style={{ marginBottom: 24 }}>
+                      <div style={{ fontSize: 14, color: '#8c8c8c', marginBottom: 8 }}>— {items[activeCapability].title}</div>
+                      <div style={{ fontSize: 16, lineHeight: 1.6 }}>{items[activeCapability].desc}</div>
+                    </div>
+                    {/* List */}
+                    <div style={{ borderTop: '1px solid #e6e6e6' }}>
+                      {[
+                        'Brand Identity',
+                        'Web Design & Development',
+                        'Shopify, Amazon, E–Commerce',
+                        'Motion Design',
+                        'AI Image & Video',
+                        'Automations, Integrations, APIs',
+                        'Direction & Consultation'
+                      ].map((label, idx) => {
+                        const computedIndex = idx + 1
+                        const isActive = activeCapability === computedIndex
+                        return (
+                          <button
+                            key={label}
+                            onClick={() => setActiveCapability(computedIndex)}
+                            style={{
+                              width: '100%',
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              padding: '18px 0',
+                              border: 'none',
+                              borderBottom: '1px solid #e6e6e6',
+                              background: 'transparent',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            <span style={{ fontSize: 16, fontWeight: 600, textAlign: 'left' }}>{label}</span>
+                            <span style={{ fontSize: 22, lineHeight: 1, opacity: 0.9 }}>{isActive ? '−' : '+'}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </>
                 )
               })()}
-              {/* List */}
-              <div style={{ borderTop: '1px solid #e6e6e6' }}>
-                {[
-                  'Brand Identity',
-                  'Web Design & Development',
-                  'Shopify, Amazon, E–Commerce',
-                  'Motion Design',
-                  'AI Image & Video',
-                  'Automations, Integrations, APIs',
-                  'Direction & Consultation'
-                ].map((label, idx) => {
-                  const computedIndex = idx + 1
-                  const isActive = activeCapability === computedIndex
-                  return (
-                    <button
-                      key={label}
-                      onClick={() => setActiveCapability(computedIndex)}
-                      style={{
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        padding: '18px 0',
-                        border: 'none',
-                        borderBottom: '1px solid #e6e6e6',
-                        background: 'transparent',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <span style={{ fontSize: 16, fontWeight: 600, textAlign: 'left' }}>{label}</span>
-                      <span style={{ fontSize: 22, lineHeight: 1, opacity: 0.9 }}>{isActive ? '−' : '+'}</span>
-                    </button>
-                  )
-                })}
-              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="contact-section">
-        <div className="contact-container">
-          <h2 className="contact-title">Get In Touch</h2>
-          <p className="contact-description">
-            Ready to start your next project? Let's discuss how we can help bring your ideas to life.
-          </p>
-          <div className="contact-info">
-            <div className="contact-item">
-              <h3>Email</h3>
-              <p>hello@vulturelines.com</p>
+      <section id="contact" className="contact-section" ref={contactRef} style={{ background: '#fff', padding: '120px 0', position: 'relative', overflow: 'hidden' }}>
+        <div className="contact-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 48px', position: 'relative' }}>
+          {/* Floating 3D Icons */}
+          <div style={{ position: 'absolute', top: '10%', left: '5%', width: 60, height: 60, opacity: 0.3, zIndex: 1 }}>
+            <div style={{ width: '100%', height: '100%', background: '#0066FF', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.1)', transform: 'perspective(1000px) rotateY(15deg)' }}>
+              <span style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>Ps</span>
             </div>
-            <div className="contact-item">
-              <h3>Phone</h3>
-              <p>+1 (555) 123-4567</p>
+          </div>
+          <div style={{ position: 'absolute', top: '10%', right: '5%', width: 60, height: 60, opacity: 0.3, zIndex: 1 }}>
+            <div style={{ width: '100%', height: '100%', background: '#10A37F', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.1)', transform: 'perspective(1000px) rotateY(-15deg)' }}>
+              <span style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>GPT</span>
             </div>
-            <div className="contact-item">
-              <h3>Location</h3>
-              <p>San Francisco, CA</p>
+          </div>
+          <div style={{ position: 'absolute', bottom: '20%', left: '5%', width: 60, height: 60, opacity: 0.3, zIndex: 1 }}>
+            <div style={{ width: '100%', height: '100%', background: '#FFC107', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.1)', transform: 'perspective(1000px) rotateY(15deg)' }}>
+              <span style={{ fontSize: 24 }}>🐵</span>
             </div>
+          </div>
+          <div style={{ position: 'absolute', bottom: '20%', right: '5%', width: 60, height: 60, opacity: 0.3, zIndex: 1 }}>
+            <div style={{ width: '100%', height: '100%', background: '#fff', border: '2px solid #000', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.1)', transform: 'perspective(1000px) rotateY(-15deg)' }}>
+              <span style={{ color: '#000', fontSize: 24, fontWeight: 'bold' }}>S</span>
+            </div>
+          </div>
+
+          {/* Main Text with Fill Animation */}
+          <div style={{ textAlign: 'center', position: 'relative', zIndex: 2 }}>
+            <h2 style={{ 
+              fontSize: 'clamp(32px, 5vw, 64px)', 
+              lineHeight: 1.2, 
+              fontWeight: 700,
+              letterSpacing: '-1px',
+              marginBottom: 40
+            }}>
+              {renderAnimatedText()}
+            </h2>
           </div>
         </div>
       </section>
 
       {/* Flow Animation */}
-      <FlowAnimation />
+      <div ref={flowAnimationRef}>
+        <FlowAnimation />
+      </div>
           </div>
   )
 }
