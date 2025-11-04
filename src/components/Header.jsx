@@ -23,11 +23,26 @@ const Header = ({ logoSrc, menuItems }) => {
   }, [isMenuOpen])
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
+    const newState = !isMenuOpen
+    setIsMenuOpen(newState)
+    
+    // Dispatch event for HeroThree to show project list on mobile
+    if (window.innerWidth <= 768) {
+      window.dispatchEvent(new CustomEvent('headerMenuToggle', {
+        detail: { isOpen: newState }
+      }))
+    }
   }
 
   const closeMenu = () => {
     setIsMenuOpen(false)
+    
+    // Dispatch event for HeroThree to close project list on mobile
+    if (window.innerWidth <= 768) {
+      window.dispatchEvent(new CustomEvent('headerMenuToggle', {
+        detail: { isOpen: false }
+      }))
+    }
   }
 
   const handleNavClick = (event, href) => {

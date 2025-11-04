@@ -535,9 +535,9 @@ Our team comprises highly skilled IT professionals whose target is to provide to
       {/* Capabilities Section (replaces Feed) */}
       <section id="feed" className="capabilities-section" style={{ padding: '100px 0', background: '#fff' }} ref={capabilitiesRef}>
         <div className="capabilities-container" style={{ maxWidth: 1400, margin: '0 auto', padding: '0 48px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 64, alignItems: 'start', minHeight: '90vh' }}>
+          <div className="capabilities-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 64, alignItems: 'start', minHeight: '90vh' }}>
             {/* Left: Image with parallax */}
-            <div>
+            <div className="capabilities-image-text">
               <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 16 }}>
                 <div style={{ transform: `scale(${imageScale})`, transition: 'transform 0.1s ease-out', transformOrigin: 'center center' }}>
                   <img 
@@ -559,7 +559,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
             </div>
 
             {/* Center: Moving text */}
-            <div style={{
+            <div className="capabilities-title-text" style={{
               position: 'relative',
               display: 'flex',
               alignItems: 'center',
@@ -573,12 +573,12 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                 <div style={{ color: '#8c8c8c', fontWeight: 700, letterSpacing: 1.2, marginBottom: 12, fontSize: 14 }}>CAPABILITIES</div>
                 <h2 style={{ fontSize: 36, lineHeight: 1.2, margin: 0, fontWeight: 700, letterSpacing: -0.5 }}>
                   KUE DELIVERS BRAND STRATEGY, DESIGN, WEB, MOTION, AND AI-POWERED CREATIVE BUILT FOR SPEED, CLARITY, AND IMPACT.
-              </h2>
+                </h2>
               </div>
             </div>
 
             {/* Right: Accordion list */}
-            <div>
+            <div className="capabilities-accordion">
               {(() => {
                 const items = [
                   {
@@ -670,7 +670,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
           </div>
 
           {/* Main Text with Fill Animation */}
-          <div style={{ textAlign: 'center', position: 'relative', zIndex: 2, paddingLeft: '80px' }}>
+          <div className="contact-animated-text" style={{ textAlign: 'center', position: 'relative', zIndex: 2, paddingLeft: '80px' }}>
             <h2 style={{ 
               fontSize: 'clamp(32px, 5vw, 64px)', 
               lineHeight: 1.2, 

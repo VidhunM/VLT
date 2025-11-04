@@ -201,11 +201,12 @@ const FlowAnimation = () => {
   }, [])
 
   return (
-    <div style={{ background: '#0a2a1a', padding: '80px 48px 40px', color: '#fff' }}>
-      <div style={{ maxWidth: 1400, margin: '0 auto' }}>
+    <div className="flow-animation-wrapper" style={{ background: '#0a2a1a', padding: '80px 48px 40px', color: '#fff' }}>
+      <div className="flow-animation-container" style={{ maxWidth: 1400, margin: '0 auto' }}>
         {/* Container with animated rectangle border */}
         <div 
           ref={containerRef}
+          className="flow-animation-border-container"
           style={{ 
             position: 'relative', 
             padding: '50px',
@@ -227,27 +228,27 @@ const FlowAnimation = () => {
           />
 
           {/* Content inside rectangle */}
-          <div style={{ position: 'relative', zIndex: 0 }}>
+          <div className="flow-animation-content" style={{ position: 'relative', zIndex: 0 }}>
             {/* Top Section */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 60 }}>
+        <div className="flow-animation-top" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 60 }}>
           {/* Left: Logo & Tagline */}
-          <div>
+          <div className="flow-animation-logo-section">
             <div style={{ marginBottom: 30 }}>
               {/* Vulturelines Logo */}
-              <img src="/assets/Images/Vlt_logo1.png" alt="Vulturelines" style={{ width: 200, height: 200, objectFit: 'contain', display: 'block' }} />
+              <img src="/assets/Images/Vlt_logo1.png" alt="Vulturelines" className="flow-animation-logo" style={{ width: 200, height: 200, objectFit: 'contain', display: 'block' }} />
             </div>
-            <div style={{ fontSize: 48, fontWeight: 700, lineHeight: 1.2, color: '#000' }}>
+            <div className="flow-animation-branding" style={{ fontSize: 48, fontWeight: 700, lineHeight: 1.2, color: '#000' }}>
               <div>Vulturelines</div>
-              <div style={{ fontSize: 24, color: '#fff', fontWeight: 400, marginTop: 12 }}>
+              <div className="flow-animation-tagline" style={{ fontSize: 24, color: '#fff', fontWeight: 400, marginTop: 12 }}>
                 With strategic design and<br />Webflow development.
               </div>
             </div>
           </div>
 
           {/* Right: Navigation & Contact */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, flex: '1 1 auto', maxWidth: 600 }}>
+          <div className="flow-animation-nav-contact" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, flex: '1 1 auto', maxWidth: 600 }}>
             {/* Navigation */}
-            <div>
+            <div className="flow-animation-nav">
               <div style={{ fontSize: 14, fontWeight: 700, color: '#ff6b35', marginBottom: 20, letterSpacing: '1px' }}>
                 EXPLORA
               </div>
@@ -263,6 +264,7 @@ const FlowAnimation = () => {
                   <a 
                     key={idx} 
                     href={item.path} 
+                    className="flow-animation-link"
                     style={{ color: '#fff', textDecoration: 'none', fontSize: 16, transition: 'color 0.2s', cursor: 'pointer' }}
                     onClick={(e) => handleFooterNavClick(e, item.path)}
                     onMouseEnter={(e) => e.target.style.color = '#ff6b35'}
@@ -274,34 +276,34 @@ const FlowAnimation = () => {
             </div>
 
             {/* Contact Info */}
-            <div>
+            <div className="flow-animation-contact">
               <div style={{ fontSize: 14, fontWeight: 700, color: '#ff6b35', marginBottom: 20, letterSpacing: '1px' }}>
                 CONTACT
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div style={{ fontSize: 14, color: '#999' }}>
+                <div className="flow-animation-address" style={{ fontSize: 14, color: '#999' }}>
                   7th Floor, Centre Point,<br />
                   2/4, Mount Pollamallee High Road,<br />
                   Manapakkam, Porur, Chennai
                 </div>
-                <div style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>+91 9791670504</div>
-                <div style={{ fontSize: 16, color: '#fff' }}>sutheesh.s@vulturelines.com</div>
+                <div className="flow-animation-phone" style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>+91 9791670504</div>
+                <div className="flow-animation-email" style={{ fontSize: 16, color: '#fff' }}>sutheesh.s@vulturelines.com</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Section */}
-        <div>
+        <div className="flow-animation-bottom">
           {/* Divider Line */}
           <div style={{ borderTop: '1px solid #333', marginBottom: 30 }}></div>
 
           {/* Social Media & Copyright */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="flow-animation-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             {/* Social Media Icons */}
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div className="flow-animation-social" style={{ display: 'flex', gap: 12 }}>
               {['Instagram', 'LinkedIn', 'TikTok'].map((platform, idx) => (
-                <div key={idx} style={{ width: 40, height: 40, background: '#2d1a2d', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'transform 0.2s' }}
+                <div key={idx} className="flow-animation-social-icon" style={{ width: 40, height: 40, background: '#2d1a2d', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'transform 0.2s' }}
                      onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
                      onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
                   <span style={{ fontSize: 18, color: '#fff' }}>
@@ -314,11 +316,11 @@ const FlowAnimation = () => {
             </div>
 
             {/* Copyright & Legal Links */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
+            <div className="flow-animation-legal" style={{ display: 'flex', alignItems: 'center', gap: 40 }}>
               <div style={{ fontSize: 12, color: '#999' }}>© 2025 StepHouse. All rights reserved.</div>
-              <div style={{ display: 'flex', gap: 20 }}>
+              <div className="flow-animation-legal-links" style={{ display: 'flex', gap: 20 }}>
                 {['Política de cookies', 'Aviso legal', 'Política de privacidad', 'Canal de denuncias'].map((link, idx) => (
-                  <a key={idx} href="#" style={{ fontSize: 12, color: '#ff6b35', textDecoration: 'none' }}
+                  <a key={idx} href="#" className="flow-animation-legal-link" style={{ fontSize: 12, color: '#ff6b35', textDecoration: 'none' }}
                      onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
                      onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
                     {link}

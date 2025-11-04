@@ -4,6 +4,7 @@ import { navigateWithCircle } from '../utils/navigation'
 
 const HeroThree = () => {
   const [selectedProject, setSelectedProject] = useState(0)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const navigate = useNavigate()
   
   const handleNavigationClick = (event, path) => {
@@ -11,7 +12,7 @@ const HeroThree = () => {
       navigate(path)
     })
   }
-  
+
   const projects = [
     {
       name: 'drone-technology ',
@@ -40,6 +41,16 @@ const HeroThree = () => {
     return () => clearInterval(interval)
   }, [projects.length])
 
+  // Listen for menu toggle from Header component
+  useEffect(() => {
+    const handleMenuToggle = (event) => {
+      setIsMobileMenuOpen(event.detail.isOpen)
+    }
+
+    window.addEventListener('headerMenuToggle', handleMenuToggle)
+    return () => window.removeEventListener('headerMenuToggle', handleMenuToggle)
+  }, [])
+
   return (
     <section className="hero-three">
       <div className="hero-background">
@@ -48,6 +59,24 @@ const HeroThree = () => {
           style={{ backgroundImage: `url(${projects[selectedProject].bgImage})` }}
         ></div>
         <div className="hero-overlay"></div>
+      </div>
+      
+      {/* Mobile Project List - Top right on mobile */}
+      <div className="hero-mobile-projects">
+        <div className="project-selector">
+          {projects.map((project, index) => (
+            <div 
+              key={project.name}
+              className={`project-item ${selectedProject === index ? 'active' : ''}`}
+              onClick={() => setSelectedProject(index)}
+            >
+              <span className="project-name">{project.name}</span>
+              <div className="project-indicator">
+                <div className={`indicator-dot ${selectedProject === index ? 'active' : ''}`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       
       <div className="hero-container">
