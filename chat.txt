@@ -202,3 +202,33 @@ Topics: Hero section height increased to full screen
 Code changes: In `src/styles/main.css`, increased hero section height from `95vh` to `100vh` (full viewport height) for both `height` and `max-height` properties in `.hero-three` class.
 Decisions: Full screen height (100vh) makes hero section occupy entire viewport for maximum visual impact.
 Next steps: Refresh browser to see full-screen hero section; verify all content remains visible and accessible.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service rotating carousel - full structure view on mobile responsive
+Code changes: 
+- In `src/pages/OurService.jsx`, added mobile detection using `isMobile` and `isSmallMobile` states with resize listener. Updated carousel to use responsive values: radius reduced to 220px on small mobile (≤480px), 280px on mobile (≤768px), 540px on desktop; perspective adjusted to 1500/1800/3500 respectively; container width set to 100vw on mobile, height set to auto; card sizes reduced progressively (small mobile: 160-240px width, 220-320px height; mobile: 200-280px width, 280-390px height; desktop: 280-410px width, 390-540px height); added responsive margin calculations.
+- In `src/styles/main.css`, enhanced mobile-specific CSS rules for `.service-carousel-3d` class and carousel wrapper divs: added overflow: visible, full viewport width (100vw), margin: 0, left/right: 0 positioning; updated selector to target `div[style*="perspective"]` to catch dynamic perspective values; added `.our-service-page` class rules to ensure page container allows overflow on mobile (768px and 480px breakpoints).
+Decisions: Progressive radius reduction (220px/280px/540px) ensures all cards visible across all mobile screen sizes; adjusted perspective and container dimensions provide full structure view without clipping; overflow visible on page and carousel containers ensures cards extending beyond viewport are shown; smaller card sizes on very small screens maintain visibility.
+Next steps: Test on actual mobile devices; verify all cards remain visible during rotation across all screen sizes; verify horizontal scrolling doesn't occur unintentionally.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service carousel cards - square shape on mobile responsive
+Code changes: In `src/pages/OurService.jsx`, updated carousel card dimensions to be square on mobile devices: height now matches width for both small mobile (≤480px) and mobile (≤768px) breakpoints. Changed height values from different clamp ranges to match width values: small mobile height changed from `clamp(220px, 48vw, 320px)` to `clamp(160px, 35vw, 240px)`; mobile height changed from `clamp(280px, 52vw, 390px)` to `clamp(200px, 38vw, 280px)`. Updated marginTop calculations to use same values as marginLeft for proper centering. Desktop cards remain rectangular with original proportions.
+Decisions: Square cards on mobile provide better visual consistency and fit mobile screens more effectively; maintains aspect ratio that works well for touch interactions.
+Next steps: Test carousel rotation with square cards on mobile; verify cards remain visible and properly centered during rotation.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service header section - move down on mobile responsive
+Code changes: In `src/pages/OurService.jsx`, added responsive padding adjustments for the "OUR SERVICES" heading and tagline section: increased paddingTop from `2em` to `4em` on mobile (≤768px), and paddingBottom from `2em` to `3em` on mobile. Desktop remains at original `2em 0` padding.
+Decisions: Increased top padding pushes header content down on mobile for better spacing and visual hierarchy, preventing content from appearing too close to the top navigation.
+Next steps: Verify spacing looks good on various mobile devices; adjust padding values if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Service header to carousel spacing - reduce gap on mobile responsive
+Code changes: In `src/pages/OurService.jsx`, reduced spacing between header section and carousel cards on mobile: changed paddingBottom of header div from `3em` to `1em` on mobile, and reduced tagline bottom margin from `2.5em` to `1em` on mobile. Desktop spacing remains unchanged (paddingBottom: `2em`, tagline margin: `0.4em 0 2.5em`).
+Decisions: Decreased spacing creates tighter layout on mobile while maintaining adequate separation; reduces excessive white space between header and carousel for better visual flow.
+Next steps: Verify spacing looks balanced on mobile devices; fine-tune if needed.

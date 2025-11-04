@@ -66,6 +66,21 @@ const OurService = () => {
   const [visibleProjects, setVisibleProjects] = useState({});
   const zigzagRefs = useRef([]);
 
+  // Add mobile detection
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isSmallMobile, setIsSmallMobile] = useState(window.innerWidth <= 480);
+
+  // Mobile detection effect
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsSmallMobile(window.innerWidth <= 480);
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial check
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   useEffect(() => {
     if (!autoRotate) return;
     const interval = setInterval(() => setActiveIndex((i) => (i + 1) % CARD_COUNT), 3500);
@@ -142,9 +157,15 @@ const OurService = () => {
           { label: 'Contact', href: '/contact' }
         ]}
       />
-      <div style={{ padding: '2em 0', textAlign: 'center' }}>
+      <div style={{ 
+        padding: '2em 0', 
+        textAlign: 'center',
+        paddingTop: isMobile ? '6em' : '2em',
+        paddingBottom: isMobile ? '0' : '2em',
+        marginBottom: isMobile ? '-2em' : '0'
+      }}>
         <h1 style={{ fontWeight: 'bold', fontSize: '2.6em', letterSpacing: '1px' }}>OUR SERVICES</h1>
-        <div style={{ fontSize: '1.1em', opacity: 0.85, margin: '0.4em 0 2.5em' }}>
+        <div style={{ fontSize: '1.1em', opacity: 0.85, margin: isMobile ? '0.4em 0 0' : '0.4em 0 2.5em' }}>
           Design. Strategy. Execution. At the speed of your brand.
         </div>
       </div>
@@ -152,24 +173,26 @@ const OurService = () => {
       {/* 3D Carousel */}
       <div
         style={{
-          perspective: 3500, // deeper view to see full cards
+          perspective: isSmallMobile ? 1500 : isMobile ? 1800 : 3500,
           width: '100%',
           overflow: 'visible',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          minHeight: '85vh'
+          minHeight: '85vh',
+          marginTop: isMobile ? '-3em' : '0',
+          marginBottom: isMobile ? '-4em' : '0'
         }}
       >
         <div
           className="service-carousel-3d"
           style={{
             position: 'relative',
-            width: 'min(90vw, 880px)',
-            height: 'min(80vh, 600px)',
+            width: isMobile ? '100vw' : 'min(90vw, 880px)',
+            height: isMobile ? 'auto' : 'min(80vh, 600px)',
             transformStyle: 'preserve-3d',
             overflow: 'visible',
-            paddingBottom: 120
+            paddingBottom: isMobile ? 0 : 120
           }}
         >
           {SERVICES.map((s, i) => {
@@ -177,7 +200,8 @@ const OurService = () => {
             if (pos > CARD_COUNT / 2) pos -= CARD_COUNT;
 
             const angle = pos * 45; // smoother separation
-            const radius = 540; // slightly tighter spacing between cards
+            // Responsive radius
+            const radius = isSmallMobile ? 220 : isMobile ? 280 : 540;
             const rad = (angle * Math.PI) / 180;
             const translateZ = Math.cos(rad) * radius;
             const translateX = Math.sin(rad) * radius;
@@ -193,10 +217,27 @@ const OurService = () => {
                   position: 'absolute',
                   top: '50%',
                   left: '50%',
-                  width: 'clamp(280px, 32vw, 410px)',
-                  height: 'clamp(390px, 48vw, 540px)',
-                  marginLeft: 'calc(-1 * clamp(280px, 32vw, 410px) / 2)',
-                  marginTop: 'calc(-1 * clamp(390px, 48vw, 540px) / 2)',
+                                    // Responsive card sizes - square on mobile
+                  width: isSmallMobile 
+                    ? 'clamp(160px, 35vw, 240px)' 
+                    : isMobile 
+                    ? 'clamp(200px, 38vw, 280px)' 
+                    : 'clamp(280px, 32vw, 410px)',
+                  height: isSmallMobile 
+                    ? 'clamp(160px, 35vw, 240px)' 
+                    : isMobile 
+                    ? 'clamp(200px, 38vw, 280px)' 
+                    : 'clamp(390px, 48vw, 540px)',
+                  marginLeft: isSmallMobile 
+                    ? 'calc(-1 * clamp(160px, 35vw, 240px) / 2)' 
+                    : isMobile 
+                    ? 'calc(-1 * clamp(200px, 38vw, 280px) / 2)' 
+                    : 'calc(-1 * clamp(280px, 32vw, 410px) / 2)',
+                  marginTop: isSmallMobile 
+                    ? 'calc(-1 * clamp(160px, 35vw, 240px) / 2)' 
+                    : isMobile 
+                    ? 'calc(-1 * clamp(200px, 38vw, 280px) / 2)' 
+                    : 'calc(-1 * clamp(390px, 48vw, 540px) / 2)',
                   borderRadius: 30,
                   overflow: 'hidden',
                   background: '#111',
@@ -290,13 +331,14 @@ const OurService = () => {
       {/* Zigzag Project Sections */}
       {PROJECTS.map((p, idx) => {
         const isReversed = idx % 2 === 1;
+        const isFirstProject = idx === 0;
         return (
           <section
             key={p.title + idx}
             style={{
               width: '100%',
               maxWidth: 1200,
-              margin: '160px auto',
+              margin: isMobile && isFirstProject ? '0 auto 160px' : isMobile ? '60px auto' : '160px auto',
               padding: '0 24px'
             }}
           >
