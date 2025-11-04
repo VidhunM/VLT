@@ -4018,7 +4018,7 @@ a.btn-our-people {
 }
 
 .board-members-container {
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   height: 750px;
   display: flex;
@@ -4031,6 +4031,20 @@ a.btn-our-people {
   transition: transform 0.1s ease-out;
   width: max-content;
   align-items: center;
+  will-change: transform;
+}
+
+/* Smooth transition on mobile */
+@media (max-width: 768px) {
+  .board-members-slider {
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .board-members-slider {
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  }
 }
 
 .board-member-card {
@@ -4544,8 +4558,13 @@ a.btn-our-people {
   }
   
   .board-section {
-    padding: 40px 0;
-    min-height: 80vh;
+    padding: 0;
+    min-height: 100vh;
+  }
+  
+  .board-header {
+    margin-bottom: 1rem;
+    padding-top: 1rem;
   }
   
   .board-title {
@@ -4553,12 +4572,16 @@ a.btn-our-people {
   }
   
   .board-members-container {
-    height: 300px;
+    height: auto;
+    min-height: 300px;
+    overflow: visible;
   }
   
   .board-member-card {
     flex: 0 0 200px;
     height: 280px;
+    opacity: 1;
+    transition: opacity 0.5s ease-out, transform 0.4s ease-out;
   }
   
   .board-member-image {
@@ -4624,8 +4647,13 @@ a.btn-our-people {
   }
   
   .board-section {
-    padding: 30px 0;
-    min-height: 70vh;
+    padding: 0;
+    min-height: 90vh;
+  }
+  
+  .board-header {
+    margin-bottom: 0.75rem;
+    padding-top: 0.75rem;
   }
   
   .board-title {
@@ -4633,12 +4661,16 @@ a.btn-our-people {
   }
   
   .board-members-container {
-    height: 250px;
+    height: auto;
+    min-height: 250px;
+    overflow: visible;
   }
   
   .board-member-card {
     flex: 0 0 180px;
     height: 220px;
+    opacity: 1;
+    transition: opacity 0.6s ease-out, transform 0.5s ease-out;
   }
   
   .board-member-image {

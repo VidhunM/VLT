@@ -150,22 +150,66 @@ const OurTeam = () => {
       if (boardSectionRef.current) {
         const rect = boardSectionRef.current.getBoundingClientRect()
         const windowHeight = window.innerHeight
-        const sectionHeight = rect.height
         
-        // Calculate scroll progress within the section
-        const scrollStart = rect.top
-        const scrollEnd = rect.bottom - windowHeight
-        const scrollRange = scrollEnd - scrollStart
+        // Check if mobile device
+        const isMobile = window.innerWidth <= 768
         
-        if (scrollStart <= 0 && scrollEnd >= 0) {
-          const progress = Math.min(Math.max(-scrollStart / scrollRange, 0), 1)
-          setScrollProgress(progress)
+        // Calculate scroll progress - simplified for mobile
+        if (isMobile) {
+          // On mobile, use simpler calculation based on section visibility
+          const sectionTop = rect.top
+          const sectionHeight = rect.height
+          
+          // Start scrolling when section enters viewport
+          if (sectionTop <= 0 && rect.bottom > windowHeight) {
+            // Calculate progress based on how far scrolled into section
+            const scrolledIntoView = Math.abs(sectionTop)
+            const maxScroll = sectionHeight - windowHeight
+            
+            let rawProgress = Math.min(Math.max(scrolledIntoView / maxScroll, 0), 1)
+            
+            // Reduce scroll sensitivity by 50% on mobile (makes it scroll 2x slower)
+            rawProgress = rawProgress * 0.5
+            
+            // Apply ease-out function for smoother deceleration
+            rawProgress = 1 - Math.pow(1 - rawProgress, 2.5)
+            
+            setScrollProgress(rawProgress)
+            // Debug log - remove in production
+            if (Math.floor(rawProgress * 100) % 10 === 0) {
+              console.log('Mobile scroll progress:', rawProgress.toFixed(2))
+            }
+          } else if (rect.bottom <= windowHeight) {
+            // Section fully scrolled past
+            setScrollProgress(0.5)
+          } else if (sectionTop > 0) {
+            // Section not yet reached
+            setScrollProgress(0)
+          }
+        } else {
+          // Desktop calculation
+          const scrollStart = rect.top
+          const scrollEnd = rect.bottom - windowHeight
+          const scrollRange = scrollEnd - scrollStart
+          
+          if (scrollStart <= 0 && scrollEnd >= 0) {
+            const progress = Math.min(Math.max(-scrollStart / scrollRange, 0), 1)
+            setScrollProgress(progress)
+          }
         }
       }
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    // Initial call
+    handleScroll()
+    
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
   }, [])
 
   const handleDirectorClick = (director) => {
