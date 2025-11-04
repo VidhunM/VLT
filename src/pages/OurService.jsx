@@ -201,7 +201,7 @@ const OurService = () => {
 
             const angle = pos * 45; // smoother separation
             // Responsive radius
-            const radius = isSmallMobile ? 220 : isMobile ? 280 : 540;
+            const radius = isSmallMobile ? 210 : isMobile ? 480 : 540;
             const rad = (angle * Math.PI) / 180;
             const translateZ = Math.cos(rad) * radius;
             const translateX = Math.sin(rad) * radius;
@@ -219,24 +219,24 @@ const OurService = () => {
                   left: '50%',
                                     // Responsive card sizes - square on mobile
                   width: isSmallMobile 
-                    ? 'clamp(160px, 35vw, 240px)' 
+                    ? 'clamp(170px, 38vw, 260px)' 
                     : isMobile 
-                    ? 'clamp(200px, 38vw, 280px)' 
+                    ? 'clamp(330px, 55vw, 460px)' 
                     : 'clamp(280px, 32vw, 410px)',
                   height: isSmallMobile 
-                    ? 'clamp(160px, 35vw, 240px)' 
+                    ? 'clamp(170px, 38vw, 260px)' 
                     : isMobile 
-                    ? 'clamp(200px, 38vw, 280px)' 
+                    ? 'clamp(330px, 55vw, 460px)' 
                     : 'clamp(390px, 48vw, 540px)',
                   marginLeft: isSmallMobile 
-                    ? 'calc(-1 * clamp(160px, 35vw, 240px) / 2)' 
+                    ? 'calc(-1 * clamp(170px, 38vw, 260px) / 2)' 
                     : isMobile 
-                    ? 'calc(-1 * clamp(200px, 38vw, 280px) / 2)' 
+                    ? 'calc(-1 * clamp(330px, 55vw, 460px) / 2)' 
                     : 'calc(-1 * clamp(280px, 32vw, 410px) / 2)',
                   marginTop: isSmallMobile 
-                    ? 'calc(-1 * clamp(160px, 35vw, 240px) / 2)' 
+                    ? 'calc(-1 * clamp(170px, 38vw, 260px) / 2)' 
                     : isMobile 
-                    ? 'calc(-1 * clamp(200px, 38vw, 280px) / 2)' 
+                    ? 'calc(-1 * clamp(330px, 55vw, 460px) / 2)' 
                     : 'calc(-1 * clamp(390px, 48vw, 540px) / 2)',
                   borderRadius: 30,
                   overflow: 'hidden',
