@@ -3990,7 +3990,7 @@ a.btn-our-people {
   background: #1a3a3a;
   padding: 60px 0;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -4028,7 +4028,7 @@ a.btn-our-people {
 .board-members-slider {
   display: flex;
   gap: 2.5rem;
-  transition: transform 0.1s ease-out;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   width: max-content;
   align-items: center;
   will-change: transform;

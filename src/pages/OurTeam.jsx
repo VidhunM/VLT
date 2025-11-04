@@ -154,48 +154,39 @@ const OurTeam = () => {
         // Check if mobile device
         const isMobile = window.innerWidth <= 768
         
-        // Calculate scroll progress - simplified for mobile
-        if (isMobile) {
-          // On mobile, use simpler calculation based on section visibility
-          const sectionTop = rect.top
+        // Simple scroll progress calculation that works for both desktop and mobile
+        // Calculate when section is in viewport
+        const sectionTop = rect.top
+        const sectionBottom = rect.bottom
+        
+        // If section is in viewport
+        if (sectionTop < windowHeight && sectionBottom > 0) {
+          // Calculate how much of the section is visible
+          const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0)
           const sectionHeight = rect.height
           
-          // Start scrolling when section enters viewport
-          if (sectionTop <= 0 && rect.bottom > windowHeight) {
-            // Calculate progress based on how far scrolled into section
-            const scrolledIntoView = Math.abs(sectionTop)
-            const maxScroll = sectionHeight - windowHeight
-            
-            let rawProgress = Math.min(Math.max(scrolledIntoView / maxScroll, 0), 1)
-            
+          // Progress from 0 to 1 as section moves through viewport
+          let progress = 1 - (sectionBottom / (windowHeight + sectionHeight))
+          progress = Math.min(Math.max(progress, 0), 1)
+          
+          // On mobile, apply slower, smoother easing with dampening
+          if (isMobile) {
             // Reduce scroll sensitivity by 50% on mobile (makes it scroll 2x slower)
-            rawProgress = rawProgress * 0.5
+            progress = progress * 0.5
             
             // Apply ease-out function for smoother deceleration
-            rawProgress = 1 - Math.pow(1 - rawProgress, 2.5)
-            
-            setScrollProgress(rawProgress)
-            // Debug log - remove in production
-            // if (Math.floor(rawProgress * 100) % 10 === 0) {
-            //   console.log('Mobile scroll progress:', rawProgress.toFixed(2))
-            // }
-          } else if (rect.bottom <= windowHeight) {
-            // Section fully scrolled past
-            setScrollProgress(0.5)
-          } else if (sectionTop > 0) {
-            // Section not yet reached
-            setScrollProgress(0)
+            progress = 1 - Math.pow(1 - progress, 2.5)
           }
-        } else {
-          // Desktop calculation
-          const scrollStart = rect.top
-          const scrollEnd = rect.bottom - windowHeight
-          const scrollRange = scrollEnd - scrollStart
           
-          if (scrollStart <= 0 && scrollEnd >= 0) {
-            const progress = Math.min(Math.max(-scrollStart / scrollRange, 0), 1)
-            setScrollProgress(progress)
-          }
+          setScrollProgress(progress)
+          // Debug log - remove in production
+          // console.log('Scroll progress:', progress.toFixed(2), 'Mobile:', isMobile)
+        } else if (sectionTop >= windowHeight) {
+          // Section not yet reached
+          setScrollProgress(0)
+        } else if (sectionBottom <= 0) {
+          // Section fully scrolled past
+          setScrollProgress(isMobile ? 0.5 : 1)
         }
       }
     }
