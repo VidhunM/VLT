@@ -176,9 +176,9 @@ const OurTeam = () => {
             
             setScrollProgress(rawProgress)
             // Debug log - remove in production
-            if (Math.floor(rawProgress * 100) % 10 === 0) {
-              console.log('Mobile scroll progress:', rawProgress.toFixed(2))
-            }
+            // if (Math.floor(rawProgress * 100) % 10 === 0) {
+            //   console.log('Mobile scroll progress:', rawProgress.toFixed(2))
+            // }
           } else if (rect.bottom <= windowHeight) {
             // Section fully scrolled past
             setScrollProgress(0.5)
