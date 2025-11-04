@@ -203,12 +203,19 @@ a, button, .project-item, .nav-link {
   z-index: 1500;
   background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.05) 1px, transparent 0);
   background-size: 22px 22px;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 .nav-overlay-open {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+  background: #f8f4ec !important;
+  background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.05) 1px, transparent 0) !important;
+  background-size: 22px 22px !important;
 }
 
 .nav-overlay-open ~ .nav-actions .nav-circle-btn {
@@ -374,6 +381,26 @@ a, button, .project-item, .nav-link {
   backface-visibility: hidden;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+}
+
+@media (max-width: 768px) {
+  .hero-three {
+    overflow: visible;
+    max-height: none;
+    position: relative;
+    z-index: 1;
+  }
+  
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+  }
+  
+  html {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }
 
 .hero-background {
@@ -2089,9 +2116,10 @@ a.btn-our-people {
   }
 
   .hero-three {
-    height: 100vh;
+    height: auto;
     min-height: 100vh;
-    max-height: 100vh;
+    max-height: none;
+    overflow: visible;
   }
 
   .hero-container {
@@ -5167,6 +5195,93 @@ a.btn-our-people {
     z-index: 101;
   }
 
+  /* Circle Menu Overlay Mobile - Full View - Ensure proper visibility */
+  .nav-overlay {
+    background: #f8f4ec !important;
+    background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.05) 1px, transparent 0) !important;
+    background-size: 22px 22px !important;
+    z-index: 2000 !important;
+    position: fixed !important;
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+    min-width: 100vw !important;
+    overflow-y: auto !important;
+    clip-path: none !important;
+  }
+
+  .nav-overlay-open,
+  .nav-overlay.nav-overlay-open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: translateY(0) !important;
+    display: flex !important;
+    background: #f8f4ec !important;
+    background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.05) 1px, transparent 0) !important;
+    background-size: 22px 22px !important;
+    clip-path: none !important;
+  }
+
+  .nav-overlay-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 5vw, 2.5rem) clamp(3rem, 8vh, 4rem) !important;
+    padding-top: clamp(5rem, 12vh, 7rem) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .nav-overlay .nav-menu {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .nav-overlay .nav-item {
+    width: 100% !important;
+    padding: clamp(1.2rem, 3vh, 2rem) 0 !important;
+    border-top: 1px solid #2f4f1f !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .nav-overlay .nav-item:first-child {
+    border-top: none !important;
+  }
+
+  .nav-overlay .nav-link {
+    font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
+    line-height: 1.2 !important;
+    font-family: 'Playfair Display', 'Times New Roman', serif !important;
+    color: #1a1a1a !important;
+    display: block !important;
+    opacity: 1 !important;
+    width: 100% !important;
+  }
+
+  .nav-overlay-close {
+    position: absolute !important;
+    top: clamp(1rem, 3vh, 1.5rem) !important;
+    right: clamp(1rem, 4vw, 1.5rem) !important;
+    width: 44px !important;
+    height: 44px !important;
+    background: transparent !important;
+    border: 2px solid #2f4f1f !important;
+    z-index: 2001 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
   /* Mobile Project List - Below menu on right */
   /* Mobile Project List - Always visible at top right */
   .hero-mobile-projects {
@@ -5254,6 +5369,8 @@ a.btn-our-people {
   .hero-three {
     min-height: 100vh;
     height: auto;
+    max-height: none;
+    overflow: visible;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -5261,6 +5378,7 @@ a.btn-our-people {
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
+    position: relative;
   }
 
   .hero-container {
@@ -5432,6 +5550,54 @@ a.btn-our-people {
   .nav-circle-btn {
     width: 45px;
     height: 45px;
+    top: 0.75rem !important;
+    right: 1rem !important;
+  }
+
+  /* Circle Menu Overlay Small Mobile */
+  .nav-overlay {
+    background: #f8f4ec !important;
+    z-index: 2000 !important;
+  }
+
+  .nav-overlay-open,
+  .nav-overlay.nav-overlay-open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    display: flex !important;
+  }
+
+  .nav-overlay-content {
+    padding: clamp(3.5rem, 10vh, 5rem) clamp(1rem, 4vw, 1.5rem) clamp(2.5rem, 7vh, 3rem) !important;
+    padding-top: clamp(4.5rem, 12vh, 6rem) !important;
+  }
+
+  .nav-overlay .nav-menu {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .nav-overlay .nav-item {
+    padding: clamp(1rem, 2.5vh, 1.5rem) 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .nav-overlay .nav-link {
+    font-size: clamp(1.3rem, 7vw, 2rem) !important;
+    color: #1a1a1a !important;
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  .nav-overlay-close {
+    width: 40px !important;
+    height: 40px !important;
+    top: clamp(0.75rem, 2vh, 1rem) !important;
+    right: clamp(0.75rem, 3vw, 1rem) !important;
+    background: transparent !important;
+    border: 2px solid #2f4f1f !important;
   }
 
   /* Hero */
@@ -5650,6 +5816,60 @@ a.btn-our-people {
 
 /* Extra Small Mobile (max-width: 420px) */
 @media (max-width: 420px) {
+  /* Circle Menu Overlay Extra Small Mobile */
+  .nav-overlay {
+    background: #f8f4ec !important;
+    z-index: 2000 !important;
+  }
+
+  .nav-overlay-open,
+  .nav-overlay.nav-overlay-open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    display: flex !important;
+  }
+
+  .nav-overlay-content {
+    padding: clamp(3rem, 9vh, 4.5rem) clamp(0.75rem, 3vw, 1.25rem) clamp(2rem, 6vh, 2.5rem) !important;
+    padding-top: clamp(4rem, 11vh, 5.5rem) !important;
+  }
+
+  .nav-overlay .nav-menu {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .nav-overlay .nav-item {
+    padding: clamp(0.9rem, 2vh, 1.2rem) 0 !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .nav-overlay .nav-link {
+    font-size: clamp(1.2rem, 8vw, 1.8rem) !important;
+    line-height: 1.35 !important;
+    color: #1a1a1a !important;
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  .nav-overlay-close {
+    width: 38px !important;
+    height: 38px !important;
+    top: clamp(0.5rem, 1.5vh, 0.75rem) !important;
+    right: clamp(0.5rem, 2.5vw, 0.75rem) !important;
+    background: transparent !important;
+    border: 2px solid #2f4f1f !important;
+  }
+
+  .nav-circle-btn {
+    width: 38px !important;
+    height: 38px !important;
+    top: 0.5rem !important;
+    right: 0.75rem !important;
+  }
+
   /* Hero */
   .hero-title {
     font-size: 1.8rem;
