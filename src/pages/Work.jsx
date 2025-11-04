@@ -141,6 +141,9 @@ const Work = () => {
         </div>
             ))}
           </div>
+
+      {/* Flow Animation */}
+      <FlowAnimation />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import MinimalistNav from '../components/MinimalistNav'
+import FlowAnimation from '../components/FlowAnimation'
 
 const OurTeam = () => {
   const boardSectionRef = useRef(null)
@@ -352,6 +353,9 @@ const OurTeam = () => {
           </div>
         </div>
       )}
+
+      {/* Flow Animation */}
+      <FlowAnimation />
     </div>
   )
 }

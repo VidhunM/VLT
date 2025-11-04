@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
+import FlowAnimation from '../components/FlowAnimation';
 
 const SERVICES = [
   { img: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80', keywords: ['BRAND', 'WEB', 'MOTION', 'AI'] },
@@ -240,7 +241,7 @@ const OurService = () => {
                     : 'calc(-1 * clamp(390px, 48vw, 540px) / 2)',
                   borderRadius: 30,
                   overflow: 'hidden',
-                  background: '#111',
+                  background: isMobile ? '#808080' : '#111',
                   transformOrigin: 'center center',
                   transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                   transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -394,6 +395,9 @@ const OurService = () => {
           </section>
         );
       })}
+
+      {/* Flow Animation */}
+      <FlowAnimation />
     </div>
   );
 };

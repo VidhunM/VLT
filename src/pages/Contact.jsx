@@ -1,5 +1,6 @@
 import React from 'react'
 import MinimalistNav from '../components/MinimalistNav'
+import FlowAnimation from '../components/FlowAnimation'
 
 const Contact = () => {
   return (
@@ -101,6 +102,9 @@ const Contact = () => {
           </div>
         </div>
       </div>
+
+      {/* Flow Animation */}
+      <FlowAnimation />
       </div>
     </div>
   )
