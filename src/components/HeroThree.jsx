@@ -51,12 +51,13 @@ const HeroThree = () => {
       </div>
       
       <div className="hero-container">
-        <div className="hero-content">
-          <h1 className="hero-title">Experience Excellence with Vulturelines </h1>
-          <p className="hero-description">
-          With strategic design and Webflow development.
-          </p>
-        </div>
+      </div>
+
+      <div className="hero-content-bottom">
+        <h1 className="hero-title">Experience Excellence with Vulturelines </h1>
+        <p className="hero-description">
+        With strategic design and Webflow development.
+        </p>
       </div>
 
       <div className="hero-sidebar">
