@@ -188,3 +188,17 @@ Code changes:
 - Enhanced animation compatibility: added -webkit-keyframes alongside standard @keyframes for slideRightToLeft animation.
 Decisions: Comprehensive approach ensures compatibility across Windows, macOS, Linux, iOS, Android, and all major browsers (Chrome, Firefox, Safari, Edge). Mobile-first responsive design with touch-friendly interactions. Vendor prefixes added for maximum browser compatibility.
 Next steps: Test on actual devices across platforms; verify animations perform smoothly; check for any remaining layout issues on specific screen sizes.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hero section height increase - whole screen size slightly increased
+Code changes: In `src/styles/main.css`, increased hero section height from `90vh` to `95vh` for both `height` and `max-height` properties in `.hero-three` class.
+Decisions: Slight increase from 90% to 95% of viewport height makes hero section take up more screen space while maintaining responsiveness.
+Next steps: Refresh browser to see updated hero section size; verify layout proportions remain balanced.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Hero section height increased to full screen
+Code changes: In `src/styles/main.css`, increased hero section height from `95vh` to `100vh` (full viewport height) for both `height` and `max-height` properties in `.hero-three` class.
+Decisions: Full screen height (100vh) makes hero section occupy entire viewport for maximum visual impact.
+Next steps: Refresh browser to see full-screen hero section; verify all content remains visible and accessible.
