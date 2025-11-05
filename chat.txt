@@ -232,3 +232,31 @@ Topics: Our Service header to carousel spacing - reduce gap on mobile responsive
 Code changes: In `src/pages/OurService.jsx`, reduced spacing between header section and carousel cards on mobile: changed paddingBottom of header div from `3em` to `1em` on mobile, and reduced tagline bottom margin from `2.5em` to `1em` on mobile. Desktop spacing remains unchanged (paddingBottom: `2em`, tagline margin: `0.4em 0 2.5em`).
 Decisions: Decreased spacing creates tighter layout on mobile while maintaining adequate separation; reduces excessive white space between header and carousel for better visual flow.
 Next steps: Verify spacing looks balanced on mobile devices; fine-tune if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile responsive - board of directors images show before animations process
+Code changes: In `src/pages/OurTeam.jsx`, added mobile detection state (`isMobile`) and section visibility tracking (`isSectionInView`). Updated board members slider to hide images initially on mobile (opacity: 0) and only show them when section is in view AND scroll progress > 0 (animation has started). Added smooth fade-in transition for opacity on mobile. In `src/styles/main.css`, set initial opacity to 0 for `.board-members-slider` on mobile breakpoints (≤768px and ≤480px) with transition properties for smooth fade-in.
+Decisions: Images hidden initially on mobile to prevent showing before animations; fade-in only triggers when scroll animation begins processing; desktop behavior unchanged.
+Next steps: Test on actual mobile devices; verify images fade in smoothly when scrolling to board section; adjust timing if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Board of directors section - first image stuck, then scroll image by image
+Code changes: In `src/pages/OurTeam.jsx`, modified scroll progress calculation to implement sticky first image behavior. Added `stickyThreshold` of 0.2 (20% of scroll) where first image stays centered (translateX = 0). After threshold, scroll progress maps to card indices (0 to totalCards-1) for image-by-image scrolling. Added `sliderRef` and `cardWidth` state to measure actual card width dynamically (including gap). Changed transform from percentage-based to pixel-based translation (`translateX(-${scrollProgress * cardWidth}px)`) for precise image-by-image scrolling. Card width measurement happens on mount, resize, and first scroll to ensure accuracy across breakpoints.
+Decisions: First image remains stuck/centered when section first enters viewport; after 20% scroll threshold, images scroll one by one progressively; pixel-based translation ensures accurate positioning; dynamic card width measurement adapts to screen size changes.
+Next steps: Test on different screen sizes; verify first image stays centered initially; confirm smooth image-by-image progression after threshold.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Excellence section - text quietly increases size on scroll
+Code changes: In `src/pages/Home.jsx`, added `excellenceRef` and `excellenceScrollProgress` state to track scroll progress through excellence section. Added scroll listener that calculates progress from 0 to 1 as section moves through viewport. Applied scroll-based size increase to subtitle (15% max increase), description (12% max increase), and buttons (8% scale increase) using inline styles with smooth transitions. Size increases gradually and quietly as user scrolls through the section.
+Decisions: Subtle, gradual size increase creates quiet growth effect; different increase percentages for different elements (subtitle 15%, description 12%, buttons 8%) for visual hierarchy; smooth transitions ensure non-jarring animation.
+Next steps: Test scroll behavior; verify size increases feel natural and not too aggressive; adjust percentages if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile responsive excellence section - center circular texts and numbers
+Code changes: In `src/styles/main.css`, added mobile-specific styles to center circular texts and numbers in the excellence section. For mobile breakpoints (≤768px, ≤576px, ≤480px): removed `translateX(40px)` offset from `.emblem-number` and `.emblem-text` using `transform: translateX(0) !important`; centered `.circular-text-svg` by setting `left: 0` and `top: 0` (removed 40px offset); added `margin: 0 auto` to `.circular-emblem` for horizontal centering; created new mobile-specific animations `numberAppearMobile` and `textAppearMobile` that use `translateX(0)` instead of `translateX(40px)`; updated `transform-origin` for `.rotating-group` to `50% 50%` on mobile for proper rotation center.
+Decisions: Mobile-specific overrides ensure centered alignment on mobile devices while preserving desktop layout with 40px offset; separate mobile animations maintain smooth appearance without affecting desktop behavior.
+Next steps: Test on actual mobile devices; verify circular text rotation and number/text centering; adjust if needed.

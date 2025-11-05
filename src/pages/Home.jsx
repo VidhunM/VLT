@@ -10,7 +10,9 @@ import { navigateWithCircle } from '../utils/navigation'
 const Home = () => {
   const emblemRef = useRef(null)
   const servicesRef = useRef(null)
+  const excellenceRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [excellenceScrollProgress, setExcellenceScrollProgress] = useState(0)
   const [service1Progress, setService1Progress] = useState(0)
   const [service2Progress, setService2Progress] = useState(0)
   const [service3Progress, setService3Progress] = useState(0)
@@ -148,6 +150,45 @@ const Home = () => {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => {
       window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  // Excellence section scroll-based size increase
+  useEffect(() => {
+    const handleExcellenceScroll = () => {
+      if (excellenceRef.current) {
+        const rect = excellenceRef.current.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+        
+        // Calculate scroll progress through the excellence section
+        // When section enters viewport: progress starts at 0
+        // When section is fully scrolled past: progress reaches 1
+        const sectionTop = rect.top
+        const sectionBottom = rect.bottom
+        const sectionHeight = rect.height
+        
+        let progress = 0
+        
+        // Section is in viewport
+        if (sectionTop < windowHeight && sectionBottom > 0) {
+          // Calculate how much of section has been scrolled
+          // Progress from 0 to 1 as section moves through viewport
+          const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0)
+          progress = Math.min(1, Math.max(0, 1 - (sectionBottom / (windowHeight + sectionHeight * 0.5))))
+        } else if (sectionBottom <= 0) {
+          // Section fully scrolled past
+          progress = 1
+        }
+        
+        setExcellenceScrollProgress(progress)
+      }
+    }
+    
+    window.addEventListener('scroll', handleExcellenceScroll, { passive: true })
+    handleExcellenceScroll()
+    
+    return () => {
+      window.removeEventListener('scroll', handleExcellenceScroll)
     }
   }, [])
 
@@ -356,7 +397,7 @@ const Home = () => {
       {showNav && <MinimalistNav />}
       <HeroThree />
       
-      <section className="excellence-section">
+      <section className="excellence-section" ref={excellenceRef}>
         <div className="excellence-container">
           <div className="excellence-left">
             <h2 className={`excellence-title ${isVisible ? 'animate-title' : ''}`}>
@@ -383,15 +424,33 @@ const Home = () => {
             </div>
           </div>
           <div className="excellence-right">
-            <h3 className={`excellence-subtitle ${isVisible ? 'animate-subtitle' : ''}`}>
+            <h3 
+              className={`excellence-subtitle ${isVisible ? 'animate-subtitle' : ''}`}
+              style={{
+                fontSize: `clamp(${1.5 * (1 + excellenceScrollProgress * 0.35)}rem, ${3 * (1 + excellenceScrollProgress * 0.35)}vw, ${2 * (1 + excellenceScrollProgress * 0.35)}rem)`,
+                transition: 'font-size 0.1s ease-out'
+              }}
+            >
               Build success in Software Engineer and Property Services
             </h3>
-            <p className={`excellence-description ${isVisible ? 'animate-description' : ''}`}>
+            <p 
+              className={`excellence-description ${isVisible ? 'animate-description' : ''}`}
+              style={{
+                fontSize: `clamp(${0.9 * (1 + excellenceScrollProgress * 0.28)}rem, ${1.8 * (1 + excellenceScrollProgress * 0.28)}vw, ${1 * (1 + excellenceScrollProgress * 0.28)}rem)`,
+                transition: 'font-size 0.1s ease-out'
+              }}
+            >
             If you mind thinks about mobile/website development, then we have created a niche for ourselves. We started in 2021 with just 3 employees and now have expanded ourselves to 20+ which shows about the growth and the quality of work that we did over the years.
 
 Our team comprises highly skilled IT professionals whose target is to provide top-notch yet cost-effective solutions to SMEs. We have expertise in designing and developing custom-made websites and apps for all industries. So if there's a specific requirement you can reach to us.
             </p>
-            <div className={`excellence-buttons ${isVisible ? 'animate-buttons' : ''}`}>
+            <div 
+              className={`excellence-buttons ${isVisible ? 'animate-buttons' : ''}`}
+              style={{
+                transform: `scale(${1 + excellenceScrollProgress * 0.2})`,
+                transition: 'transform 0.1s ease-out'
+              }}
+            >
               <a 
                 href="/our-team" 
                 className="btn-our-people"

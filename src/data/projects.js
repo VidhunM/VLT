@@ -118,3 +118,4 @@ export const getProjectBySlug = (slug) => {
   return PROJECTS_DATA[slug] || null
 }
 
+

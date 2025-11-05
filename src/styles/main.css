@@ -850,6 +850,28 @@ a, button, .project-item, .nav-link {
   }
 }
 
+@keyframes numberAppearMobile {
+  from {
+    opacity: 0;
+    transform: scale(0.5) translateX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+
+@keyframes textAppearMobile {
+  from {
+    opacity: 0;
+    transform: translateY(20px) translateX(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+}
+
 
 .excellence-right {
   display: flex;
@@ -2548,14 +2570,36 @@ a.btn-our-people {
   .circular-emblem {
     width: 120px;
     height: 120px;
+    margin: 0 auto;
   }
 
   .emblem-number {
     font-size: 3rem;
+    transform: translateX(0) !important;
+    text-align: center;
+  }
+
+  .emblem-number.animate-number {
+    animation: numberAppearMobile 0.8s ease-out 0.5s forwards;
   }
 
   .emblem-text {
     font-size: 0.9rem;
+    transform: translateX(0) !important;
+    text-align: center;
+  }
+
+  .emblem-text.animate-text {
+    animation: textAppearMobile 0.6s ease-out 1.3s forwards;
+  }
+
+  .circular-text-svg {
+    left: 0 !important;
+    top: 0 !important;
+  }
+
+  .rotating-group {
+    transform-origin: 50% 50% !important;
   }
 
   .circular-text {
@@ -2837,10 +2881,35 @@ a.btn-our-people {
   .circular-emblem {
     width: 100px;
     height: 100px;
+    margin: 0 auto;
   }
 
   .emblem-number {
     font-size: 2.5rem;
+    transform: translateX(0) !important;
+    text-align: center;
+  }
+
+  .emblem-number.animate-number {
+    animation: numberAppearMobile 0.8s ease-out 0.5s forwards;
+  }
+
+  .emblem-text {
+    transform: translateX(0) !important;
+    text-align: center;
+  }
+
+  .emblem-text.animate-text {
+    animation: textAppearMobile 0.6s ease-out 1.3s forwards;
+  }
+
+  .circular-text-svg {
+    left: 0 !important;
+    top: 0 !important;
+  }
+
+  .rotating-group {
+    transform-origin: 50% 50% !important;
   }
 
   .nav-menu {
@@ -4298,13 +4367,17 @@ a.btn-our-people {
 /* Smooth transition on mobile */
 @media (max-width: 768px) {
   .board-members-slider {
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    transition: opacity 0.6s ease-in, transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    /* Initial opacity set to 0, will be overridden by inline styles when section is in view */
+    opacity: 0;
   }
 }
 
 @media (max-width: 480px) {
   .board-members-slider {
-    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    transition: opacity 0.7s ease-in, transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    /* Initial opacity set to 0, will be overridden by inline styles when section is in view */
+    opacity: 0;
   }
 }
 
@@ -6030,10 +6103,35 @@ a.btn-our-people {
   .circular-emblem {
     width: 120px;
     height: 120px;
+    margin: 0 auto;
   }
 
   .emblem-number {
     font-size: 3rem;
+    transform: translateX(0) !important;
+    text-align: center;
+  }
+
+  .emblem-number.animate-number {
+    animation: numberAppearMobile 0.8s ease-out 0.5s forwards;
+  }
+
+  .emblem-text {
+    transform: translateX(0) !important;
+    text-align: center;
+  }
+
+  .emblem-text.animate-text {
+    animation: textAppearMobile 0.6s ease-out 1.3s forwards;
+  }
+
+  .circular-text-svg {
+    left: 0 !important;
+    top: 0 !important;
+  }
+
+  .rotating-group {
+    transform-origin: 50% 50% !important;
   }
 
   .circular-text {

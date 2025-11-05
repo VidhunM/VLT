@@ -4,10 +4,14 @@ import FlowAnimation from '../components/FlowAnimation'
 
 const OurTeam = () => {
   const boardSectionRef = useRef(null)
+  const sliderRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [selectedDirector, setSelectedDirector] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [activeFilter, setActiveFilter] = useState('All')
+  const [isMobile, setIsMobile] = useState(false)
+  const [isSectionInView, setIsSectionInView] = useState(false)
+  const [cardWidth, setCardWidth] = useState(520) // Default desktop width
 
   const boardMembers = [
     {
@@ -145,14 +149,78 @@ const OurTeam = () => {
     ? teamMembers 
     : teamMembers.filter(member => member.team === activeFilter)
 
+  // Check mobile on mount and resize, and measure card width
   useEffect(() => {
+    const measureCardWidth = () => {
+      if (sliderRef.current) {
+        const firstCard = sliderRef.current.querySelector('.board-member-card')
+        if (firstCard) {
+          const cardRect = firstCard.getBoundingClientRect()
+          const sliderStyle = window.getComputedStyle(sliderRef.current)
+          const gap = parseFloat(sliderStyle.gap) || 40 // Default gap if not found
+          // Card width includes the gap to next card for translation calculation
+          const newCardWidth = cardRect.width + gap
+          if (newCardWidth > 0) {
+            setCardWidth(prev => {
+              if (prev !== newCardWidth) {
+                return newCardWidth
+              }
+              return prev
+            })
+          }
+        }
+      }
+    }
+    
+    const checkMobile = () => {
+      const isMobileDevice = window.innerWidth <= 768
+      setIsMobile(isMobileDevice)
+      measureCardWidth()
+    }
+    
+    checkMobile()
+    
+    // Re-measure after a short delay to ensure DOM is ready
+    const timeoutId = setTimeout(checkMobile, 100)
+    const timeoutId2 = setTimeout(checkMobile, 500) // Second measurement to be sure
+    
+    window.addEventListener('resize', checkMobile, { passive: true })
+    
+    return () => {
+      clearTimeout(timeoutId)
+      clearTimeout(timeoutId2)
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
+
+  useEffect(() => {
+    const measureCardWidth = () => {
+      if (sliderRef.current) {
+        const firstCard = sliderRef.current.querySelector('.board-member-card')
+        if (firstCard) {
+          const cardRect = firstCard.getBoundingClientRect()
+          const sliderStyle = window.getComputedStyle(sliderRef.current)
+          const gap = parseFloat(sliderStyle.gap) || 40
+          const newCardWidth = cardRect.width + gap
+          if (newCardWidth > 0) {
+            setCardWidth(prev => prev !== newCardWidth ? newCardWidth : prev)
+          }
+        }
+      }
+    }
+    
     const handleScroll = () => {
       if (boardSectionRef.current) {
+        // Measure card width on first scroll if not measured yet
+        if (cardWidth === 520) {
+          measureCardWidth()
+        }
+        
         const rect = boardSectionRef.current.getBoundingClientRect()
         const windowHeight = window.innerHeight
         
         // Check if mobile device
-        const isMobile = window.innerWidth <= 768
+        const isMobileDevice = window.innerWidth <= 768
         
         // Simple scroll progress calculation that works for both desktop and mobile
         // Calculate when section is in viewport
@@ -161,6 +229,9 @@ const OurTeam = () => {
         
         // If section is in viewport
         if (sectionTop < windowHeight && sectionBottom > 0) {
+          // Mark section as in view for animation trigger
+          setIsSectionInView(true)
+          
           // Calculate how much of the section is visible
           const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0)
           const sectionHeight = rect.height
@@ -170,7 +241,7 @@ const OurTeam = () => {
           progress = Math.min(Math.max(progress, 0), 1)
           
           // On mobile, apply slower, smoother easing with dampening
-          if (isMobile) {
+          if (isMobileDevice) {
             // Reduce scroll sensitivity by 50% on mobile (makes it scroll 2x slower)
             progress = progress * 0.5
             
@@ -178,15 +249,32 @@ const OurTeam = () => {
             progress = 1 - Math.pow(1 - progress, 2.5)
           }
           
-          setScrollProgress(progress)
+          // First 20% of scroll progress: keep first image stuck (translateX = 0)
+          // After 20%: start translating image by image
+          const stickyThreshold = 0.2
+          let adjustedProgress = 0
+          
+          if (progress > stickyThreshold) {
+            // Map remaining 80% progress to card indices (0 to totalCards - 1)
+            const remainingProgress = (progress - stickyThreshold) / (1 - stickyThreshold)
+            const totalCards = boardMembers.length
+            // Calculate which card index to show (0 = first card, totalCards-1 = last card)
+            // This will be used to calculate pixel translation
+            adjustedProgress = remainingProgress * (totalCards - 1)
+          }
+          
+          setScrollProgress(adjustedProgress)
           // Debug log - remove in production
-          // console.log('Scroll progress:', progress.toFixed(2), 'Mobile:', isMobile)
+          // console.log('Scroll progress:', progress.toFixed(2), 'Adjusted:', adjustedProgress.toFixed(2), 'Mobile:', isMobileDevice)
         } else if (sectionTop >= windowHeight) {
           // Section not yet reached
           setScrollProgress(0)
+          setIsSectionInView(false)
         } else if (sectionBottom <= 0) {
-          // Section fully scrolled past
-          setScrollProgress(isMobile ? 0.5 : 1)
+          // Section fully scrolled past - show last image
+          const totalCards = boardMembers.length
+          setScrollProgress(totalCards - 1)
+          setIsSectionInView(true)
         }
       }
     }
@@ -201,7 +289,7 @@ const OurTeam = () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleScroll)
     }
-  }, [])
+  }, [cardWidth, boardMembers.length])
 
   const handleDirectorClick = (director) => {
     setSelectedDirector(director)
@@ -243,9 +331,15 @@ const OurTeam = () => {
           </div>
           <div className="board-members-container">
             <div 
+              ref={sliderRef}
               className="board-members-slider"
               style={{
-                transform: `translateX(-${scrollProgress * 100}%)`
+                // Calculate translateX based on scroll progress
+                // scrollProgress: 0 = first image stuck, 0 to (totalCards-1) = card index to show
+                // Translate by card index * cardWidth (including gap) to show images one by one
+                transform: `translateX(-${scrollProgress * cardWidth}px)`,
+                opacity: isMobile && (scrollProgress === 0 || !isSectionInView) ? 0 : 1,
+                transition: isMobile ? 'opacity 0.6s ease-in, transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
               }}
             >
               {boardMembers.map((member, index) => (
