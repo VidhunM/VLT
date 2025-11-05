@@ -717,7 +717,7 @@ a, button, .project-item, .nav-link {
   position: relative;
   margin-bottom: 0.2rem;
   opacity: 0;
-  transform: scale(0.5);
+  transform: scale(0.5) translateX(40px);
 }
 
 .emblem-number.animate-number {
@@ -743,7 +743,7 @@ a, button, .project-item, .nav-link {
   font-family: 'Arial', sans-serif;
   text-transform: uppercase;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(20px) translateX(40px);
 }
 
 .emblem-text.animate-text {
@@ -753,7 +753,7 @@ a, button, .project-item, .nav-link {
 .circular-text-svg {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 40px;
   width: 100%;
   height: 100%;
   z-index: 1;
@@ -790,22 +790,22 @@ a, button, .project-item, .nav-link {
 @keyframes numberAppear {
   from {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0.5) translateX(40px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateX(40px);
   }
 }
 
 @keyframes textAppear {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(20px) translateX(40px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateX(40px);
   }
 }
 
@@ -1686,66 +1686,38 @@ a.btn-our-people {
   transition: none;
   will-change: transform, opacity;
   pointer-events: none;
+  z-index: 1;
 }
 
-/* Service 1 - Always visible at top, fully in view initially */
+/* Service 1 - Fixed position for scroll-based animation */
 .service-overlay.service-1 {
-  position: sticky !important;
-  top: 0 !important;
-  transform: none !important;
-  opacity: 1 !important;
-  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
-  z-index: 1;
-  pointer-events: auto;
-}
-
-/* Animation classes for service 2, 3, and 4 - Slide up to cover previous */
-.service-overlay.service-2.animate-overlay-slide,
-.service-overlay.service-3.animate-overlay-slide {
-  animation: overlaySlideUpCover 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-  pointer-events: auto;
-  position: fixed;
-  top: 0;
-  left: 0;
+  /* Remove default transform and opacity - handled by inline styles */
+  transform: translateY(100vh);
+  opacity: 0;
 }
 
-/* Service 4 - special handling to stay visible */
-.service-overlay.service-4.animate-overlay-slide {
-  animation: overlaySlideUpCover 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-  pointer-events: auto;
-  position: fixed;
-  top: 0;
-  left: 0;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.service-overlay.service-2.animate-overlay-slide-reverse,
-.service-overlay.service-3.animate-overlay-slide-reverse {
-  animation: overlaySlideDownHide 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  pointer-events: none;
-  position: fixed;
-}
-
-/* Service 4 reverse - slide down when scrolling back up */
-.service-overlay.service-4.animate-overlay-slide-reverse {
-  animation: overlaySlideDownHide 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
-/* Ensure smooth transitions for reverse scrolling */
+/* Service 2, 3, 4 - Fixed position for scroll-based animation */
 .service-overlay.service-2,
 .service-overlay.service-3,
 .service-overlay.service-4 {
-  animation-fill-mode: both;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+  /* Remove default transform and opacity - handled by inline styles */
+  transform: translateY(100vh);
+  opacity: 0;
 }
+
+/* Scroll-based animations are now handled via inline styles in JSX */
 
 /* Z-index stacking - each service covers the previous one */
 .service-1 {

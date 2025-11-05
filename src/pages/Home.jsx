@@ -10,13 +10,11 @@ import { navigateWithCircle } from '../utils/navigation'
 const Home = () => {
   const emblemRef = useRef(null)
   const servicesRef = useRef(null)
-  const service2Ref = useRef(null)
-  const service3Ref = useRef(null)
-  const service4Ref = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
-  const [service2Visible, setService2Visible] = useState(false)
-  const [service3Visible, setService3Visible] = useState(false)
-  const [service4Visible, setService4Visible] = useState(false)
+  const [service1Progress, setService1Progress] = useState(0)
+  const [service2Progress, setService2Progress] = useState(0)
+  const [service3Progress, setService3Progress] = useState(0)
+  const [service4Progress, setService4Progress] = useState(0)
   const [selectedClient, setSelectedClient] = useState(0)
   const [activeCapability, setActiveCapability] = useState(0)
   const [scrollDirection, setScrollDirection] = useState('down')
@@ -166,64 +164,15 @@ const Home = () => {
       { threshold: 0.3 }
     )
 
-    const service2Observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setService2Visible(true)
-        } else {
-          setService2Visible(false)
-        }
-      },
-      { threshold: 0.5 }
-    )
-
-    const service3Observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setService3Visible(true)
-        } else {
-          setService3Visible(false)
-        }
-      },
-      { threshold: 0.5 }
-    )
-
-    const service4Observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setService4Visible(true)
-        } else {
-          setService4Visible(false)
-        }
-      },
-      { threshold: 0.5 }
-    )
+    // Removed IntersectionObserver for services - now using scroll-based animation
 
     if (emblemRef.current) {
       emblemObserver.observe(emblemRef.current)
-    }
-    if (service2Ref.current) {
-      service2Observer.observe(service2Ref.current)
-    }
-    if (service3Ref.current) {
-      service3Observer.observe(service3Ref.current)
-    }
-    if (service4Ref.current) {
-      service4Observer.observe(service4Ref.current)
     }
 
     return () => {
       if (emblemRef.current) {
         emblemObserver.unobserve(emblemRef.current)
-      }
-      if (service2Ref.current) {
-        service2Observer.unobserve(service2Ref.current)
-      }
-      if (service3Ref.current) {
-        service3Observer.unobserve(service3Ref.current)
-      }
-      if (service4Ref.current) {
-        service4Observer.unobserve(service4Ref.current)
       }
     }
   }, [])
@@ -303,6 +252,78 @@ const Home = () => {
 
     return () => {
       window.removeEventListener('scroll', handleContactScroll)
+    }
+  }, [])
+
+  // Scroll-based animation for Services section - cards slide up sequentially
+  useEffect(() => {
+    const handleServicesScroll = () => {
+      if (!servicesRef.current) return
+
+      const rect = servicesRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      const sectionHeight = rect.height
+      
+      // Calculate if section is in view
+      const isInView = rect.top < windowHeight && rect.bottom > 0
+      
+      if (!isInView) {
+        setService1Progress(0)
+        setService2Progress(0)
+        setService3Progress(0)
+        setService4Progress(0)
+        return
+      }
+
+      // Calculate scroll progress within the services section
+      // Progress should start when section top reaches viewport top (rect.top = 0)
+      // Progress should end when section bottom reaches viewport top (rect.bottom = 0)
+      
+      const sectionTop = rect.top
+      const sectionBottom = rect.bottom
+      
+      // Calculate progress: 0 when section enters view, 1 when section is fully scrolled past
+      // Section is 400vh (4 cards × 100vh each)
+      // Scrollable distance = 300vh (400vh - 100vh viewport)
+      const scrollableDistance = sectionHeight - windowHeight
+      
+      // When section top is at viewport top: sectionTop = 0
+      // When section is scrolled past: sectionTop < 0
+      // Calculate scroll progress
+      let scrollProgress = 0
+      if (sectionTop <= 0) {
+        // Section is at or past viewport top
+        const scrolled = -sectionTop // How much we've scrolled past the top
+        scrollProgress = Math.max(0, Math.min(1, scrolled / scrollableDistance))
+      } else {
+        // Section is entering from below - Service 1 should start appearing
+        // When sectionTop = windowHeight, progress = 0
+        // When sectionTop = 0, progress = 1 (for Service 1 only)
+        const entryProgress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / windowHeight))
+        scrollProgress = entryProgress * 0.25 // Service 1 uses first 25% of scroll
+      }
+      
+      // Each service card gets 1/4 of the scroll progress (25% each)
+      // Service 1: 0-25% of scroll progress
+      const service1Progress = Math.max(0, Math.min(1, scrollProgress / 0.25))
+      // Service 2: 25-50% of scroll progress
+      const service2Progress = Math.max(0, Math.min(1, (scrollProgress - 0.25) / 0.25))
+      // Service 3: 50-75% of scroll progress  
+      const service3Progress = Math.max(0, Math.min(1, (scrollProgress - 0.50) / 0.25))
+      // Service 4: 75-100% of scroll progress
+      const service4Progress = Math.max(0, Math.min(1, (scrollProgress - 0.75) / 0.25))
+      
+      setService1Progress(service1Progress)
+      setService2Progress(service2Progress)
+      setService3Progress(service3Progress)
+      setService4Progress(service4Progress)
+    }
+
+    window.addEventListener('scroll', handleServicesScroll, { passive: true })
+    handleServicesScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleServicesScroll)
     }
   }, [])
 
@@ -397,13 +418,16 @@ Our team comprises highly skilled IT professionals whose target is to provide to
         style={{ scrollMarginTop: '80px' }}
       >
         <div className="services-container">
-          {/* Trigger elements for scroll detection */}
-          <div ref={service2Ref} style={{ position: 'absolute', top: '100vh', height: '1px', width: '100%' }}></div>
-          <div ref={service3Ref} style={{ position: 'absolute', top: '200vh', height: '1px', width: '100%' }}></div>
-          <div ref={service4Ref} style={{ position: 'absolute', top: '300vh', height: '1px', width: '100%' }}></div>
-
-          {/* Service 1: Web Development - Static, always visible */}
-          <div className="service-overlay service-1">
+          {/* Service 1: Web Development - Slides up first */}
+          <div 
+            className="service-overlay service-1"
+            style={{
+              transform: `translate3d(0, ${100 - service1Progress * 100}vh, 0)`,
+              opacity: service1Progress,
+              pointerEvents: service1Progress > 0.5 ? 'auto' : 'none',
+              transition: 'opacity 0.1s ease-out'
+            }}
+          >
             <div className="service-row">
               <div className="service-image-section">
                 <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80" alt="Web Development" />
@@ -422,8 +446,16 @@ Our team comprises highly skilled IT professionals whose target is to provide to
             </div>
           </div>
 
-          {/* Service 2: Mobile Apps - Slides over Service 1 */}
-          <div className={`service-overlay service-2 ${service2Visible ? 'animate-overlay-slide' : 'animate-overlay-slide-reverse'}`}>
+          {/* Service 2: Mobile Apps - Slides up over Service 1 */}
+          <div 
+            className="service-overlay service-2"
+            style={{
+              transform: `translate3d(0, ${100 - service2Progress * 100}vh, 0)`,
+              opacity: service2Progress,
+              pointerEvents: service2Progress > 0.5 ? 'auto' : 'none',
+              transition: 'opacity 0.1s ease-out'
+            }}
+          >
             <div className="service-row">
               <div className="service-image-section">
                 <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Mobile Apps" />
@@ -442,8 +474,16 @@ Our team comprises highly skilled IT professionals whose target is to provide to
             </div>
           </div>
 
-          {/* Service 3: UI/UX Design - Slides over Service 2 */}
-          <div className={`service-overlay service-3 ${service3Visible ? 'animate-overlay-slide' : 'animate-overlay-slide-reverse'}`}>
+          {/* Service 3: UI/UX Design - Slides up over Service 2 */}
+          <div 
+            className="service-overlay service-3"
+            style={{
+              transform: `translate3d(0, ${100 - service3Progress * 100}vh, 0)`,
+              opacity: service3Progress,
+              pointerEvents: service3Progress > 0.5 ? 'auto' : 'none',
+              transition: 'opacity 0.1s ease-out'
+            }}
+          >
             <div className="service-row">
               <div className="service-image-section">
                 <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80" alt="UI/UX Design" />
@@ -462,8 +502,16 @@ Our team comprises highly skilled IT professionals whose target is to provide to
             </div>
           </div>
 
-          {/* Service 4: Property Services - Slides over Service 3 */}
-          <div className={`service-overlay service-4 ${service4Visible ? 'animate-overlay-slide' : 'animate-overlay-slide-reverse'}`}>
+          {/* Service 4: Property Services - Slides up over Service 3 */}
+          <div 
+            className="service-overlay service-4"
+            style={{
+              transform: `translate3d(0, ${100 - service4Progress * 100}vh, 0)`,
+              opacity: service4Progress,
+              pointerEvents: service4Progress > 0.5 ? 'auto' : 'none',
+              transition: 'opacity 0.1s ease-out'
+            }}
+          >
             <div className="service-row">
               <div className="service-image-section">
                 <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80" alt="Property Services" />
