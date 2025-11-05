@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import MinimalistNav from '../components/MinimalistNav'
 import ProjectSection from '../components/ProjectSection'
 import FlowAnimation from '../components/FlowAnimation'
+import { navigateWithCircle } from '../utils/navigation'
+import { getProjectSlug } from '../data/projects'
 
 const PROJECTS = [
   {
@@ -43,10 +46,18 @@ const PROJECTS = [
 ]
 
 const Work = () => {
+  const navigate = useNavigate()
   const [hoveredProject, setHoveredProject] = useState(null)
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
   const [isInSection, setIsInSection] = useState(false)
   const projectsSectionRef = useRef(null)
+
+  const handleProjectClick = (event, project) => {
+    const slug = getProjectSlug(project.title)
+    navigateWithCircle(event, `/work/${slug}`, () => {
+      navigate(`/work/${slug}`)
+    })
+  }
 
   // Track mouse position and check section boundaries
   useEffect(() => {
@@ -133,35 +144,35 @@ const Work = () => {
                 onMouseLeave={() => setHoveredProject(null)}
               >
                 <div className="work-project-name">{project.title}</div>
+                <div className="work-project-image-space">
+                  {hoveredProject === index && isInSection && (
+                    <div className="work-project-image-fixed">
+                      <div className="work-project-image-container-small">
+                        <img 
+                          src={project.image} 
+                          alt={project.title}
+                          className="work-project-image-small"
+                        />
+                        <div className="work-project-image-badge-small">
+                          <span className="badge-text-small">R</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
                 <div className="work-project-category">{project.category}</div>
-                <a href={project.link} className="work-project-link">VIEW PROJECT</a>
+                <div 
+                  className="work-project-link"
+                  onClick={(e) => handleProjectClick(e, project)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  VIEW PROJECT
+                </div>
               </div>
               {index < PROJECTS.length - 1 && <div className="work-project-divider"></div>}
             </React.Fragment>
           ))}
         </div>
-        
-        {/* Project Image - Follows Cursor */}
-        {hoveredProject !== null && isInSection && cursorPosition.x > 0 && cursorPosition.y > 0 && (
-          <div 
-            className="work-project-image-follow"
-            style={{
-              left: `${cursorPosition.x}px`,
-              top: `${cursorPosition.y}px`,
-            }}
-          >
-            <div className="work-project-image-container-small">
-              <img 
-                src={PROJECTS[hoveredProject].image} 
-                alt={PROJECTS[hoveredProject].title}
-                className="work-project-image-small"
-              />
-              <div className="work-project-image-badge-small">
-                <span className="badge-text-small">R</span>
-              </div>
-            </div>
-          </div>
-        )}
       </section>
 
       {/* Flow Animation */}

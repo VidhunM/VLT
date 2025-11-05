@@ -384,13 +384,14 @@ const OurService = () => {
                 <h2 style={{ fontSize: '48px', lineHeight: 1.05, margin: '0 0 10px', letterSpacing: '0.5px' }}>
                   {p.title}
                 </h2>
-                <div style={{ fontSize: 14, color: '#7a7a7a', marginBottom: 18 }}>
+                <div style={{ fontSize: 14, color: '#7a7a7a', marginBottom: 18, marginTop: 12 }}>
                   {p.meta}
                 </div>
                 <p style={{ fontSize: 16, lineHeight: 1.7, color: '#222', margin: '0 0 22px', maxWidth: 620 }}>
                   {p.description}
                 </p>
               </div>
+
             </div>
           </section>
         );
