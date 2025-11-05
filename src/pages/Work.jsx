@@ -28,6 +28,18 @@ const PROJECTS = [
     link: '#',
     image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
   },
+  {
+    title: 'FOUNDRSPACE COWORKING',
+    category: 'Real Estate, Business',
+    link: '#',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
+  },
+  {
+    title: 'ILLUMINATION FOUNDATION',
+    category: 'Nonprofit',
+    link: '#',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+  },
 ]
 
 const Work = () => {
@@ -57,6 +69,9 @@ const Work = () => {
       {/* Projects List Section */}
       <section className="work-projects-list">
         <div className="work-projects-list-container">
+          <div className="work-projects-header">
+            <h2 className="work-projects-title">RECENT WORK</h2>
+          </div>
           {PROJECTS.map((project, index) => (
             <React.Fragment key={index}>
               <div 
