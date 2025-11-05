@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import MinimalistNav from '../components/MinimalistNav'
 import ProjectSection from '../components/ProjectSection'
 import FlowAnimation from '../components/FlowAnimation'
@@ -45,19 +45,68 @@ const PROJECTS = [
 const Work = () => {
   const [hoveredProject, setHoveredProject] = useState(null)
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 })
+  const [isInSection, setIsInSection] = useState(false)
+  const projectsSectionRef = useRef(null)
 
+  // Track mouse position and check section boundaries
   useEffect(() => {
     const handleMouseMove = (e) => {
       setCursorPosition({ x: e.clientX, y: e.clientY })
-    }
-
-    if (hoveredProject !== null) {
-      window.addEventListener('mousemove', handleMouseMove)
-      return () => {
-        window.removeEventListener('mousemove', handleMouseMove)
+      
+      // Check if cursor is within the projects section
+      if (projectsSectionRef.current) {
+        const rect = projectsSectionRef.current.getBoundingClientRect()
+        const isInside = (
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom
+        )
+        
+        setIsInSection(isInside)
+        
+        // If cursor leaves the section and image is showing, hide it immediately
+        if (!isInside && hoveredProject !== null) {
+          setHoveredProject(null)
+        }
+      } else if (hoveredProject !== null) {
+        // If section ref is not available, hide the image
+        setHoveredProject(null)
       }
     }
-  }, [hoveredProject])
+
+    const handleScroll = () => {
+      // Check boundaries on scroll as well
+      if (projectsSectionRef.current && hoveredProject !== null) {
+        const rect = projectsSectionRef.current.getBoundingClientRect()
+        const isInside = (
+          cursorPosition.x >= rect.left &&
+          cursorPosition.x <= rect.right &&
+          cursorPosition.y >= rect.top &&
+          cursorPosition.y <= rect.bottom
+        )
+        
+        if (!isInside) {
+          setHoveredProject(null)
+          setIsInSection(false)
+        }
+      }
+    }
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [hoveredProject, cursorPosition])
+
+  // Handle mouse leave on the section itself
+  const handleSectionMouseLeave = () => {
+    setHoveredProject(null)
+    setIsInSection(false)
+  }
 
   return (
     <div className="page work">
@@ -67,7 +116,11 @@ const Work = () => {
         <ProjectSection />
       </section>
       {/* Projects List Section */}
-      <section className="work-projects-list">
+      <section 
+        className="work-projects-list" 
+        ref={projectsSectionRef}
+        onMouseLeave={handleSectionMouseLeave}
+      >
         <div className="work-projects-list-container">
           <div className="work-projects-header">
             <h2 className="work-projects-title">RECENT WORK</h2>
@@ -89,7 +142,7 @@ const Work = () => {
         </div>
         
         {/* Project Image - Follows Cursor */}
-        {hoveredProject !== null && (
+        {hoveredProject !== null && isInSection && cursorPosition.x > 0 && cursorPosition.y > 0 && (
           <div 
             className="work-project-image-follow"
             style={{
