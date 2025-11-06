@@ -21,8 +21,8 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/work" element={<Work />} />
             <Route path="/work/:projectId" element={<ProjectDetail />} />
+            <Route path="/work" element={<Work />} />
             <Route path="/our-service" element={<OurService />} />
             <Route path="/our-feed" element={<OurFeed />} />
             <Route path="/our-team" element={<OurTeam />} />

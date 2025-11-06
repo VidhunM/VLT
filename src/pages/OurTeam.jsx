@@ -4,6 +4,7 @@ import FlowAnimation from '../components/FlowAnimation'
 
 const OurTeam = () => {
   const boardSectionRef = useRef(null)
+  const boardWrapperRef = useRef(null)
   const sliderRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [selectedDirector, setSelectedDirector] = useState(null)
@@ -157,16 +158,33 @@ const OurTeam = () => {
         if (firstCard) {
           const cardRect = firstCard.getBoundingClientRect()
           const sliderStyle = window.getComputedStyle(sliderRef.current)
-          const gap = parseFloat(sliderStyle.gap) || 40 // Default gap if not found
-          // Card width includes the gap to next card for translation calculation
-          const newCardWidth = cardRect.width + gap
-          if (newCardWidth > 0) {
-            setCardWidth(prev => {
-              if (prev !== newCardWidth) {
-                return newCardWidth
-              }
-              return prev
-            })
+          const isMobileDevice = window.innerWidth <= 768
+          
+          // On mobile, cards are full-width with no gap
+          // On desktop, include gap for translation calculation
+          if (isMobileDevice) {
+            // On mobile, card width is viewport width (cards are full-width)
+            const newCardWidth = window.innerWidth
+            if (newCardWidth > 0) {
+              setCardWidth(prev => {
+                if (prev !== newCardWidth) {
+                  return newCardWidth
+                }
+                return prev
+              })
+            }
+          } else {
+            const gap = parseFloat(sliderStyle.gap) || 40 // Default gap if not found
+            // Card width includes the gap to next card for translation calculation
+            const newCardWidth = cardRect.width + gap
+            if (newCardWidth > 0) {
+              setCardWidth(prev => {
+                if (prev !== newCardWidth) {
+                  return newCardWidth
+                }
+                return prev
+              })
+            }
           }
         }
       }
@@ -200,10 +218,22 @@ const OurTeam = () => {
         if (firstCard) {
           const cardRect = firstCard.getBoundingClientRect()
           const sliderStyle = window.getComputedStyle(sliderRef.current)
-          const gap = parseFloat(sliderStyle.gap) || 40
-          const newCardWidth = cardRect.width + gap
-          if (newCardWidth > 0) {
-            setCardWidth(prev => prev !== newCardWidth ? newCardWidth : prev)
+          const isMobileDevice = window.innerWidth <= 768
+          
+          // On mobile, cards are full-width with no gap
+          // On desktop, include gap for translation calculation
+          if (isMobileDevice) {
+            // On mobile, card width is viewport width (cards are full-width)
+            const newCardWidth = window.innerWidth
+            if (newCardWidth > 0) {
+              setCardWidth(prev => prev !== newCardWidth ? newCardWidth : prev)
+            }
+          } else {
+            const gap = parseFloat(sliderStyle.gap) || 40
+            const newCardWidth = cardRect.width + gap
+            if (newCardWidth > 0) {
+              setCardWidth(prev => prev !== newCardWidth ? newCardWidth : prev)
+            }
           }
         }
       }
@@ -226,6 +256,7 @@ const OurTeam = () => {
         // Calculate when section is in viewport
         const sectionTop = rect.top
         const sectionBottom = rect.bottom
+        const sectionHeight = rect.height
         
         // If section is in viewport
         if (sectionTop < windowHeight && sectionBottom > 0) {
@@ -234,38 +265,53 @@ const OurTeam = () => {
           
           // Calculate how much of the section is visible
           const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0)
-          const sectionHeight = rect.height
           
           // Progress from 0 to 1 as section moves through viewport
           let progress = 1 - (sectionBottom / (windowHeight + sectionHeight))
           progress = Math.min(Math.max(progress, 0), 1)
           
-          // On mobile, apply slower, smoother easing with dampening
-          if (isMobileDevice) {
-            // Reduce scroll sensitivity by 50% on mobile (makes it scroll 2x slower)
-            progress = progress * 0.5
-            
-            // Apply ease-out function for smoother deceleration
-            progress = 1 - Math.pow(1 - progress, 2.5)
-          }
-          
-          // First 20% of scroll progress: keep first image stuck (translateX = 0)
-          // After 20%: start translating image by image
-          const stickyThreshold = 0.2
           let adjustedProgress = 0
           
-          if (progress > stickyThreshold) {
-            // Map remaining 80% progress to card indices (0 to totalCards - 1)
-            const remainingProgress = (progress - stickyThreshold) / (1 - stickyThreshold)
+          // On mobile, implement the new scroll behavior:
+          // 1. Initially, section appears fully in view
+          // 2. Enable image-by-image scrolling where only images move
+          // 3. After final image, section comes back into full view
+          if (isMobileDevice) {
             const totalCards = boardMembers.length
-            // Calculate which card index to show (0 = first card, totalCards-1 = last card)
-            // This will be used to calculate pixel translation
-            adjustedProgress = remainingProgress * (totalCards - 1)
+            
+            // Define scroll phases:
+            // Phase 1 (0-25%): Section fully visible, no movement
+            // Phase 2 (25-75%): Image-by-image scrolling
+            // Phase 3 (75-100%): Section fully visible again
+            
+            if (progress < 0.25) {
+              // Phase 1: Keep first image fully visible (no movement)
+              adjustedProgress = 0
+            } else if (progress < 0.75) {
+              // Phase 2: Image-by-image scrolling
+              // Map 25-75% progress to 0 to (totalCards-1)
+              const phaseProgress = (progress - 0.25) / 0.5
+              adjustedProgress = phaseProgress * (totalCards - 1)
+            } else {
+              // Phase 3: Keep last image fully visible (no movement)
+              adjustedProgress = totalCards - 1
+            }
+          } else {
+            // Desktop: First 25% of scroll progress: keep first image stuck (translateX = 0)
+            // After 25%: start translating image by image
+            const stickyThreshold = 0.25
+            
+            if (progress > stickyThreshold) {
+              // Map remaining 75% progress to card indices (0 to totalCards - 1)
+              const remainingProgress = (progress - stickyThreshold) / (1 - stickyThreshold)
+              const totalCards = boardMembers.length
+              // Calculate which card index to show (0 = first card, totalCards-1 = last card)
+              // This will be used to calculate pixel translation
+              adjustedProgress = remainingProgress * (totalCards - 1)
+            }
           }
           
           setScrollProgress(adjustedProgress)
-          // Debug log - remove in production
-          // console.log('Scroll progress:', progress.toFixed(2), 'Adjusted:', adjustedProgress.toFixed(2), 'Mobile:', isMobileDevice)
         } else if (sectionTop >= windowHeight) {
           // Section not yet reached
           setScrollProgress(0)
@@ -338,8 +384,7 @@ const OurTeam = () => {
                 // scrollProgress: 0 = first image stuck, 0 to (totalCards-1) = card index to show
                 // Translate by card index * cardWidth (including gap) to show images one by one
                 transform: `translateX(-${scrollProgress * cardWidth}px)`,
-                opacity: isMobile && (scrollProgress === 0 || !isSectionInView) ? 0 : 1,
-                transition: isMobile ? 'opacity 0.6s ease-in, transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                transition: isMobile ? 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
               }}
             >
               {boardMembers.map((member, index) => (
