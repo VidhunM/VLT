@@ -22,57 +22,55 @@ const IMAGES = [
 ];
 
 function OurFeed() {
-  const groupRef = useRef(null);
-  // Build the 3D pattern (6 - 5 - 6)
-  const items = useMemo(() => {
-    const result = [];
-    const baseZ = 280;
-    const radii = { x: 380, z: 190 };
-    const yLevels = [-160, 0, 160];
-    const sizes = [100, 100, 100];
+  const ringGroupRef = useRef(null);
+  
+  // Build cylindrical ring structure (center column removed)
+  const ringItems = useMemo(() => {
+    const ringItems = [];
     let imgIdx = 0;
-
-    // Row 1: 6
-    const r1Count = 6;
-    for (let i = 0; i < r1Count; i++) {
-      const t = (i / r1Count) * Math.PI * 2;
-      const x = radii.x * Math.sin(t);
-      const z = baseZ + radii.z * Math.cos(t);
-      result.push({ src: IMAGES[imgIdx++ % IMAGES.length], x, y: yLevels[0], z, size: sizes[0] });
-    }
-
-    // Row 2: 5 (odd slots of 10)
-    const r2Slots = 10;
-    for (let k = 0; k < 5; k++) {
-      const slot = 2 * k + 1;
-      const t = (slot / r2Slots) * Math.PI * 2;
-      const x = radii.x * Math.sin(t);
-      const z = baseZ + radii.z * Math.cos(t);
-      result.push({ src: IMAGES[imgIdx++ % IMAGES.length], x, y: yLevels[1], z, size: sizes[1] });
-    }
-
-    // Row 3: 6 (even slots of 12)
-    const r3Slots = 12;
-    for (let k = 1; k <= 6; k++) {
-      const slot = 2 * k;
-      const t = (slot / r3Slots) * Math.PI * 2;
-      const x = radii.x * Math.sin(t);
-      const z = baseZ + radii.z * Math.cos(t);
-      result.push({ src: IMAGES[imgIdx++ % IMAGES.length], x, y: yLevels[2], z, size: sizes[2] });
-    }
-
-    return result.slice(0, 17);
+    
+    const baseZ = -200; // Negative Z brings elements closer to camera
+    const ringRadius = 450; // Increased radius for middle row (wider structure)
+    const outerRingRadius = 480; // Larger radius for 1st and 3rd rows (wider structure)
+    const ringImageSize = 130; // Increased size for larger images
+    
+    // Cylindrical ring: 3 vertical levels, each with 8 images in a circle
+    const ringYLevels = [-150, 0, 150]; // Increased vertical spread
+    const imagesPerLevel = 8;
+    
+    ringYLevels.forEach((y, levelIdx) => {
+      // Use larger radius for 1st (0) and 3rd (2) rows
+      const currentRadius = (levelIdx === 0 || levelIdx === 2) ? outerRingRadius : ringRadius;
+      // Offset 2nd row (middle) by half angle step to position images between outer rows
+      const angleOffset = (levelIdx === 1) ? (Math.PI / imagesPerLevel) : 0;
+      
+      for (let i = 0; i < imagesPerLevel; i++) {
+        const angle = (i / imagesPerLevel) * Math.PI * 2 + angleOffset;
+        const x = currentRadius * Math.sin(angle);
+        const z = baseZ + currentRadius * Math.cos(angle);
+        ringItems.push({
+          src: IMAGES[imgIdx++ % IMAGES.length],
+          x,
+          y,
+          z,
+          size: ringImageSize,
+          angle, // Store angle for rotation
+          radius: currentRadius, // Store radius for animation
+        });
+      }
+    });
+    
+    return ringItems;
   }, []);
 
-  // Animation: map scroll progress to rotation, then rotate the group.
-  // Also update each child's transform so cards face the camera (negate group rotation + a small local tilt).
+  // Animation: map scroll progress to rotation, then rotate the ring.
   useEffect(() => {
-    const node = groupRef.current;
-    if (!node) return;
+    const ringNode = ringGroupRef.current; // Ring container
+    if (!ringNode) return;
 
     let lastRotY = 0; // degrees
     const ease = 0.08; // smoothing
-    const baseRotationOffset = -8; // keep a slight X tilt for depth
+    const baseRotationOffset = 0; // No X tilt - keep everything centered
 
     // Helper: page scroll -> normalized [0,1]
     const getScrollProgress = () => {
@@ -92,16 +90,20 @@ function OurFeed() {
     };
 
     // Pre-store each child's data-attributes for performance
-    const children = Array.from(node.children);
-    children.forEach((child) => {
-      // Expect each child to have data attributes already set (we'll set them in render)
-      // If not present, parse transforms from style (fallback)
+    const ringChildren = Array.from(ringNode.children);
+    ringChildren.forEach((child) => {
       const dx = child.dataset.x ?? "0";
       const dy = child.dataset.y ?? "0";
       const dz = child.dataset.z ?? "0";
-      const tilt = child.dataset.tilt ?? "0";
-      child.__pos = { x: parseFloat(dx), y: parseFloat(dy), z: parseFloat(dz), tilt: parseFloat(tilt) || 0 };
-      // ensure 3d rendering hints
+      const angle = child.dataset.angle ?? "0";
+      const radius = child.dataset.radius ?? "450";
+      child.__pos = {
+        x: parseFloat(dx),
+        y: parseFloat(dy),
+        z: parseFloat(dz),
+        angle: parseFloat(angle) || 0,
+        radius: parseFloat(radius) || 450,
+      };
       child.style.transformStyle = "preserve-3d";
       child.style.willChange = "transform";
     });
@@ -110,24 +112,27 @@ function OurFeed() {
     let raf = 0;
     const animate = () => {
       const progress = getScrollProgress(); // 0..1
-      // map progress to a rotation range. Tune multiplier to taste.
-      // Here: full page scroll -> 360 degrees * 0.9 (almost one full spin)
+      // map progress to a rotation range
       const targetRotY = progress * 360 * 0.9;
       lastRotY += (targetRotY - lastRotY) * ease;
 
-      // apply rotation to group container
-      node.style.transform = `rotateX(${baseRotationOffset}deg) rotateY(${lastRotY}deg)`;
-      node.style.transformStyle = "preserve-3d";
+      // Apply centering and X tilt to ring container for depth consistency
+      ringNode.style.transform = `translate(-50%, -50%) rotateX(${baseRotationOffset}deg)`;
+      ringNode.style.transformStyle = "preserve-3d";
 
-      // update each child so it faces the camera:
-      // child rotation = -groupRotation + localTilt
-      children.forEach((child) => {
+      // Update ring items: rotate around center and face camera
+      const centerZ = -200; // Match the baseZ from useMemo (negative = closer)
+      ringChildren.forEach((child) => {
         const p = child.__pos;
-        // local tilt gives a little card face orientation based on x position
-        const localTilt = p.tilt || 0;
-        const finalRotY = -lastRotY + localTilt;
-        // translate3d uses px values; preserve the card's own translate(-50%,-50%) via inner wrapper
-        child.style.transform = `translate3d(${p.x}px, ${p.y}px, ${p.z}px) rotateY(${finalRotY}deg)`;
+        // Use each item's stored radius (different for each row)
+        const itemRadius = p.radius || 450;
+        // Calculate new position after rotation
+        const rotatedAngle = p.angle + (lastRotY * Math.PI / 180);
+        const newX = itemRadius * Math.sin(rotatedAngle);
+        const newZ = centerZ + itemRadius * Math.cos(rotatedAngle);
+        // Face camera: rotate Y to face outward (tangent to circle)
+        const faceAngle = rotatedAngle * (180 / Math.PI);
+        child.style.transform = `translate3d(${newX}px, ${p.y}px, ${newZ}px) rotateY(${faceAngle}deg)`;
       });
 
       raf = requestAnimationFrame(animate);
@@ -135,7 +140,7 @@ function OurFeed() {
 
     raf = requestAnimationFrame(animate);
 
-    // Keep scroll handling passive (we rely on requestAnimationFrame to read scroll)
+    // Keep scroll handling passive
     const onScroll = () => {
       /* no-op: scroll read happens in animation frame via getScrollProgress */
     };
@@ -145,7 +150,7 @@ function OurFeed() {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [items]);
+  }, [ringItems]);
 
   return (
     <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
@@ -203,72 +208,79 @@ function OurFeed() {
           style={{
             position: "relative",
             width: "100%",
-            height: "100vh",
+            height: "150vh",
             overflow: "hidden",
-            perspective: "1600px",
+            perspective: "800px",
+            perspectiveOrigin: "50% 50%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
+          {/* Cylindrical Ring - Rotates on Scroll */}
           <div
-            ref={groupRef}
+            ref={ringGroupRef}
             style={{
-              position: "relative",
+              position: "absolute",
+              left: "50%",
+              top: "50%",
               width: "100%",
               height: "100%",
               transformStyle: "preserve-3d",
+              transform: "translate(-50%, -50%)",
               willChange: "transform",
+              pointerEvents: "none",
             }}
           >
-            {items.map((it, idx) => {
-              // compute a small local tilt so cards don't look perfectly flat — tweak divisor for effect
-              const localTilt = -it.x / 10; // degrees
+            {ringItems.map((it, idx) => {
+              // Calculate initial face angle for ring items
+              const faceAngle = it.angle * (180 / Math.PI);
               return (
-              <div
-                key={idx}
-                  className="feed-3d-item"
-                  // store positions & tilt as data attributes for the animation loop
+                <div
+                  key={`ring-${idx}`}
+                  className="feed-3d-item feed-ring-item"
                   data-x={it.x}
                   data-y={it.y}
                   data-z={it.z}
-                  data-tilt={localTilt}
-                style={{
+                  data-angle={it.angle}
+                  data-radius={it.radius}
+                  data-is-center="false"
+                  style={{
                     position: "absolute",
                     left: "50%",
                     top: "50%",
                     transformStyle: "preserve-3d",
-                    // initial transform; animation loop will overwrite this each frame
-                    transform: `translate3d(${it.x}px, ${it.y}px, ${it.z}px) rotateY(${localTilt}deg)`,
-                }}
-              >
-                <div
-                  style={{
-                    width: it.size,
-                    height: it.size,
-                      boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+                    transform: `translate3d(${it.x}px, ${it.y}px, ${it.z}px) rotateY(${faceAngle}deg)`,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: it.size,
+                      height: it.size,
+                      boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
                       transform: "translate(-50%, -50%)",
-                    borderRadius: 6,
+                      borderRadius: 8,
                       overflow: "hidden",
                       background: "#111",
                       willChange: "transform",
-                  }}
-                >
-                  <img
-                    src={it.src}
-                    alt="feed"
+                      border: "1px solid rgba(255,255,255,0.1)",
+                    }}
+                  >
+                    <img
+                      src={it.src}
+                      alt="feed"
                       style={{
                         width: "100%",
                         height: "100%",
                         objectFit: "cover",
                         display: "block",
-                        transform: "translateZ(20px)", // give subtle pop forward
+                        transform: "translateZ(20px)",
                         backfaceVisibility: "hidden",
                         WebkitBackfaceVisibility: "hidden",
                       }}
-                  />
+                    />
+                  </div>
                 </div>
-              </div>
               );
             })}
           </div>
