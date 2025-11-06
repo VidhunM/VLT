@@ -30,13 +30,13 @@ function OurFeed() {
     let imgIdx = 0;
     
     const baseZ = -200; // Negative Z brings elements closer to camera
-    const ringRadius = 450; // Increased radius for middle row (wider structure)
-    const outerRingRadius = 480; // Larger radius for 1st and 3rd rows (wider structure)
-    const ringImageSize = 130; // Increased size for larger images
+    const ringRadius = 440; // Slightly increased radius for middle row (wider structure)
+    const outerRingRadius = 470; // Slightly increased radius for 1st and 3rd rows (wider structure)
+    const ringImageSize = 115; // Slightly decreased image size
     
-    // Cylindrical ring: 3 vertical levels, each with 8 images in a circle
-    const ringYLevels = [-150, 0, 150]; // Increased vertical spread
-    const imagesPerLevel = 8;
+    // Cylindrical ring: 3 vertical levels, each with 6 images in a circle
+    const ringYLevels = [-130, 0, 130]; // Slightly decreased vertical spread
+    const imagesPerLevel = 6;
     
     ringYLevels.forEach((y, levelIdx) => {
       // Use larger radius for 1st (0) and 3rd (2) rows
@@ -69,8 +69,18 @@ function OurFeed() {
     if (!ringNode) return;
 
     let lastRotY = 0; // degrees
+    let autoRotY = 0; // Automatic rotation angle
     const ease = 0.08; // smoothing
-    const baseRotationOffset = 0; // No X tilt - keep everything centered
+    const autoRotSpeed = 0.3; // Automatic rotation speed (degrees per frame)
+    const baseRotationOffsetX = 0; // No X tilt - keep everything centered
+    const baseRotationOffsetZ = -350; // Fixed -350 degree Z-axis rotation (not rotating)
+    const verticalOffset = -40; // Move structure slightly downward (less negative = down)
+    const horizontalOffset = -60; // Move structure to left (negative = left)
+    
+    // Scroll stop detection
+    let scrollTimeout = null;
+    let isScrolling = false;
+    let lastScrollTop = 0;
 
     // Helper: page scroll -> normalized [0,1]
     const getScrollProgress = () => {
@@ -96,13 +106,13 @@ function OurFeed() {
       const dy = child.dataset.y ?? "0";
       const dz = child.dataset.z ?? "0";
       const angle = child.dataset.angle ?? "0";
-      const radius = child.dataset.radius ?? "450";
+      const radius = child.dataset.radius ?? "440";
       child.__pos = {
         x: parseFloat(dx),
         y: parseFloat(dy),
         z: parseFloat(dz),
         angle: parseFloat(angle) || 0,
-        radius: parseFloat(radius) || 450,
+        radius: parseFloat(radius) || 440,
       };
       child.style.transformStyle = "preserve-3d";
       child.style.willChange = "transform";
@@ -115,9 +125,18 @@ function OurFeed() {
       // map progress to a rotation range
       const targetRotY = progress * 360 * 0.9;
       lastRotY += (targetRotY - lastRotY) * ease;
+      
+      // Automatic rotation when scroll stops
+      if (!isScrolling) {
+        autoRotY += autoRotSpeed;
+        if (autoRotY >= 360) autoRotY -= 360; // Keep in 0-360 range
+      }
+      
+      // Combine scroll-based rotation with automatic rotation
+      const finalRotY = lastRotY + autoRotY;
 
-      // Apply centering and X tilt to ring container for depth consistency
-      ringNode.style.transform = `translate(-50%, -50%) rotateX(${baseRotationOffset}deg)`;
+      // Apply centering with fixed -350 degree Z-axis rotation, upward and leftward offsets
+      ringNode.style.transform = `translate(calc(-50% + ${horizontalOffset}px), calc(-50% + ${verticalOffset}px)) rotateX(${baseRotationOffsetX}deg) rotateZ(${baseRotationOffsetZ}deg)`;
       ringNode.style.transformStyle = "preserve-3d";
 
       // Update ring items: rotate around center and face camera
@@ -125,9 +144,9 @@ function OurFeed() {
       ringChildren.forEach((child) => {
         const p = child.__pos;
         // Use each item's stored radius (different for each row)
-        const itemRadius = p.radius || 450;
-        // Calculate new position after rotation
-        const rotatedAngle = p.angle + (lastRotY * Math.PI / 180);
+        const itemRadius = p.radius || 440;
+        // Calculate new position after rotation (using combined rotation)
+        const rotatedAngle = p.angle + (finalRotY * Math.PI / 180);
         const newX = itemRadius * Math.sin(rotatedAngle);
         const newZ = centerZ + itemRadius * Math.cos(rotatedAngle);
         // Face camera: rotate Y to face outward (tangent to circle)
@@ -140,15 +159,35 @@ function OurFeed() {
 
     raf = requestAnimationFrame(animate);
 
-    // Keep scroll handling passive
+    // Scroll stop detection
     const onScroll = () => {
-      /* no-op: scroll read happens in animation frame via getScrollProgress */
+      const currentScrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+      
+      // Check if scroll position changed
+      if (Math.abs(currentScrollTop - lastScrollTop) > 1) {
+        isScrolling = true;
+        lastScrollTop = currentScrollTop;
+        
+        // Clear existing timeout
+        if (scrollTimeout) {
+          clearTimeout(scrollTimeout);
+        }
+        
+        // Set timeout to detect scroll stop (300ms after last scroll)
+        scrollTimeout = setTimeout(() => {
+          isScrolling = false;
+        }, 300);
+      }
     };
+    
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
     };
   }, [ringItems]);
 
@@ -208,7 +247,7 @@ function OurFeed() {
           style={{
             position: "relative",
             width: "100%",
-            height: "150vh",
+            height: "130vh",
             overflow: "hidden",
             perspective: "800px",
             perspectiveOrigin: "50% 50%",
@@ -259,7 +298,7 @@ function OurFeed() {
                       height: it.size,
                       boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
                       transform: "translate(-50%, -50%)",
-                      borderRadius: 8,
+                      borderRadius: 0,
                       overflow: "hidden",
                       background: "#111",
                       willChange: "transform",
