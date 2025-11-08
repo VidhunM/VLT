@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { navigateWithCircle } from '../utils/navigation'
 
 const HeroThree = () => {
   const [selectedProject, setSelectedProject] = useState(0)
+  const [previousProject, setPreviousProject] = useState(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const transitionTimeoutRef = useRef(null)
   const navigate = useNavigate()
   
   const handleNavigationClick = (event, path) => {
@@ -16,30 +18,71 @@ const HeroThree = () => {
   const projects = [
     {
       name: 'drone-technology ',
-      bgImage: 'https://cdn.pixabay.com/photo/2022/06/13/09/11/dji-mini-3-pro-7259550_1280.jpg'
+      bgImage: 'https://images.pexels.com/photos/2050718/pexels-photo-2050718.jpeg'
     },
     {
       name: 'artificial-intelligence',
-      bgImage: 'https://cdn.pixabay.com/photo/2021/11/04/06/26/ai-6767501_1280.jpg'
+      bgImage: 'https://images.pexels.com/photos/8721318/pexels-photo-8721318.jpeg'
     },
     {
       name: 'iot-development',
-      bgImage: 'https://images.unsplash.com/photo-1553341640-6b28ff92098a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870'
+      bgImage: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg'
     },
     {
       name: 'application-development',
-      bgImage: 'https://images.pexels.com/photos/38544/imac-apple-mockup-app-38544.jpeg'
+      bgImage: 'https://images.pexels.com/photos/5473889/pexels-photo-5473889.jpeg'
     }
   ]
+
+  const projectCount = projects.length
+
+  const goToProject = useCallback((next) => {
+    if (!projectCount) return
+
+    setSelectedProject((current) => {
+      const proposed = typeof next === 'function' ? next(current) : next
+
+      if (typeof proposed !== 'number' || Number.isNaN(proposed)) {
+        return current
+      }
+
+      const nextIndex = ((proposed % projectCount) + projectCount) % projectCount
+
+      if (nextIndex === current) {
+        return current
+      }
+
+      setPreviousProject(current)
+
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current)
+      }
+
+      transitionTimeoutRef.current = setTimeout(() => {
+        setPreviousProject(null)
+        transitionTimeoutRef.current = null
+      }, 1100)
+
+      return nextIndex
+    })
+  }, [projectCount])
 
   // Auto-rotate through projects every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setSelectedProject((prev) => (prev + 1) % projects.length)
+      goToProject((current) => (current + 1) % projectCount)
     }, 4000)
 
     return () => clearInterval(interval)
-  }, [projects.length])
+  }, [goToProject, projectCount])
+
+  useEffect(() => {
+    return () => {
+      if (transitionTimeoutRef.current) {
+        clearTimeout(transitionTimeoutRef.current)
+      }
+    }
+  }, [])
 
   // Listen for menu toggle from Header component
   useEffect(() => {
@@ -54,8 +97,16 @@ const HeroThree = () => {
   return (
     <section className="hero-three">
       <div className="hero-background">
+        {previousProject !== null && previousProject !== selectedProject && (
+          <div
+            key={`prev-${projects[previousProject].name}`}
+            className="hero-bg-layer hero-bg-previous"
+            style={{ backgroundImage: `url(${projects[previousProject].bgImage})` }}
+          ></div>
+        )}
         <div 
-          className="hero-bg-active" 
+          className="hero-bg-layer hero-bg-active" 
+          key={`active-${projects[selectedProject].name}`}
           style={{ backgroundImage: `url(${projects[selectedProject].bgImage})` }}
         ></div>
         <div className="hero-overlay"></div>
@@ -68,7 +119,7 @@ const HeroThree = () => {
             <div 
               key={project.name}
               className={`project-item ${selectedProject === index ? 'active' : ''}`}
-              onClick={() => setSelectedProject(index)}
+              onClick={() => goToProject(index)}
             >
               <span className="project-name">{project.name}</span>
               <div className="project-indicator">
@@ -95,7 +146,7 @@ const HeroThree = () => {
             <div 
               key={project.name}
               className={`project-item ${selectedProject === index ? 'active' : ''}`}
-              onClick={() => setSelectedProject(index)}
+              onClick={() => goToProject(index)}
             >
               <span className="project-name">{project.name}</span>
               <div className="project-indicator">
