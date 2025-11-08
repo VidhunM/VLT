@@ -442,7 +442,7 @@ a, button, .project-item, .nav-link {
   overflow: hidden;
 }
 
-.hero-bg-active {
+.hero-bg-layer {
   position: absolute;
   top: 0;
   left: 0;
@@ -451,20 +451,28 @@ a, button, .project-item, .nav-link {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  -webkit-animation: slideRightToLeft 2s ease-in-out forwards;
-  animation: slideRightToLeft 2s ease-in-out forwards;
-  -webkit-transform: scale(1);
-  transform: scale(1);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: transform, opacity;
 }
 
-@-webkit-keyframes slideRightToLeft {
+.hero-bg-active {
+  -webkit-animation: heroSlideIn 1.1s ease-in-out forwards;
+  animation: heroSlideIn 1.1s ease-in-out forwards;
+  z-index: 2;
+}
+
+.hero-bg-previous {
+  -webkit-animation: heroSlideOut 1.1s ease-in-out forwards;
+  animation: heroSlideOut 1.1s ease-in-out forwards;
+  z-index: 1;
+}
+
+@-webkit-keyframes heroSlideIn {
   0% {
-    -webkit-transform: translateX(100%) scale(1.1);
-    transform: translateX(100%) scale(1.1);
-    opacity: 0;
+    -webkit-transform: translateX(40%) scale(0.8);
+    transform: translateX(40%) scale(0.8);
+    opacity: 1;
   }
   100% {
     -webkit-transform: translateX(0) scale(1);
@@ -473,15 +481,41 @@ a, button, .project-item, .nav-link {
   }
 }
 
-@keyframes slideRightToLeft {
+@keyframes heroSlideIn {
   0% {
-    -webkit-transform: translateX(100%) scale(1.1);
-    transform: translateX(100%) scale(1.1);
-    opacity: 0;
+    -webkit-transform: translateX(40%) scale(0.8);
+    transform: translateX(40%) scale(0.8);
+    opacity: 1;
   }
   100% {
     -webkit-transform: translateX(0) scale(1);
     transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes heroSlideOut {
+  0% {
+    -webkit-transform: translateX(0) scale(1);
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(-40%) scale(0.75);
+    transform: translateX(-40%) scale(0.75);
+    opacity: 1;
+  }
+}
+
+@keyframes heroSlideOut {
+  0% {
+    -webkit-transform: translateX(0) scale(1);
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateX(-40%) scale(0.75);
+    transform: translateX(-40%) scale(0.75);
     opacity: 1;
   }
 }
@@ -492,7 +526,7 @@ a, button, .project-item, .nav-link {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.78);
 }
 
 .hero-container {
@@ -1083,9 +1117,8 @@ a.btn-our-people {
   z-index: 10;
 }
 
-/* Position Classes - Dynamic Overlapping Structure */
 .project-left {
-  transform: translateX(-50%) translateY(-50%) rotateY(35deg) translateX(-500px) scale(0.8) !important;
+  transform: translateX(-50%) translateY(-50%) rotateY(20deg) translateX(-500px) scale(0.8) !important;
   z-index: 1;
 }
 
@@ -3374,12 +3407,6 @@ a.btn-our-people {
   .statistics-section {
     height: 100vh;
     padding: 0;
-    background-color: #ffffff;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   
   .statistics-container {
@@ -3414,12 +3441,6 @@ a.btn-our-people {
   .statistics-section {
     height: 100vh;
     padding: 0;
-    background-color: #ffffff;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   
   .statistics-container {
@@ -4328,10 +4349,6 @@ a.btn-our-people {
 }
 
 /* Board of Directors Section */
-.board-section-wrapper {
-  position: relative;
-}
-
 .board-section {
   background: #1a3a3a;
   padding: 60px 0;
@@ -4380,53 +4397,20 @@ a.btn-our-people {
   will-change: transform;
 }
 
-/* Mobile styles for board section */
+/* Smooth transition on mobile */
 @media (max-width: 768px) {
-  .board-section {
-    padding: 0;
-    min-height: 100vh;
-    position: relative;
-  }
-  
-  .board-container {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-  }
-  
-  .board-members-container {
-    height: 100vh;
-    min-height: auto;
-    overflow: visible;
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
-  }
-  
   .board-members-slider {
-    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    opacity: 1 !important;
+    transition: opacity 0.6s ease-in, transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    /* Initial opacity set to 0, will be overridden by inline styles when section is in view */
+    opacity: 0;
   }
 }
 
 @media (max-width: 480px) {
-  .board-section {
-    padding: 0;
-    min-height: 90vh;
-  }
-  
-  .board-members-container {
-    height: 90vh;
-    min-height: auto;
-    overflow: visible;
-    display: flex;
-    align-items: center;
-  }
-  
   .board-members-slider {
-    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    opacity: 1 !important;
+    transition: opacity 0.7s ease-in, transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+    /* Initial opacity set to 0, will be overridden by inline styles when section is in view */
+    opacity: 0;
   }
 }
 
@@ -4446,7 +4430,7 @@ a.btn-our-people {
   border-radius: 50%;
   overflow: hidden;
   border: 5px solid #fff;
-  margin-bottom: 0.25rem;
+  margin-bottom: 2rem;
   position: relative;
   background: linear-gradient(135deg, #e8f4f8 0%, #d1e7dd 100%);
   cursor: pointer;
@@ -4515,7 +4499,7 @@ a.btn-our-people {
 .board-member-name {
   font-size: 3rem;
   font-weight: 700;
-  margin-bottom: 0.25rem;
+  margin-bottom: 1rem;
   color: #fff;
   letter-spacing: 0.5px;
 }
@@ -4943,7 +4927,6 @@ a.btn-our-people {
   .board-section {
     padding: 0;
     min-height: 100vh;
-    position: relative;
   }
   
   .board-header {
@@ -4956,40 +4939,21 @@ a.btn-our-people {
   }
   
   .board-members-container {
-    height: 100vh;
-    min-height: auto;
+    height: auto;
+    min-height: 300px;
     overflow: visible;
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
   }
   
   .board-member-card {
     flex: 0 0 200px;
-    height: 200px;
+    height: 280px;
     opacity: 1;
-    transition: opacity 0.6s ease-out, transform 0.5s ease-out;
+    transition: opacity 0.5s ease-out, transform 0.4s ease-out;
   }
   
   .board-member-image {
-    width: 200px;
-    height: 200px;
-  }
-  
-  .board-header {
-    position: absolute;
-    top: 2rem;
-    left: 0;
-    right: 0;
-    z-index: 20;
-    text-align: center;
-  }
-  
-  .board-container {
-    position: relative;
-    height: 100vh;
-    width: 100%;
+    width: 120px;
+    height: 120px;
   }
   
   .board-member-image:hover .hover-dot {
@@ -5052,7 +5016,6 @@ a.btn-our-people {
   .board-section {
     padding: 0;
     min-height: 90vh;
-    position: relative;
   }
   
   .board-header {
@@ -5065,40 +5028,21 @@ a.btn-our-people {
   }
   
   .board-members-container {
-    height: 90vh;
-    min-height: auto;
+    height: auto;
+    min-height: 250px;
     overflow: visible;
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 0;
   }
   
   .board-member-card {
     flex: 0 0 180px;
-    height: 160px;
+    height: 220px;
     opacity: 1;
-    transition: opacity 0.7s ease-out, transform 0.6s ease-out;
+    transition: opacity 0.6s ease-out, transform 0.5s ease-out;
   }
   
   .board-member-image {
-    width: 180px;
-    height: 180px;
-  }
-  
-  .board-header {
-    position: absolute;
-    top: 1.5rem;
-    left: 0;
-    right: 0;
-    z-index: 20;
-    text-align: center;
-  }
-  
-  .board-container {
-    position: relative;
-    height: 90vh;
-    width: 100%;
+    width: 100px;
+    height: 100px;
   }
   
   .board-member-image:hover .hover-dot {
@@ -5107,8 +5051,7 @@ a.btn-our-people {
   }
   
   .board-members-slider {
-    gap: 0;
-    will-change: transform;
+    gap: 1.5rem;
   }
   
   .team-section-title {
@@ -5242,7 +5185,6 @@ a.btn-our-people {
   transition: color 0.2s;
   align-self: flex-start;
 }
-
 .project-link:hover {
   color: #ff6b35;
   text-decoration: underline;
