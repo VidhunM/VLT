@@ -267,3 +267,10 @@ Topics: Statistics section mobile responsive - apply desktop background properti
 Code changes: In `src/styles/main.css`, added desktop background properties to mobile responsive styles for `.statistics-section`. Added `background-color: #ffffff`, `position: relative`, `overflow: hidden`, `display: flex`, `align-items: center`, and `justify-content: center` to both mobile breakpoints (≤768px and ≤480px) to match desktop view background styling.
 Decisions: Mobile responsive views now match desktop background styling for consistency across all screen sizes; white background and flexbox centering ensure proper layout on mobile devices.
 Next steps: Verify statistics section background appears correctly on mobile devices; test layout with new flex properties.
+
+Date: 2025-11-09
+Time: N/A (timestamp command unavailable)
+Topics: Extracted project showcase styles into dedicated stylesheet
+Code changes: Created `src/styles/projectShowcase.css` for project showcase rules, removed the duplicated selectors from `src/styles/main.css`, and imported the new stylesheet in `src/components/ProjectSection.jsx`.
+Decisions: Keep project showcase styling scoped via component import while trimming global CSS to avoid duplication and ease future edits.
+Next steps: Verify the project showcase renders correctly with the new stylesheet and ensure production build picks up `projectShowcase.css`.
