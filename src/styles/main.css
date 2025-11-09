@@ -291,7 +291,7 @@ a, button, .project-item, .nav-link {
 
 .nav-overlay .nav-link {
   font-family: 'Playfair Display', 'Times New Roman', serif;
-  font-size: clamp(1.9rem, 4.8vw, 3.4rem);
+  font-size: clamp(1.6rem, 4vw, 3rem);
   font-weight: 500;
   color: inherit;
   padding: 0;
@@ -691,6 +691,12 @@ a, button, .project-item, .nav-link {
 
 
 /* Excellence Section */
+.excellence-wrapper {
+  position: relative;
+  height: 200vh;
+  background: white;
+}
+
 .excellence-section {
   background: white;
   color: #1A202C;
@@ -701,6 +707,26 @@ a, button, .project-item, .nav-link {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.excellence-section.is-pinned {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 5;
+}
+
+.excellence-section.is-pinned .excellence-container {
+  height: 100%;
+}
+
+.excellence-section.is-past {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  width: 100%;
 }
 
 .excellence-container {
@@ -1043,8 +1069,7 @@ a.btn-our-people {
 /* Sections */
 .about-section,
 .services-section,
-.work-hero,
-.projects-section {
+.work-hero {
   padding: 4rem 0;
 }
 
@@ -1464,67 +1489,6 @@ a.btn-our-people {
 .work-hero h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.project-card {
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(74, 124, 89, 0.2);
-}
-
-.project-image {
-  height: 200px;
-  background: #f0f0f0;
-}
-
-.project-content {
-  padding: 1.5rem;
-}
-
-.project-category {
-  color: #4a7c59;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 0.5rem;
-}
-
-.project-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.project-description {
-  color: #666;
-  margin-bottom: 1rem;
-  line-height: 1.6;
-}
-
-.project-link {
-  color: #4a7c59;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease;
-}
-
-.project-link:hover {
-  color: #3a6b49;
 }
 
 /* Responsive Design */

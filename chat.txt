@@ -274,3 +274,17 @@ Topics: Extracted project showcase styles into dedicated stylesheet
 Code changes: Created `src/styles/projectShowcase.css` for project showcase rules, removed the duplicated selectors from `src/styles/main.css`, and imported the new stylesheet in `src/components/ProjectSection.jsx`.
 Decisions: Keep project showcase styling scoped via component import while trimming global CSS to avoid duplication and ease future edits.
 Next steps: Verify the project showcase renders correctly with the new stylesheet and ensure production build picks up `projectShowcase.css`.
+
+Date: 2025-11-09
+Time: N/A (timestamp command unavailable)
+Topics: Home services animation update
+Code changes: Adjusted the services scroll logic in `src/pages/Home.jsx` so the first card remains fixed on entry while the remaining cards slide up sequentially over it. No CSS changes required.
+Decisions: Keep animation handling in JS for precise scroll segment control; first card snaps in as the section enters, subsequent cards follow one-by-one.
+Next steps: Manually verify the scroll sequence feels seamless across breakpoints and tweak segment timing if needed.
+
+Date: 2025-11-09
+Time: N/A (timestamp command unavailable)
+Topics: Excellence section fullscreen pin
+Code changes: Wrapped the excellence block in a new `excellence-wrapper`, added pinning logic in `src/pages/Home.jsx`, and introduced corresponding styles in `src/styles/main.css` so the section locks to the viewport before handing off to Services.
+Decisions: Use JS-driven pin detection to toggle between default, pinned, and post-pinned layout states while keeping the content interactive.
+Next steps: Scroll through the transition from Excellence into Services across devices to confirm the pin/release timing feels right.

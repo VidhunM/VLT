@@ -149,15 +149,7 @@ const OurService = () => {
 
   return (
     <div style={{ background: '#ffffff', minHeight: '100vh', overflowX: 'hidden' }}>
-      <Header
-        logoSrc={'/assets/Images/Vlt_logo1.png'}
-        menuItems={[
-          { label: 'Home', href: '/' },
-          { label: 'Our Service', href: '/our-service' },
-          { label: 'Projects', href: '/work' },
-          { label: 'Contact', href: '/contact' }
-        ]}
-      />
+      <Header logoSrc={'/assets/Images/Vlt_logo1.png'} />
       <div style={{ 
         padding: '2em 0', 
         textAlign: 'center',

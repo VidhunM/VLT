@@ -204,16 +204,7 @@ function OurFeed() {
       `}</style>
 
       {/* Header */}
-      <Header
-        logoSrc={"/assets/Images/Vlt_logo1.png"}
-        menuItems={[
-          { label: "Home", href: "/" },
-          { label: "Our Service", href: "/our-service" },
-          { label: "Projects", href: "/work" },
-          { label: "Our Feed", href: "/our-feed" },
-          { label: "Contact", href: "/contact" },
-        ]}
-      />
+      <Header logoSrc={"/assets/Images/Vlt_logo1.png"} />
 
       {/* FEED Heading */}
       <section style={{ padding: "120px 24px 36px", maxWidth: 1200, margin: "0 auto" }}>

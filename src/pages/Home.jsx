@@ -11,7 +11,10 @@ const Home = () => {
   const emblemRef = useRef(null)
   const servicesRef = useRef(null)
   const excellenceRef = useRef(null)
+  const excellenceWrapperRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [isExcellencePinned, setIsExcellencePinned] = useState(false)
+  const [isExcellencePast, setIsExcellencePast] = useState(false)
   const [excellenceScrollProgress, setExcellenceScrollProgress] = useState(0)
   const [service1Progress, setService1Progress] = useState(0)
   const [service2Progress, setService2Progress] = useState(0)
@@ -192,6 +195,28 @@ const Home = () => {
     }
   }, [])
 
+  // Pin excellence section for full-screen experience
+  useEffect(() => {
+    const handleExcellencePin = () => {
+      if (!excellenceWrapperRef.current) return
+      const rect = excellenceWrapperRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      const shouldPin = rect.top <= 0 && rect.bottom >= windowHeight
+      const isPast = rect.bottom < windowHeight
+      setIsExcellencePinned(shouldPin)
+      setIsExcellencePast(!shouldPin && isPast)
+    }
+
+    window.addEventListener('scroll', handleExcellencePin, { passive: true })
+    window.addEventListener('resize', handleExcellencePin)
+    handleExcellencePin()
+
+    return () => {
+      window.removeEventListener('scroll', handleExcellencePin)
+      window.removeEventListener('resize', handleExcellencePin)
+    }
+  }, [])
+
   // IntersectionObservers for emblem and service overlays (set up once)
   useEffect(() => {
     const emblemObserver = new IntersectionObserver(
@@ -296,7 +321,7 @@ const Home = () => {
     }
   }, [])
 
-  // Scroll-based animation for Services section - cards slide up sequentially
+  // Scroll-based animation for Services section - first card stays fixed, others slide up sequentially
   useEffect(() => {
     const handleServicesScroll = () => {
       if (!servicesRef.current) return
@@ -304,7 +329,7 @@ const Home = () => {
       const rect = servicesRef.current.getBoundingClientRect()
       const windowHeight = window.innerHeight
       const sectionHeight = rect.height
-      
+
       // Calculate if section is in view
       const isInView = rect.top < windowHeight && rect.bottom > 0
       
@@ -316,48 +341,29 @@ const Home = () => {
         return
       }
 
-      // Calculate scroll progress within the services section
-      // Progress should start when section top reaches viewport top (rect.top = 0)
-      // Progress should end when section bottom reaches viewport top (rect.bottom = 0)
-      
-      const sectionTop = rect.top
-      const sectionBottom = rect.bottom
-      
-      // Calculate progress: 0 when section enters view, 1 when section is fully scrolled past
-      // Section is 400vh (4 cards × 100vh each)
-      // Scrollable distance = 300vh (400vh - 100vh viewport)
-      const scrollableDistance = sectionHeight - windowHeight
-      
-      // When section top is at viewport top: sectionTop = 0
-      // When section is scrolled past: sectionTop < 0
-      // Calculate scroll progress
-      let scrollProgress = 0
-      if (sectionTop <= 0) {
-        // Section is at or past viewport top
-        const scrolled = -sectionTop // How much we've scrolled past the top
-        scrollProgress = Math.max(0, Math.min(1, scrolled / scrollableDistance))
-      } else {
-        // Section is entering from below - Service 1 should start appearing
-        // When sectionTop = windowHeight, progress = 0
-        // When sectionTop = 0, progress = 1 (for Service 1 only)
-        const entryProgress = Math.max(0, Math.min(1, (windowHeight - sectionTop) / windowHeight))
-        scrollProgress = entryProgress * 0.25 // Service 1 uses first 25% of scroll
+      const clamp = (value) => Math.max(0, Math.min(1, value))
+
+      let nextService1 = 1
+      let nextService2 = 0
+      let nextService3 = 0
+      let nextService4 = 0
+
+      if (rect.top <= 0) {
+        // Once the section is pinned, drive the remaining cards sequentially.
+        const scrollableDistance = Math.max(sectionHeight - windowHeight, 1)
+        const scrolled = Math.min(-rect.top, scrollableDistance)
+        const progress = clamp(scrolled / scrollableDistance)
+        const segment = 1 / 3
+
+        nextService2 = clamp(progress / segment)
+        nextService3 = clamp((progress - segment) / segment)
+        nextService4 = clamp((progress - 2 * segment) / segment)
       }
-      
-      // Each service card gets 1/4 of the scroll progress (25% each)
-      // Service 1: 0-25% of scroll progress
-      const service1Progress = Math.max(0, Math.min(1, scrollProgress / 0.25))
-      // Service 2: 25-50% of scroll progress
-      const service2Progress = Math.max(0, Math.min(1, (scrollProgress - 0.25) / 0.25))
-      // Service 3: 50-75% of scroll progress  
-      const service3Progress = Math.max(0, Math.min(1, (scrollProgress - 0.50) / 0.25))
-      // Service 4: 75-100% of scroll progress
-      const service4Progress = Math.max(0, Math.min(1, (scrollProgress - 0.75) / 0.25))
-      
-      setService1Progress(service1Progress)
-      setService2Progress(service2Progress)
-      setService3Progress(service3Progress)
-      setService4Progress(service4Progress)
+
+      setService1Progress(nextService1)
+      setService2Progress(nextService2)
+      setService3Progress(nextService3)
+      setService4Progress(nextService4)
     }
 
     window.addEventListener('scroll', handleServicesScroll, { passive: true })
@@ -397,77 +403,79 @@ const Home = () => {
       {showNav && <MinimalistNav />}
       <HeroThree />
       
-      <section className="excellence-section" ref={excellenceRef}>
-        <div className="excellence-container">
-          <div className="excellence-left">
-            <h2 className={`excellence-title ${isVisible ? 'animate-title' : ''}`}>
-              <span>2+ Years of</span>
-              <span>Excellence.</span>
-            </h2>
-            <div className="excellence-emblem" ref={emblemRef}>
-              <div className="circular-emblem">
-                <div className={`emblem-number ${isVisible ? 'animate-number' : ''}`}>2</div>
-                <div className={`emblem-text ${isVisible ? 'animate-text' : ''}`}>YEARS</div>
-                <svg className="circular-text-svg" viewBox="0 0 200 200">
-                  <defs>
-                    <path id="circle-path" d="M 100, 100 m -80, 0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" />
-                  </defs>
-                  <g className={`rotating-group ${isVisible ? 'animate-rotating' : ''}`}>
-                    <text className="circular-text">
-                      <textPath href="#circle-path" startOffset="0%">
-                        CELEBRATING TWO PLUS YEARS • CELEBRATING TWO PLUS YEARS • 
-                      </textPath>
-                    </text>
-                  </g>
-                </svg>
+      <div className="excellence-wrapper" ref={excellenceWrapperRef}>
+        <section className={`excellence-section ${isExcellencePinned ? 'is-pinned' : ''} ${isExcellencePast ? 'is-past' : ''}`} ref={excellenceRef}>
+          <div className="excellence-container">
+            <div className="excellence-left">
+              <h2 className={`excellence-title ${isVisible ? 'animate-title' : ''}`}>
+                <span>2+ Years of</span>
+                <span>Excellence.</span>
+              </h2>
+              <div className="excellence-emblem" ref={emblemRef}>
+                <div className="circular-emblem">
+                  <div className={`emblem-number ${isVisible ? 'animate-number' : ''}`}>2</div>
+                  <div className={`emblem-text ${isVisible ? 'animate-text' : ''}`}>YEARS</div>
+                  <svg className="circular-text-svg" viewBox="0 0 200 200">
+                    <defs>
+                      <path id="circle-path" d="M 100, 100 m -80, 0 a 80,80 0 1,1 160,0 a 80,80 0 1,1 -160,0" />
+                    </defs>
+                    <g className={`rotating-group ${isVisible ? 'animate-rotating' : ''}`}>
+                      <text className="circular-text">
+                        <textPath href="#circle-path" startOffset="0%">
+                          CELEBRATING TWO PLUS YEARS • CELEBRATING TWO PLUS YEARS • 
+                        </textPath>
+                      </text>
+                    </g>
+                  </svg>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="excellence-right">
-            <h3 
-              className={`excellence-subtitle ${isVisible ? 'animate-subtitle' : ''}`}
-              style={{
-                fontSize: `clamp(${1.5 * (1 + excellenceScrollProgress * 0.35)}rem, ${3 * (1 + excellenceScrollProgress * 0.35)}vw, ${2 * (1 + excellenceScrollProgress * 0.35)}rem)`,
-                transition: 'font-size 0.1s ease-out'
-              }}
-            >
-              Build success in Software Engineer and Property Services
-            </h3>
-            <p 
-              className={`excellence-description ${isVisible ? 'animate-description' : ''}`}
-              style={{
-                fontSize: `clamp(${0.9 * (1 + excellenceScrollProgress * 0.28)}rem, ${1.8 * (1 + excellenceScrollProgress * 0.28)}vw, ${1 * (1 + excellenceScrollProgress * 0.28)}rem)`,
-                transition: 'font-size 0.1s ease-out'
-              }}
-            >
+            <div className="excellence-right">
+              <h3 
+                className={`excellence-subtitle ${isVisible ? 'animate-subtitle' : ''}`}
+                style={{
+                  fontSize: `clamp(${1.5 * (1 + excellenceScrollProgress * 0.35)}rem, ${3 * (1 + excellenceScrollProgress * 0.35)}vw, ${2 * (1 + excellenceScrollProgress * 0.35)}rem)`,
+                  transition: 'font-size 0.1s ease-out'
+                }}
+              >
+                Build success in Software Engineer and Property Services
+              </h3>
+              <p 
+                className={`excellence-description ${isVisible ? 'animate-description' : ''}`}
+                style={{
+                  fontSize: `clamp(${0.9 * (1 + excellenceScrollProgress * 0.28)}rem, ${1.8 * (1 + excellenceScrollProgress * 0.28)}vw, ${1 * (1 + excellenceScrollProgress * 0.28)}rem)`,
+                  transition: 'font-size 0.1s ease-out'
+                }}
+              >
             If you mind thinks about mobile/website development, then we have created a niche for ourselves. We started in 2021 with just 3 employees and now have expanded ourselves to 20+ which shows about the growth and the quality of work that we did over the years.
 
 Our team comprises highly skilled IT professionals whose target is to provide top-notch yet cost-effective solutions to SMEs. We have expertise in designing and developing custom-made websites and apps for all industries. So if there's a specific requirement you can reach to us.
-            </p>
-            <div 
-              className={`excellence-buttons ${isVisible ? 'animate-buttons' : ''}`}
-              style={{
-                transform: `scale(${1 + excellenceScrollProgress * 0.2})`,
-                transition: 'transform 0.1s ease-out'
-              }}
-            >
-              <a 
-                href="/our-team" 
-                className="btn-our-people"
-                onClick={(e) => handleNavigationClick(e, '/our-team')}
+              </p>
+              <div 
+                className={`excellence-buttons ${isVisible ? 'animate-buttons' : ''}`}
+                style={{
+                  transform: `scale(${1 + excellenceScrollProgress * 0.2})`,
+                  transition: 'transform 0.1s ease-out'
+                }}
               >
-                <span>Our People</span>
-                <div className="btn-icon orange-dots"></div>
-              </a>
-              <button className="btn-join-team">
-                <span>Join The Team</span>
-                <div className="btn-icon white-dots"></div>
-              </button>
+                <a 
+                  href="/our-team" 
+                  className="btn-our-people"
+                  onClick={(e) => handleNavigationClick(e, '/our-team')}
+                >
+                  <span>Our People</span>
+                  <div className="btn-icon orange-dots"></div>
+                </a>
+                <button className="btn-join-team">
+                  <span>Join The Team</span>
+                  <div className="btn-icon white-dots"></div>
+                </button>
+              </div>
             </div>
+            <div className="excellence-scroll-indicator"></div>
           </div>
-          <div className="excellence-scroll-indicator"></div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* Services Section */}
       <section 

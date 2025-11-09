@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { navigateWithCircle } from '../utils/navigation'
 
 const MinimalistNav = () => {
@@ -8,6 +8,7 @@ const MinimalistNav = () => {
   const [scrollDirection, setScrollDirection] = useState('down')
   const [lastScrollY, setLastScrollY] = useState(0)
   const navigate = useNavigate()
+  const location = useLocation()
 
   const menuItems = [
     { name: 'HOME', href: '/', sectionId: 'home' },
@@ -61,7 +62,7 @@ const MinimalistNav = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentPath = window.location.pathname
+      const currentPath = location.pathname
       let heroSection = null
       
       // Determine hero section based on current page
@@ -107,7 +108,34 @@ const MinimalistNav = () => {
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll() // Initial check
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [lastScrollY])
+  }, [lastScrollY, location.pathname])
+
+  // Ensure nav visibility/active state updates when route changes
+  useEffect(() => {
+    const currentPath = location.pathname
+
+    if (currentPath === '/contact') {
+      setIsVisible(true)
+      setActiveSection('CONTACT')
+    } else if (currentPath === '/') {
+      // On home, re-evaluate active section on route change
+      const section = getActiveSection()
+      setActiveSection(section.toUpperCase())
+    } else {
+      // For other routes, set active based on predefined mapping
+      const routeMap = {
+        '/work': 'PROJECTS',
+        '/our-team': 'OUR TEAM',
+        '/our-service': 'OUR SERVICE',
+        '/our-feed': 'OUR FEED'
+      }
+      const mapped = routeMap[currentPath]
+      if (mapped) {
+        setActiveSection(mapped)
+        setIsVisible(true)
+      }
+    }
+  }, [location.pathname])
 
   const handleNavClick = (event, item) => {
     // Handle navigation
