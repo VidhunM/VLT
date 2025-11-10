@@ -392,3 +392,103 @@ Topics: Flow footer color alignment
 Code changes: Set `FlowAnimation` wrapper background and `.location-section` color to the same dark green (`#1b402f`) so the contact page and footer share one continuous tone.
 Decisions: Removed the gradient/backdrop filters to keep the hue consistent; left other styling untouched.
 Next steps: Review the footer to ensure content remains readable; adjust text accents if needed.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects arch layout update
+Code changes: 
+- `src/components/ProjectSection.jsx`: drove card offsets/rotations via data and CSS variables to position five cards symmetrically in an arch.
+- `src/styles/projectShowcase.css`: refactored transforms to consume CSS custom properties and tuned responsive translations for the arch arrangement.
+Decisions: Keep fallback class defaults while letting data override placement; retain existing project card content.
+Next steps: Preview the Home projects section across breakpoints to ensure spacing/overlaps look correct; fine-tune offsets if needed.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects arch vertical alignment tweak
+Code changes: Raised each card’s `offsetY` in `src/components/ProjectSection.jsx` by ~30px so the arch sits slightly lower while preserving the established tilt angles.
+Decisions: Apply a uniform downward shift via data to avoid touching CSS structure.
+Next steps: Give the home projects area a quick pass on multiple viewports to confirm the lowered arch doesn’t crowd adjacent sections.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects six-card arch update
+Code changes: Added a sixth project entry in `src/components/ProjectSection.jsx`, introduced clamp-based offsets so all cards scale responsively, and updated `src/styles/projectShowcase.css` to support the new symmetry classes and animation timing.
+Decisions: Keep all positioning data-driven with CSS variable fallbacks for graceful scaling; reuse existing mockup types for consistency.
+Next steps: Review the six-card arch on desktop/tablet/mobile to confirm spacing and overlaps remain balanced; fine-tune clamp ranges if any breakpoint feels cramped.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects arch width expansion
+Code changes: Increased horizontal clamp ranges for all six cards in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so the arch spreads wider without altering tilt angles or vertical alignment.
+Decisions: Adjust widths purely via data/CSS variables to preserve animation behavior.
+Next steps: Give the projects arch a visual pass to ensure the wider spacing still feels cohesive across breakpoints; tweak ranges further if outer cards come too close to container edges.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects card sizing + wider arc
+Code changes: Reduced base card dimensions with `clamp` sizing and pushed every card’s horizontal offsets further out in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so the six-card arc feels airier without changing tilt angles.
+Decisions: Keep vertical offsets untouched to maintain arch height; lean on CSS variables for responsive scaling.
+Next steps: Review the section visually to ensure the smaller cards remain readable and the extended width doesn’t collide with container edges on large displays.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center card drop
+Code changes: Lowered the two inner mobile mockups and two adjacent cards by adjusting their `offsetY` clamp ranges in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, leaving the outer cards untouched so the arch dips slightly deeper in the middle.
+Decisions: Modify data and CSS variables together to keep responsiveness consistent.
+Next steps: Check the home projects arch to confirm the lowered middle cards still clear surrounding sections and maintain the intended curvature.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects deeper center curve
+Code changes: Further decreased the four middle cards’ vertical clamp ranges in `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so the arch drops a little more through the center while outer cards remain unchanged.
+Decisions: Adjust offsets via shared CSS variables for consistent responsiveness.
+Next steps: Give the projects arch a quick visual review to ensure the deeper center still avoids overlap with neighboring sections.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair drop
+Code changes: Lowered only the two innermost cards by easing their `offsetY` clamp ranges in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, leaving the adjacent cards at previous heights.
+Decisions: Keep changes scoped to the center pair to fine-tune the arch profile without affecting the outer curve.
+Next steps: Refresh the projects arch to confirm the center pair’s new position flows smoothly with the remaining cards.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair deeper drop
+Code changes: Nudged just the two central cards further down by loosening their `offsetY` clamp ranges again in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`.
+Decisions: Continue tweaking only the inner pair to refine the arch shape while keeping outer spacing intact.
+Next steps: Preview the section to verify the deeper center alignment feels intentional and doesn’t crowd surrounding content.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair final adjustment
+Code changes: Lowered the two innermost cards once more by updating their `offsetY` clamps in `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, allowing the arch’s midpoint to sit closer to the baseline.
+Decisions: Keep the change limited to those cards so the outer curvature remains steady.
+Next steps: Reload the home projects section to confirm the new midpoint height aligns cleanly with surrounding sections.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair baseline alignment
+Code changes: Relaxed the innermost cards’ `offsetY` clamps again in `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so they sit slightly lower, nearing the arch baseline while the outer cards stay untouched.
+Decisions: Continue modifying only the center pair for fine-grained curvature control.
+Next steps: Preview the section to ensure the lowered midpoint doesn’t collide with the footer/neighboring content and still reads cohesively.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects center pair spacing
+Code changes: Pulled the two innermost cards closer together by tightening their horizontal `offsetX` clamp ranges in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, keeping their lowered height from earlier tweaks.
+Decisions: Limit adjustments to the inner pair to refine the center emphasis without disturbing the outer arc.
+Next steps: Check the arch visually so the tighter center spacing still feels balanced and avoids overlap.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects card width increase
+Code changes: Expanded the card size clamps in `src/styles/projectShowcase.css` so each card renders slightly wider/taller while maintaining the existing offsets and arch structure.
+Decisions: Keep spacing unchanged for now; rely on clamp scaling to stay responsive across breakpoints.
+Next steps: Refresh the section to confirm the larger cards have adequate spacing and adjust offsets if any overlap appears.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects card size bump
+Code changes: Increased the `clamp` ranges for `.project-mockup` width/height in `src/styles/projectShowcase.css` to make each card a bit bigger while preserving offsets and layout.
+Decisions: Delay offset changes until after visually confirming spacing with the new size.
+Next steps: Preview the projects arch to verify the larger cards still fit comfortably and adjust positioning if needed.

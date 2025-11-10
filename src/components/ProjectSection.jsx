@@ -34,8 +34,11 @@ const ProjectSection = () => {
       type: "mobile",
       theme: "gradient",
       image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      position: "left",
-      rotation: -8
+      position: "far-left",
+      offsetX: "clamp(-400px, -36vw, -240px)",
+      offsetY: "clamp(50px, 8vw, 90px)",
+      rotation: -30,
+      zIndex: 2
     },
     {
       id: 2,
@@ -44,8 +47,11 @@ const ProjectSection = () => {
       type: "mobile",
       theme: "dark",
       image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      position: "bottom-left",
-      rotation: 3
+      position: "left",
+      offsetX: "clamp(-270px, -24vw, -160px)",
+      offsetY: "clamp(20px, 2vw, 50px)",
+      rotation: -18,
+      zIndex: 3
     },
     {
       id: 3,
@@ -55,36 +61,64 @@ const ProjectSection = () => {
       type: "website",
       theme: "light",
       image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-      position: "center",
-      rotation: 0
+      position: "center-left",
+      offsetX: "clamp(-120px, -12vw, -60px)",
+      offsetY: "clamp(-20px, -4vw, 20px)",
+      rotation: -6,
+      zIndex: 5
     },
     {
       id: 4,
+      title: "ATLAS",
+      subtitle: "An immersive app that lets teams explore design systems in context.",
+      type: "mobile",
+      theme: "dark",
+      image: "https://images.unsplash.com/photo-1604079628040-94301bb21b14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      position: "center-right",
+      offsetX: "clamp(60px, 12vw, 120px)",
+      offsetY: "clamp(-20px, -4vw, 20px)",
+      rotation: 6,
+      zIndex: 5
+    },
+    {
+      id: 5,
       title: "STRATEGY",
       subtitle: "AI • MOTION • WEB • BRAND • STRATEGY • AI • MOTION • WEB",
       type: "card",
       theme: "white",
       position: "right",
-      rotation: -5
+      offsetX: "clamp(160px, 24vw, 270px)",
+      offsetY: "clamp(20px, 2vw, 50px)",
+      rotation: 18,
+      zIndex: 3
     },
     {
-      id: 5,
+      id: 6,
       title: "GEOMETRIC",
       subtitle: "Design System",
       type: "card",
       theme: "dark",
-      position: "bottom-right",
-      rotation: -3
+      position: "far-right",
+      offsetX: "clamp(260px, 36vw, 400px)",
+      offsetY: "clamp(50px, 8vw, 90px)",
+      rotation: 30,
+      zIndex: 2
     }
   ]
 
   const renderProject = (project) => {
     const baseClasses = `project-mockup project-${project.type} project-${project.theme} project-${project.position}`
     const animationClass = isVisible ? 'animate-in' : ''
+    const cardStyle = {
+      '--card-translate-x': typeof project.offsetX === 'number' ? `${project.offsetX}px` : project.offsetX,
+      '--card-translate-y': typeof project.offsetY === 'number' ? `${project.offsetY}px` : project.offsetY,
+      '--card-rotate': `${project.rotation ?? 0}deg`,
+      '--card-z-index': `${project.zIndex ?? 1}`
+    }
 
     if (project.type === 'mobile') {
       return (
-        <div key={project.id} className={`${baseClasses} ${animationClass}`} style={{ transform: `rotate(${project.rotation}deg)` }}>
+        <div key={project.id} className={`${baseClasses} ${animationClass}`} style={cardStyle}>
           <div className="mockup-frame mobile-frame">
             <div className="mockup-screen">
               <div className="mockup-header">
@@ -114,7 +148,7 @@ const ProjectSection = () => {
 
     if (project.type === 'website') {
       return (
-        <div key={project.id} className={`${baseClasses} ${animationClass}`} style={{ transform: `rotate(${project.rotation}deg)` }}>
+        <div key={project.id} className={`${baseClasses} ${animationClass}`} style={cardStyle}>
           <div className="mockup-frame website-frame">
             <div className="mockup-screen">
               <div className="website-header">
@@ -145,7 +179,7 @@ const ProjectSection = () => {
 
     if (project.type === 'card') {
       return (
-        <div key={project.id} className={`${baseClasses} ${animationClass}`} style={{ transform: `rotate(${project.rotation}deg)` }}>
+        <div key={project.id} className={`${baseClasses} ${animationClass}`} style={cardStyle}>
           <div className="mockup-frame card-frame">
             <div className="mockup-screen">
               {project.theme === 'white' ? (
