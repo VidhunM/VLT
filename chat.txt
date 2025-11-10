@@ -288,3 +288,59 @@ Topics: Excellence section fullscreen pin
 Code changes: Wrapped the excellence block in a new `excellence-wrapper`, added pinning logic in `src/pages/Home.jsx`, and introduced corresponding styles in `src/styles/main.css` so the section locks to the viewport before handing off to Services.
 Decisions: Use JS-driven pin detection to toggle between default, pinned, and post-pinned layout states while keeping the content interactive.
 Next steps: Scroll through the transition from Excellence into Services across devices to confirm the pin/release timing feels right.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: CTA pattern visibility fix
+Code changes: Tweaked the `team-cta-pattern` gradients and the overlay opacity in `src/styles/main.css` so the orange dot field is visible behind the card while retaining the dark vignette.
+Decisions: Keep the layered gradient approach; lighten the overlay instead of removing it to preserve depth.
+Next steps: Hard-refresh the page to clear cached CSS and confirm the background now matches the mock.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin panel scaffold
+Code changes: Added `/admin` route in `src/App.jsx`, created admin pages (`src/pages/admin/AdminApp.jsx`, `AdminLogin.jsx`, `AdminDashboard.jsx`) and supporting styles `src/styles/admin.css`. Implemented mock credential check (admin@vulturelines.com / admin123) and dashboard cards for Home, Our Service, and Our Feed.
+Decisions: Keep authentication mock client-side for now; modularize admin assets under dedicated folder for future expansion.
+Next steps: Replace mock auth with real API integration and wire dashboard cards to actual management views when available.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin Our Service manager
+Code changes: Updated admin app state handling to support view switching, added `AdminServiceManager` component with forms for service cards, 3D carousel slots, and project showcases, wired dashboard navigation to open the manager, and extended `admin.css` with new form/preview styles.
+Decisions: Keep data client-side with console output for now; provide previews and save placeholder until backend integration.
+Next steps: Connect save action to API/storage and synchronize with live Our Service page data.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin service manager enhancements
+Code changes: Expanded `AdminServiceManager.jsx` to support six service cards with keyword entry and image uploads, extended carousel slots to six items with keywords/uploads, and updated `admin.css` with upload and tag preview styling.
+Decisions: Store uploaded images as Data URLs for now; parse keywords via comma separation for fast entry.
+Next steps: Hook the admin save action to persistent storage and pipe data into the live Our Service page.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin Our Feed manager
+Code changes: Added `AdminFeedManager.jsx` with editors for 18 feed cards, carousel imagery, and highlight stories; wired `/admin` view switching in `AdminApp.jsx`; updated `admin.css` with preview grids for feed and carousel items.
+Decisions: Keep data client-side with console logging until backend integration; mirror service manager UX for consistency.
+Next steps: Persist admin updates and connect to the live Our Feed data sources.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin upload reset
+Code changes: Cleared file inputs after processing uploads in `AdminServiceManager.jsx` and `AdminFeedManager.jsx` to prevent duplicate-selection issues.
+Decisions: Reset the underlying `<input>` value inside the FileReader `onload` callback to allow re-uploading the same asset without extra steps.
+Next steps: None; ready for backend integration when available.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin feed carousel sync
+Code changes: Updated `AdminFeedManager.jsx` so feed card edits automatically sync titles/images to the corresponding carousel slots, eliminating the need to upload assets twice.
+Decisions: Reuse feed card data for carousel labels/images with sensible fallbacks while keeping manual overrides possible.
+Next steps: Consider adding a manual “restore defaults” action if custom carousel content is desired later.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Admin feed form simplification
+Code changes: Removed the separate carousel form from `AdminFeedManager.jsx`, relying solely on feed card inputs to drive carousel imagery/text. Minor copy updates explain the automatic linkage.
+Decisions: Keep carousel state in sync behind the scenes while presenting a single upload flow for clarity.
+Next steps: If future customization is needed, reintroduce a dedicated carousel editor or add advanced toggles.

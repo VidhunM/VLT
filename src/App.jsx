@@ -6,6 +6,7 @@ import Work from './pages/Work'
 import ProjectDetail from './pages/ProjectDetail'
 import OurTeam from './pages/OurTeam'
 import Contact from './pages/Contact'
+import AdminApp from './pages/admin/AdminApp'
 import CustomCursor from './components/CustomCursor'
 import CircleTransition from './components/CircleTransition'
 import OurService from './pages/OurService'
@@ -27,6 +28,7 @@ function App() {
             <Route path="/our-feed" element={<OurFeed />} />
             <Route path="/our-team" element={<OurTeam />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/admin" element={<AdminApp />} />
           </Routes>
         </main>
       </div>

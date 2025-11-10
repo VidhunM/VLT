@@ -313,7 +313,7 @@ const OurService = () => {
                     fontWeight: 400,
                   }}
                 >
-                  © 2025 KUE CONCEPTS, LLC.
+                  © 2025 VLT CONCEPTS, LLC.
                 </div>
               </div>
             );
