@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import MinimalistNav from '../components/MinimalistNav'
+import Header from '../components/Header'
 import FlowAnimation from '../components/FlowAnimation'
 
 const OurTeam = () => {
@@ -349,6 +350,7 @@ const OurTeam = () => {
 
   return (
     <div className="page our-team">
+      <Header logoSrc={'/assets/Images/Vlt_logo1.png'} />
       <MinimalistNav />
       
       {/* Hero Section */}
@@ -480,15 +482,6 @@ const OurTeam = () => {
               <p>Trust and transparency guide our relationships with clients.</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="team-cta-section">
-        <div className="team-cta-container">
-          <h2>Join Our Team</h2>
-          <p>We're always looking for talented individuals to join our growing team.</p>
-          <button className="cta-button">View Open Positions</button>
         </div>
       </section>
 

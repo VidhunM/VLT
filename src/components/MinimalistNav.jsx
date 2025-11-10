@@ -12,7 +12,7 @@ const MinimalistNav = () => {
 
   const menuItems = [
     { name: 'HOME', href: '/', sectionId: 'home' },
-    { name: 'OUR SERVICE', href: '#services', sectionId: 'services' },
+    { name: 'OUR SERVICE', href: '/our-service', sectionId: 'services' },
     { name: 'PROJECTS', href: '/work', sectionId: 'projects' },
     { name: 'OUR FEED', href: '/our-feed', sectionId: 'feed' },
     { name: 'CONTACT', href: '/contact', sectionId: 'contact' }

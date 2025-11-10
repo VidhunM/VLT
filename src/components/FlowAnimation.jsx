@@ -204,11 +204,7 @@ const FlowAnimation = () => {
     <div
       className="flow-animation-wrapper"
       style={{
-        background: 'linear-gradient(135deg, rgba(14, 78, 46, 0.82) 0%, rgba(4, 34, 21, 0.65) 55%, rgba(12, 92, 53, 0.78) 100%)',
-        backdropFilter: 'blur(18px) saturate(125%)',
-        WebkitBackdropFilter: 'blur(18px) saturate(125%)',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        boxShadow: '0 40px 120px rgba(4, 32, 20, 0.55)',
+        background: '#1b402f',
         padding: '80px 48px 40px',
         color: '#fff'
       }}

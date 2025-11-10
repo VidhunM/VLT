@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getProjectBySlug, PROJECTS_DATA } from '../data/projects'
 import { navigateWithCircle } from '../utils/navigation'
 import MinimalistNav from '../components/MinimalistNav'
+import Header from '../components/Header'
 
 const ProjectDetail = () => {
   const { projectId } = useParams()
@@ -45,6 +46,7 @@ const ProjectDetail = () => {
 
   return (
     <div className="page project-detail">
+      <Header logoSrc={'/assets/Images/Vlt_logo1.png'} />
       <MinimalistNav />
       
       {/* Disclaimer */}

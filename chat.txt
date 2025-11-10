@@ -344,3 +344,51 @@ Topics: Admin feed form simplification
 Code changes: Removed the separate carousel form from `AdminFeedManager.jsx`, relying solely on feed card inputs to drive carousel imagery/text. Minor copy updates explain the automatic linkage.
 Decisions: Keep carousel state in sync behind the scenes while presenting a single upload flow for clarity.
 Next steps: If future customization is needed, reintroduce a dedicated carousel editor or add advanced toggles.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Board section responsive sizing
+Code changes: Adjusted `.board-section` and related styles in `src/styles/main.css` to use clamp-based heights, flexible card widths, and responsive image sizing so the Board of Directors area fits comfortably on screen.
+Decisions: Keep the scroll animation intact while letting the layout breathe across desktop and mobile.
+Next steps: Verify the slider still measures card widths correctly and tweak clamp ranges if further balancing is needed.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Board text scaling
+Code changes: Reduced Board of Directors name/position typography in `src/styles/main.css` using clamp-based sizes and updated breakpoint overrides so text below portraits stays compact on smaller screens.
+Decisions: Allow text to scale fluidly while preserving readability.
+Next steps: Review on tablet/mobile to ensure hierarchy still feels right; fine-tune clamp bounds if necessary.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: MinimalistNav service routing
+Code changes: Updated `src/components/MinimalistNav.jsx` so the “OUR SERVICE” button uses the `/our-service` route, triggering the circle transition and navigating straight to the services page instead of scrolling to a hash.
+Decisions: Keep other items unchanged; rely on existing route map to highlight the active state.
+Next steps: Verify the transition animation still plays and adjust other menu items if similar direct routing is desired.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Header parity across project/team/contact views
+Code changes: Imported `Header` into `src/pages/Work.jsx`, `OurTeam.jsx`, `ProjectDetail.jsx`, and `Contact.jsx`, rendering it ahead of `MinimalistNav` with the same logo as the services page for consistent branding.
+Decisions: Keep the minimalist footer nav in place for scroll interactions while adding the top header for route consistency.
+Next steps: Confirm header spacing looks correct on each page; adjust page-specific padding if needed.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Our Team CTA removal
+Code changes: Deleted the “Join Our Team / View Open Positions” block from `src/pages/OurTeam.jsx` so the page transitions directly from values into the director modal/footer.
+Decisions: Keep styling in case the CTA returns later; no other sections affected.
+Next steps: Verify spacing after the values grid feels balanced; adjust padding if a gap appears.
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Contact page green background
+Code changes: Adjusted `src/styles/main.css` so `.contact-page-dark` and `.location-section` now use rich green tones (`#1b402f` / `#1f4d38`) instead of the previous teal shades.
+Decisions: Keep typography/layout as-is; only the base colors changed.
+Next steps: Confirm contrast feels good across the contact page; tweak shades further if a lighter/darker green is preferred.
+
+Date: 2025-11-10
+Time: N/A (timestamp command unavailable)
+Topics: Flow footer color alignment
+Code changes: Set `FlowAnimation` wrapper background and `.location-section` color to the same dark green (`#1b402f`) so the contact page and footer share one continuous tone.
+Decisions: Removed the gradient/backdrop filters to keep the hue consistent; left other styling untouched.
+Next steps: Review the footer to ensure content remains readable; adjust text accents if needed.

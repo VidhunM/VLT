@@ -3543,10 +3543,10 @@ a.btn-our-people {
 /* Board of Directors Section */
 .board-section {
   background: #1a3a3a;
-  padding: 60px 0;
+  padding: clamp(48px, 6vw, 72px) 0;
   position: relative;
   overflow: visible;
-  min-height: 100vh;
+  min-height: clamp(640px, 100vh, 820px);
   display: flex;
   align-items: center;
 }
@@ -3575,17 +3575,19 @@ a.btn-our-people {
 .board-members-container {
   overflow: visible;
   position: relative;
-  height: 750px;
+  min-height: clamp(520px, 70vh, 640px);
+  height: auto;
   display: flex;
   align-items: center;
+  padding: clamp(24px, 6vh, 48px) 0;
 }
 
 .board-members-slider {
   display: flex;
-  gap: 2.5rem;
+  gap: clamp(1.8rem, 4vw, 2.5rem);
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   width: max-content;
-  align-items: center;
+  align-items: stretch;
   will-change: transform;
 }
 
@@ -3607,18 +3609,20 @@ a.btn-our-people {
 }
 
 .board-member-card {
-  flex: 0 0 520px;
+  flex: 0 0 clamp(320px, 42vw, 480px);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: 680px;
   justify-content: center;
+  min-height: clamp(420px, 60vh, 540px);
+  height: auto;
+  padding: clamp(16px, 4vh, 32px);
 }
 
 .board-member-image {
-  width: 380px;
-  height: 380px;
+  width: clamp(220px, 28vw, 320px);
+  height: clamp(220px, 28vw, 320px);
   border-radius: 50%;
   overflow: hidden;
   border: 5px solid #fff;
@@ -3689,15 +3693,15 @@ a.btn-our-people {
 }
 
 .board-member-name {
-  font-size: 3rem;
+  font-size: clamp(2rem, 3.4vw, 2.6rem);
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   color: #fff;
   letter-spacing: 0.5px;
 }
 
 .board-member-position {
-  font-size: 1.7rem;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
   color: #b8d4d4;
   margin: 0;
   font-weight: 500;
@@ -4117,8 +4121,8 @@ a.btn-our-people {
   }
   
   .board-section {
-    padding: 0;
-    min-height: 100vh;
+    padding: 48px 0 64px;
+    min-height: auto;
   }
   
   .board-header {
@@ -4131,21 +4135,23 @@ a.btn-our-people {
   }
   
   .board-members-container {
+    min-height: auto;
     height: auto;
-    min-height: 300px;
-    overflow: visible;
+    padding: 0;
   }
   
   .board-member-card {
-    flex: 0 0 200px;
-    height: 280px;
+    flex: 0 0 80vw;
+    min-height: 420px;
+    height: auto;
+    padding: 24px 16px;
     opacity: 1;
     transition: opacity 0.5s ease-out, transform 0.4s ease-out;
   }
   
   .board-member-image {
-    width: 120px;
-    height: 120px;
+    width: clamp(180px, 48vw, 220px);
+    height: clamp(180px, 48vw, 220px);
   }
   
   .board-member-image:hover .hover-dot {
@@ -4206,8 +4212,8 @@ a.btn-our-people {
   }
   
   .board-section {
-    padding: 0;
-    min-height: 90vh;
+    padding: 40px 0 56px;
+    min-height: auto;
   }
   
   .board-header {
@@ -4220,21 +4226,23 @@ a.btn-our-people {
   }
   
   .board-members-container {
+    min-height: auto;
     height: auto;
-    min-height: 250px;
-    overflow: visible;
+    padding: 0;
   }
   
   .board-member-card {
-    flex: 0 0 180px;
-    height: 220px;
+    flex: 0 0 88vw;
+    min-height: 360px;
+    height: auto;
+    padding: 20px 12px;
     opacity: 1;
     transition: opacity 0.6s ease-out, transform 0.5s ease-out;
   }
   
   .board-member-image {
-    width: 100px;
-    height: 100px;
+    width: clamp(160px, 52vw, 200px);
+    height: clamp(160px, 52vw, 200px);
   }
   
   .board-member-image:hover .hover-dot {
@@ -4438,7 +4446,7 @@ a.btn-our-people {
 /* ===== Contact Page - Split Layout ===== */
 .contact-page-dark {
   min-height: 100vh;
-  background: #16272B;
+  background: #1b402f;
   color: #fff;
   padding: 0;
   display: flex;
@@ -4612,7 +4620,7 @@ a.btn-our-people {
 /* Location Map Section */
 .location-section {
   width: 100%;
-  background: #16272B;
+  background: #1b402f;
   padding: 60px 0 80px 0;
 }
 
@@ -5168,21 +5176,25 @@ a.btn-our-people {
   }
 
   .board-members-container {
-    height: 500px;
+    min-height: 420px;
+    height: auto;
+    padding: 16px 0;
   }
-
+  
   .board-member-card {
-    flex: 0 0 280px;
-    height: 480px;
+    flex: 0 0 clamp(240px, 46vw, 320px);
+    min-height: 400px;
+    height: auto;
+    padding: 20px;
   }
-
+  
   .board-member-image {
-    width: 200px;
-    height: 200px;
+    width: clamp(180px, 40vw, 220px);
+    height: clamp(180px, 40vw, 220px);
   }
-
+  
   .board-member-name {
-    font-size: 1.8rem;
+    font-size: clamp(1.8rem, 4.2vw, 2.2rem);
   }
 }
 

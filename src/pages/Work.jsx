@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import MinimalistNav from '../components/MinimalistNav'
+import Header from '../components/Header'
 import ProjectSection from '../components/ProjectSection'
 import FlowAnimation from '../components/FlowAnimation'
 import { navigateWithCircle } from '../utils/navigation'
@@ -121,6 +122,7 @@ const Work = () => {
 
   return (
     <div className="page work">
+      <Header logoSrc={'/assets/Images/Vlt_logo1.png'} />
       <MinimalistNav />
       {/* Projects Showcase Section */}
       <section id="projects">

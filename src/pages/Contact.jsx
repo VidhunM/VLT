@@ -1,10 +1,12 @@
 import React from 'react'
 import MinimalistNav from '../components/MinimalistNav'
+import Header from '../components/Header'
 import FlowAnimation from '../components/FlowAnimation'
 
 const Contact = () => {
   return (
     <div className="contact-page-dark">
+      <Header logoSrc={'/assets/Images/Vlt_logo1.png'} />
       <MinimalistNav />
       <div className="contact-wrapper">
         <div className="contact-container">
