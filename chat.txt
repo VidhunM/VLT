@@ -530,7 +530,7 @@ Next steps: Review the arch spacing to confirm the taller cards don’t crowd ad
 
 Date: 2025-11-11
 Time: N/A (timestamp command unavailable)
-Topics: Projects arch width expansion + larger cards
-Code changes: Broadened `.project-mockup` width clamp to `clamp(320px, 28vw, 400px)` and widened all desktop horizontal `offsetX` clamps in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so the six-card arch spans wider again.
-Decisions: Keep rotations/height and mobile overrides as-is; mirror clamp values between data and CSS for consistency.
-Next steps: Visual pass to ensure the expanded arch still fits within the section without edge collisions.
+Topics: Projects arch width expansion + larger span
+Code changes: Widened desktop `--card-translate-x` clamps for all six cards in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, spreading the arch further across the section without altering card size.
+Decisions: Mirror clamp values between data and CSS; keep rotations and mobile overrides unchanged.
+Next steps: Visual pass to ensure the expanded arch still fits within the section and doesn’t clip near container edges.

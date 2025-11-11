@@ -4,6 +4,8 @@ import '../styles/projectShowcase.css'
 const ProjectSection = () => {
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef(null)
+  const cardsRef = useRef([])
+  const animationFrameRef = useRef(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,6 +28,90 @@ const ProjectSection = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (!isVisible) {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+        animationFrameRef.current = null
+      }
+      cardsRef.current.forEach((card) => {
+        if (!card) return
+        card.style.setProperty('--card-dynamic-translate-x', '0px')
+        card.style.setProperty('--card-dynamic-translate-y', '0px')
+        card.style.setProperty('--card-dynamic-rotate', '0deg')
+        if (card.dataset.baseZ) {
+          card.style.zIndex = card.dataset.baseZ
+        }
+      })
+      return
+    }
+
+    let start = null
+    const period = 6000
+    const directionalPush = 70
+    const rippleSpacing = 0.16
+    const rippleWidth = 0.45
+    const followAmplitude = 14
+    const liftAmplitude = 18
+    const twoPi = Math.PI * 2
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3)
+
+    const animate = (timestamp) => {
+      if (start === null) {
+        start = timestamp
+      }
+
+      const elapsed = timestamp - start
+      const theta = ((elapsed % period) / period) * twoPi
+      const normalized = ((theta % twoPi) + twoPi) % twoPi
+      const halfCycleIndex = Math.floor(normalized / Math.PI)
+      const withinHalf = (normalized % Math.PI) / Math.PI
+      const extremeSide = halfCycleIndex % 2 === 0 ? 'right' : 'left'
+      const rippleProgress = Math.sin(withinHalf * Math.PI)
+
+      cardsRef.current.forEach((card, idx) => {
+        if (!card) return
+
+        const sequenceIndex =
+          extremeSide === 'right' ? idx : cardsRef.current.length - 1 - idx
+        const activationRaw =
+          (rippleProgress - sequenceIndex * rippleSpacing) / rippleWidth
+        const clampedActivation = Math.max(0, Math.min(1, activationRaw))
+        const easedActivation = easeOutCubic(clampedActivation)
+        const directionalMagnitude =
+          (extremeSide === 'right' ? 1 : -1) * directionalPush * easedActivation
+        const lag = idx * 0.18
+        const localTheta = theta - lag
+        const follower = Math.sin(localTheta) * followAmplitude * easedActivation
+        const lift = (1 - Math.cos(localTheta)) * liftAmplitude * easedActivation
+
+        const cardX = directionalMagnitude + follower
+        const cardY = lift
+        const rotateAdjustment =
+          extremeSide === 'right' ? easedActivation * 3 : -easedActivation * 3
+
+        card.style.setProperty('--card-dynamic-translate-x', `${cardX}px`)
+        card.style.setProperty('--card-dynamic-translate-y', `${cardY}px`)
+        card.style.setProperty('--card-dynamic-rotate', `${rotateAdjustment}deg`)
+
+        if (card.dataset.baseZ) {
+          card.style.zIndex = card.dataset.baseZ
+        }
+      })
+
+      animationFrameRef.current = requestAnimationFrame(animate)
+    }
+
+    animationFrameRef.current = requestAnimationFrame(animate)
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+        animationFrameRef.current = null
+      }
+    }
+  }, [isVisible])
+
   const projects = [
     {
       id: 1,
@@ -35,7 +121,7 @@ const ProjectSection = () => {
       theme: "gradient",
       image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       position: "far-left",
-      offsetX: "clamp(-460px, -42vw, -320px)",
+      offsetX: "clamp(-460px, -40vw, -320px)",
       offsetY: "clamp(50px, 8vw, 90px)",
       rotation: -30,
       zIndex: 2
@@ -48,7 +134,7 @@ const ProjectSection = () => {
       theme: "dark",
       image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       position: "left",
-      offsetX: "clamp(-320px, -30vw, -200px)",
+      offsetX: "clamp(-320px, -28vw, -200px)",
       offsetY: "clamp(20px, 2vw, 50px)",
       rotation: -18,
       zIndex: 3
@@ -62,7 +148,7 @@ const ProjectSection = () => {
       theme: "light",
       image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       position: "center-left",
-      offsetX: "clamp(-180px, -18vw, -100px)",
+      offsetX: "clamp(-90px, -16vw, -90px)",
       offsetY: "clamp(-20px, -4vw, 20px)",
       rotation: -6,
       zIndex: 5
@@ -75,7 +161,7 @@ const ProjectSection = () => {
       theme: "dark",
       image: "https://images.unsplash.com/photo-1604079628040-94301bb21b14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       position: "center-right",
-      offsetX: "clamp(100px, 18vw, 190px)",
+      offsetX: "clamp(90px, 16vw, 180px)",
       offsetY: "clamp(-20px, -4vw, 20px)",
       rotation: 6,
       zIndex: 5
@@ -87,7 +173,7 @@ const ProjectSection = () => {
       type: "card",
       theme: "white",
       position: "right",
-      offsetX: "clamp(230px, 30vw, 340px)",
+      offsetX: "clamp(240px, 28vw, 340px)",
       offsetY: "clamp(20px, 2vw, 50px)",
       rotation: 18,
       zIndex: 5
@@ -99,26 +185,40 @@ const ProjectSection = () => {
       type: "card",
       theme: "dark",
       position: "far-right",
-      offsetX: "clamp(360px, 42vw, 480px)",
+      offsetX: "clamp(360px, 40vw, 480px)",
       offsetY: "clamp(50px, 8vw, 90px)",
       rotation: 30,
       zIndex: 6
     }
   ]
 
-  const renderProject = (project) => {
+  const renderProject = (project, index) => {
     const baseClasses = `project-mockup project-${project.type} project-${project.theme} project-${project.position}`
     const animationClass = isVisible ? 'animate-in' : ''
     const cardStyle = {
-      '--card-translate-x': typeof project.offsetX === 'number' ? `${project.offsetX}px` : project.offsetX,
-      '--card-translate-y': typeof project.offsetY === 'number' ? `${project.offsetY}px` : project.offsetY,
-      '--card-rotate': `${project.rotation ?? 0}deg`,
-      '--card-z-index': `${project.zIndex ?? 1}`
+      '--card-base-translate-x':
+        typeof project.offsetX === 'number' ? `${project.offsetX}px` : project.offsetX,
+      '--card-base-translate-y':
+        typeof project.offsetY === 'number' ? `${project.offsetY}px` : project.offsetY,
+      '--card-base-rotate': `${project.rotation ?? 0}deg`,
+      '--card-dynamic-translate-x': '0px',
+      '--card-dynamic-translate-y': '0px',
+      '--card-dynamic-rotate': '0deg',
+      zIndex: project.zIndex ?? 1
+    }
+    const setCardRef = (el) => {
+      cardsRef.current[index] = el
     }
 
     if (project.type === 'mobile') {
       return (
-        <div key={project.id} className={`${baseClasses} ${animationClass}`} style={cardStyle}>
+        <div
+          key={project.id}
+          className={`${baseClasses} ${animationClass}`}
+          style={cardStyle}
+          ref={setCardRef}
+          data-base-z={project.zIndex ?? 1}
+        >
           <div className="mockup-frame mobile-frame">
             <div className="mockup-screen">
               <div className="mockup-header">
@@ -148,7 +248,13 @@ const ProjectSection = () => {
 
     if (project.type === 'website') {
       return (
-        <div key={project.id} className={`${baseClasses} ${animationClass}`} style={cardStyle}>
+        <div
+          key={project.id}
+          className={`${baseClasses} ${animationClass}`}
+          style={cardStyle}
+          ref={setCardRef}
+          data-base-z={project.zIndex ?? 1}
+        >
           <div className="mockup-frame website-frame">
             <div className="mockup-screen">
               <div className="website-header">
@@ -179,7 +285,13 @@ const ProjectSection = () => {
 
     if (project.type === 'card') {
       return (
-        <div key={project.id} className={`${baseClasses} ${animationClass}`} style={cardStyle}>
+        <div
+          key={project.id}
+          className={`${baseClasses} ${animationClass}`}
+          style={cardStyle}
+          ref={setCardRef}
+          data-base-z={project.zIndex ?? 1}
+        >
           <div className="mockup-frame card-frame">
             <div className="mockup-screen">
               {project.theme === 'white' ? (
@@ -221,9 +333,8 @@ const ProjectSection = () => {
           <h2 className="projects-showcase-title">OUR PROJECTS</h2>
           <p className="projects-showcase-subtitle">Creative solutions that make a difference</p>
         </div>
-        
-        <div className="projects-showcase-grid">
-          {projects.map(project => renderProject(project))}
+        <div className="projects-showcase-stage">
+          {projects.map((project, index) => renderProject(project, index))}
         </div>
       </div>
     </section>

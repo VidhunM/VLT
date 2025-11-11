@@ -34,30 +34,44 @@
   margin: 0;
 }
 
-.projects-showcase-grid {
+.projects-showcase-stage {
+  position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
-  perspective: 1200px;
-  position: relative;
+  align-items: flex-start;
+  perspective: 1400px;
   height: 640px;
+  width: clamp(960px, 80vw, 1320px);
+  margin: 0 auto;
+  padding: 0 2rem;
+  transform-style: preserve-3d;
 }
 
 .project-mockup {
   position: absolute;
-  width: clamp(320px, 28vw, 400px);
+  --card-base-translate-x: 0px;
+  --card-base-translate-y: 0px;
+  --card-base-rotate: 0deg;
+  --card-dynamic-translate-x: 0px;
+  --card-dynamic-translate-y: 0px;
+  --card-dynamic-rotate: 0deg;
+  width: clamp(280px, 24vw, 340px);
   height: clamp(460px, 38vw, 600px);
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
   transform-style: preserve-3d;
-  transition: all 0.8s ease;
+  transition: opacity 0.8s ease;
   opacity: 0;
   left: 50%;
   top: 50%;
-  z-index: var(--card-z-index, 1);
+  z-index: 1;
+  will-change: transform;
   transform: translate(-50%, -50%)
-    translate(var(--card-translate-x, 0px), var(--card-translate-y, 0px))
-    rotate(var(--card-rotate, 0deg));
+    translate(
+      calc(var(--card-base-translate-x) + var(--card-dynamic-translate-x)),
+      calc(var(--card-base-translate-y) + var(--card-dynamic-translate-y))
+    )
+    rotate(calc(var(--card-base-rotate) + var(--card-dynamic-rotate)));
 }
 
 .project-mockup.animate-in {
@@ -69,45 +83,39 @@
 }
 
 .project-far-left {
-  --card-translate-x: clamp(-460px, -42vw, -320px);
-  --card-translate-y: clamp(50px, 8vw, 90px);
-  --card-rotate: -30deg;
-  --card-z-index: 2;
+  --card-base-translate-x: clamp(-460px, -40vw, -320px);
+  --card-base-translate-y: clamp(50px, 8vw, 90px);
+  --card-base-rotate: -30deg;
 }
 
 .project-left {
-  --card-translate-x: clamp(-320px, -30vw, -200px);
-  --card-translate-y: clamp(20px, 2vw, 50px);
-  --card-rotate: -18deg;
-  --card-z-index: 3;
+  --card-base-translate-x: clamp(-320px, -28vw, -200px);
+  --card-base-translate-y: clamp(20px, 2vw, 50px);
+  --card-base-rotate: -18deg;
 }
 
 .project-center-left {
-  --card-translate-x: clamp(-180px, -18vw, -100px);
-  --card-translate-y: clamp(-20px, -4vw, 20px);
-  --card-rotate: -6deg;
-  --card-z-index: 5;
+  --card-base-translate-x: clamp(-180px, -16vw, -90px);
+  --card-base-translate-y: clamp(-20px, -4vw, 20px);
+  --card-base-rotate: -6deg;
 }
 
 .project-center-right {
-  --card-translate-x: clamp(100px, 18vw, 190px);
-  --card-translate-y: clamp(-20px, -4vw, 20px);
-  --card-rotate: 6deg;
-  --card-z-index: 5;
+  --card-base-translate-x: clamp(120px, 16vw, 180px);
+  --card-base-translate-y: clamp(-20px, -4vw, 20px);
+  --card-base-rotate: 6deg;
 }
 
 .project-right {
-  --card-translate-x: clamp(230px, 30vw, 340px);
-  --card-translate-y: clamp(20px, 2vw, 50px);
-  --card-rotate: 18deg;
-  --card-z-index: 3;
+  --card-base-translate-x: clamp(240px, 28vw, 340px);
+  --card-base-translate-y: clamp(20px, 2vw, 50px);
+  --card-base-rotate: 18deg;
 }
 
 .project-far-right {
-  --card-translate-x: clamp(360px, 42vw, 480px);
-  --card-translate-y: clamp(50px, 8vw, 90px);
-  --card-rotate: 30deg;
-  --card-z-index: 2;
+  --card-base-translate-x: clamp(360px, 40vw, 480px);
+  --card-base-translate-y: clamp(50px, 8vw, 90px);
+  --card-base-rotate: 30deg;
 }
 
 .mobile-frame {
@@ -565,7 +573,7 @@
     font-size: 1rem;
   }
 
-  .projects-showcase-grid {
+  .projects-showcase-stage {
     height: 600px;
     perspective: 500px;
     overflow: visible !important;
@@ -583,38 +591,33 @@
   }
 
   .project-far-left {
-    --card-translate-x: -260px;
-    --card-translate-y: 20px;
-    --card-rotate: -30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: -260px;
+    --card-base-translate-y: 20px;
+    --card-base-rotate: -30deg;
   }
 
   .project-left {
-    --card-translate-x: -140px;
-    --card-translate-y: -30px;
-    --card-rotate: -15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: -140px;
+    --card-base-translate-y: -30px;
+    --card-base-rotate: -15deg;
   }
 
   .project-center {
-    --card-translate-x: 0px;
-    --card-translate-y: -110px;
-    --card-rotate: 0deg;
-    --card-z-index: 5;
+    --card-base-translate-x: 0px;
+    --card-base-translate-y: -110px;
+    --card-base-rotate: 0deg;
   }
 
   .project-right {
-    --card-translate-x: 140px;
-    --card-translate-y: -30px;
-    --card-rotate: 15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: 140px;
+    --card-base-translate-y: -30px;
+    --card-base-rotate: 15deg;
   }
 
   .project-far-right {
-    --card-translate-x: 260px;
-    --card-translate-y: 20px;
-    --card-rotate: 30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: 260px;
+    --card-base-translate-y: 20px;
+    --card-base-rotate: 30deg;
   }
 
   .website-nav {
@@ -659,7 +662,7 @@
     margin: 0;
   }
 
-  .projects-showcase-grid {
+  .projects-showcase-stage {
     height: 580px;
     perspective: 550px;
     overflow: visible !important;
@@ -674,38 +677,33 @@
   }
 
   .project-far-left {
-    --card-translate-x: -220px;
-    --card-translate-y: 30px;
-    --card-rotate: -30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: -220px;
+    --card-base-translate-y: 30px;
+    --card-base-rotate: -30deg;
   }
 
   .project-left {
-    --card-translate-x: -120px;
-    --card-translate-y: -20px;
-    --card-rotate: -15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: -120px;
+    --card-base-translate-y: -20px;
+    --card-base-rotate: -15deg;
   }
 
   .project-center {
-    --card-translate-x: 0px;
-    --card-translate-y: -100px;
-    --card-rotate: 0deg;
-    --card-z-index: 5;
+    --card-base-translate-x: 0px;
+    --card-base-translate-y: -100px;
+    --card-base-rotate: 0deg;
   }
 
   .project-right {
-    --card-translate-x: 120px;
-    --card-translate-y: -20px;
-    --card-rotate: 15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: 120px;
+    --card-base-translate-y: -20px;
+    --card-base-rotate: 15deg;
   }
 
   .project-far-right {
-    --card-translate-x: 220px;
-    --card-translate-y: 30px;
-    --card-rotate: 30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: 220px;
+    --card-base-translate-y: 30px;
+    --card-base-rotate: 30deg;
   }
 
   .website-title {
@@ -755,7 +753,7 @@
     margin: 0;
   }
 
-  .projects-showcase-grid {
+  .projects-showcase-stage {
     height: 550px;
     perspective: 450px;
     overflow: visible !important;
@@ -770,38 +768,33 @@
   }
 
   .project-far-left {
-    --card-translate-x: -200px;
-    --card-translate-y: 25px;
-    --card-rotate: -30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: -200px;
+    --card-base-translate-y: 25px;
+    --card-base-rotate: -30deg;
   }
 
   .project-left {
-    --card-translate-x: -110px;
-    --card-translate-y: -15px;
-    --card-rotate: -15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: -110px;
+    --card-base-translate-y: -15px;
+    --card-base-rotate: -15deg;
   }
 
   .project-center {
-    --card-translate-x: 0px;
-    --card-translate-y: -90px;
-    --card-rotate: 0deg;
-    --card-z-index: 5;
+    --card-base-translate-x: 0px;
+    --card-base-translate-y: -90px;
+    --card-base-rotate: 0deg;
   }
 
   .project-right {
-    --card-translate-x: 110px;
-    --card-translate-y: -15px;
-    --card-rotate: 15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: 110px;
+    --card-base-translate-y: -15px;
+    --card-base-rotate: 15deg;
   }
 
   .project-far-right {
-    --card-translate-x: 200px;
-    --card-translate-y: 25px;
-    --card-rotate: 30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: 200px;
+    --card-base-translate-y: 25px;
+    --card-base-rotate: 30deg;
   }
 
   .website-title {
@@ -837,7 +830,7 @@
     margin: 0;
   }
 
-  .projects-showcase-grid {
+  .projects-showcase-stage {
     height: 520px;
     perspective: 480px;
     overflow: visible !important;
@@ -852,38 +845,33 @@
   }
 
   .project-far-left {
-    --card-translate-x: -190px;
-    --card-translate-y: 20px;
-    --card-rotate: -30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: -190px;
+    --card-base-translate-y: 20px;
+    --card-base-rotate: -30deg;
   }
 
   .project-left {
-    --card-translate-x: -105px;
-    --card-translate-y: -10px;
-    --card-rotate: -15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: -105px;
+    --card-base-translate-y: -10px;
+    --card-base-rotate: -15deg;
   }
 
   .project-center {
-    --card-translate-x: 0px;
-    --card-translate-y: -85px;
-    --card-rotate: 0deg;
-    --card-z-index: 5;
+    --card-base-translate-x: 0px;
+    --card-base-translate-y: -85px;
+    --card-base-rotate: 0deg;
   }
 
   .project-right {
-    --card-translate-x: 105px;
-    --card-translate-y: -10px;
-    --card-rotate: 15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: 105px;
+    --card-base-translate-y: -10px;
+    --card-base-rotate: 15deg;
   }
 
   .project-far-right {
-    --card-translate-x: 190px;
-    --card-translate-y: 20px;
-    --card-rotate: 30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: 190px;
+    --card-base-translate-y: 20px;
+    --card-base-rotate: 30deg;
   }
 }
 
@@ -902,7 +890,7 @@
     margin: 0;
   }
 
-  .projects-showcase-grid {
+  .projects-showcase-stage {
     height: 500px;
     perspective: 400px;
     overflow: visible !important;
@@ -917,38 +905,33 @@
   }
 
   .project-far-left {
-    --card-translate-x: -170px;
-    --card-translate-y: 20px;
-    --card-rotate: -30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: -170px;
+    --card-base-translate-y: 20px;
+    --card-base-rotate: -30deg;
   }
 
   .project-left {
-    --card-translate-x: -95px;
-    --card-translate-y: -10px;
-    --card-rotate: -15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: -95px;
+    --card-base-translate-y: -10px;
+    --card-base-rotate: -15deg;
   }
 
   .project-center {
-    --card-translate-x: 0px;
-    --card-translate-y: -80px;
-    --card-rotate: 0deg;
-    --card-z-index: 5;
+    --card-base-translate-x: 0px;
+    --card-base-translate-y: -80px;
+    --card-base-rotate: 0deg;
   }
 
   .project-right {
-    --card-translate-x: 95px;
-    --card-translate-y: -10px;
-    --card-rotate: 15deg;
-    --card-z-index: 3;
+    --card-base-translate-x: 95px;
+    --card-base-translate-y: -10px;
+    --card-base-rotate: 15deg;
   }
 
   .project-far-right {
-    --card-translate-x: 170px;
-    --card-translate-y: 20px;
-    --card-rotate: 30deg;
-    --card-z-index: 2;
+    --card-base-translate-x: 170px;
+    --card-base-translate-y: 20px;
+    --card-base-rotate: 30deg;
   }
 
   .website-title {
