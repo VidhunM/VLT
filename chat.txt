@@ -395,6 +395,13 @@ Next steps: Review the footer to ensure content remains readable; adjust text ac
 
 Date: 2025-11-11
 Time: N/A (timestamp command unavailable)
+Topics: Project showcase card width reduction
+Code changes: Narrowed `.project-mockup` clamps in `src/styles/projectShowcase.css` to `clamp(280px, 24vw, 340px)` wide and `clamp(380px, 32vw, 470px)` tall for slimmer cards.
+Decisions: Keep all offsets/animations unchanged for a minimal visual tweak.
+Next steps: Verify the projects arch still has comfortable spacing across breakpoints.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
 Topics: Our Projects rightmost card orientation tweak
 Code changes: In `src/components/ProjectSection.jsx`, set the far-right card rotation to 0° and raised its z-index to 6 so it faces forward and appears above adjacent cards.
 Decisions: Leave existing offsets untouched for a minimal, targeted adjustment.
@@ -499,3 +506,31 @@ Topics: Our Projects card size bump
 Code changes: Increased the `clamp` ranges for `.project-mockup` width/height in `src/styles/projectShowcase.css` to make each card a bit bigger while preserving offsets and layout.
 Decisions: Delay offset changes until after visually confirming spacing with the new size.
 Next steps: Preview the projects arch to verify the larger cards still fit comfortably and adjust positioning if needed.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Project showcase card height increase
+Code changes: Raised `.project-mockup` height clamp in `src/styles/projectShowcase.css` to `clamp(420px, 34vw, 540px)` while keeping the new narrower width.
+Decisions: Preserve all translate/rotate settings so only the card proportions shift.
+Next steps: Recheck the projects arch to confirm taller cards still clear neighboring sections without overlap.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Projects arch width tightening
+Code changes: Reduced horizontal `--card-translate-x` clamps for all six cards in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, pulling the arc closer to center while leaving mobile overrides untouched.
+Decisions: Mirror clamp values between data and CSS to keep behavior in sync; no changes to rotation or height.
+Next steps: Visual sweep across desktop/tablet breakpoints to ensure the tighter layout still reads cleanly.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Project showcase card height boost
+Code changes: Increased `.project-mockup` height clamp in `src/styles/projectShowcase.css` to `clamp(460px, 38vw, 600px)` so desktop/tablet cards appear taller while mobile overrides remain unchanged.
+Decisions: Leave width and transform variables untouched for a simple proportion update.
+Next steps: Review the arch spacing to confirm the taller cards don’t crowd adjacent sections.
+
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Projects arch width expansion + larger cards
+Code changes: Broadened `.project-mockup` width clamp to `clamp(320px, 28vw, 400px)` and widened all desktop horizontal `offsetX` clamps in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css` so the six-card arch spans wider again.
+Decisions: Keep rotations/height and mobile overrides as-is; mirror clamp values between data and CSS for consistency.
+Next steps: Visual pass to ensure the expanded arch still fits within the section without edge collisions.

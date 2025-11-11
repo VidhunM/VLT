@@ -45,8 +45,8 @@
 
 .project-mockup {
   position: absolute;
-  width: clamp(320px, 28vw, 390px);
-  height: clamp(440px, 38vw, 520px);
+  width: clamp(320px, 28vw, 400px);
+  height: clamp(460px, 38vw, 600px);
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
   transform-style: preserve-3d;
@@ -69,42 +69,42 @@
 }
 
 .project-far-left {
-  --card-translate-x: clamp(-460px, -40vw, -300px);
+  --card-translate-x: clamp(-460px, -42vw, -320px);
   --card-translate-y: clamp(50px, 8vw, 90px);
   --card-rotate: -30deg;
   --card-z-index: 2;
 }
 
 .project-left {
-  --card-translate-x: clamp(-320px, -28vw, -200px);
+  --card-translate-x: clamp(-320px, -30vw, -200px);
   --card-translate-y: clamp(20px, 2vw, 50px);
   --card-rotate: -18deg;
   --card-z-index: 3;
 }
 
 .project-center-left {
-  --card-translate-x: clamp(-170px, -16vw, -90px);
+  --card-translate-x: clamp(-180px, -18vw, -100px);
   --card-translate-y: clamp(-20px, -4vw, 20px);
   --card-rotate: -6deg;
   --card-z-index: 5;
 }
 
 .project-center-right {
-  --card-translate-x: clamp(90px, 16vw, 170px);
+  --card-translate-x: clamp(100px, 18vw, 190px);
   --card-translate-y: clamp(-20px, -4vw, 20px);
   --card-rotate: 6deg;
   --card-z-index: 5;
 }
 
 .project-right {
-  --card-translate-x: clamp(210px, 28vw, 330px);
+  --card-translate-x: clamp(230px, 30vw, 340px);
   --card-translate-y: clamp(20px, 2vw, 50px);
   --card-rotate: 18deg;
   --card-z-index: 3;
 }
 
 .project-far-right {
-  --card-translate-x: clamp(330px, 40vw, 470px);
+  --card-translate-x: clamp(360px, 42vw, 480px);
   --card-translate-y: clamp(50px, 8vw, 90px);
   --card-rotate: 30deg;
   --card-z-index: 2;
