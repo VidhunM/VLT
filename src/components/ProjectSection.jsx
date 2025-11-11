@@ -35,7 +35,7 @@ const ProjectSection = () => {
       theme: "gradient",
       image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       position: "far-left",
-      offsetX: "clamp(-400px, -36vw, -240px)",
+      offsetX: "clamp(-460px, -40vw, -300px)",
       offsetY: "clamp(50px, 8vw, 90px)",
       rotation: -30,
       zIndex: 2
@@ -48,7 +48,7 @@ const ProjectSection = () => {
       theme: "dark",
       image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       position: "left",
-      offsetX: "clamp(-270px, -24vw, -160px)",
+      offsetX: "clamp(-320px, -28vw, -200px)",
       offsetY: "clamp(20px, 2vw, 50px)",
       rotation: -18,
       zIndex: 3
@@ -62,7 +62,7 @@ const ProjectSection = () => {
       theme: "light",
       image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       position: "center-left",
-      offsetX: "clamp(-120px, -12vw, -60px)",
+      offsetX: "clamp(-170px, -16vw, -90px)",
       offsetY: "clamp(-20px, -4vw, 20px)",
       rotation: -6,
       zIndex: 5
@@ -75,7 +75,7 @@ const ProjectSection = () => {
       theme: "dark",
       image: "https://images.unsplash.com/photo-1604079628040-94301bb21b14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
       position: "center-right",
-      offsetX: "clamp(60px, 12vw, 120px)",
+      offsetX: "clamp(90px, 16vw, 170px)",
       offsetY: "clamp(-20px, -4vw, 20px)",
       rotation: 6,
       zIndex: 5
@@ -87,10 +87,10 @@ const ProjectSection = () => {
       type: "card",
       theme: "white",
       position: "right",
-      offsetX: "clamp(160px, 24vw, 270px)",
+      offsetX: "clamp(210px, 28vw, 330px)",
       offsetY: "clamp(20px, 2vw, 50px)",
       rotation: 18,
-      zIndex: 3
+      zIndex: 5
     },
     {
       id: 6,
@@ -99,10 +99,10 @@ const ProjectSection = () => {
       type: "card",
       theme: "dark",
       position: "far-right",
-      offsetX: "clamp(260px, 36vw, 400px)",
+      offsetX: "clamp(330px, 40vw, 470px)",
       offsetY: "clamp(50px, 8vw, 90px)",
       rotation: 30,
-      zIndex: 2
+      zIndex: 6
     }
   ]
 

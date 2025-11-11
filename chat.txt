@@ -393,6 +393,13 @@ Code changes: Set `FlowAnimation` wrapper background and `.location-section` col
 Decisions: Removed the gradient/backdrop filters to keep the hue consistent; left other styling untouched.
 Next steps: Review the footer to ensure content remains readable; adjust text accents if needed.
 
+Date: 2025-11-11
+Time: N/A (timestamp command unavailable)
+Topics: Our Projects rightmost card orientation tweak
+Code changes: In `src/components/ProjectSection.jsx`, set the far-right card rotation to 0° and raised its z-index to 6 so it faces forward and appears above adjacent cards.
+Decisions: Leave existing offsets untouched for a minimal, targeted adjustment.
+Next steps: Visual pass on the projects arch to confirm the new orientation doesn’t cause overlap or spacing issues.
+
 Date: 2025-11-10
 Time: N/A (timestamp command unavailable)
 Topics: Our Projects arch layout update
