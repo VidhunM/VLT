@@ -163,7 +163,7 @@ const ProjectSection = () => {
       position: "center-right",
       offsetX: "clamp(90px, 16vw, 180px)",
       offsetY: "clamp(-20px, -4vw, 20px)",
-      rotation: 6,
+      rotation: 4,
       zIndex: 5
     },
     {
@@ -187,7 +187,7 @@ const ProjectSection = () => {
       position: "far-right",
       offsetX: "clamp(360px, 40vw, 480px)",
       offsetY: "clamp(50px, 8vw, 90px)",
-      rotation: 30,
+      rotation: 20,
       zIndex: 6
     }
   ]
