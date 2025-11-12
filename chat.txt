@@ -534,3 +534,26 @@ Topics: Projects arch width expansion + larger span
 Code changes: Widened desktop `--card-translate-x` clamps for all six cards in both `src/components/ProjectSection.jsx` and `src/styles/projectShowcase.css`, spreading the arch further across the section without altering card size.
 Decisions: Mirror clamp values between data and CSS; keep rotations and mobile overrides unchanged.
 Next steps: Visual pass to ensure the expanded arch still fits within the section and doesn’t clip near container edges.
+
+Date: 2025-11-12
+Time: N/A (timestamp command unavailable)
+Topics: Project cards image-only layout
+Code changes: Updated `src/components/ProjectSection.jsx` to render each project card as a single full-bleed image (with placeholder fallback) and added new wrapper styles in `src/styles/projectShowcase.css` so the images fill the card and inherit the arch transforms.
+Decisions: Remove all previous text/mockup chrome while leaving transforms and animation logic intact for minimal behavioral change.
+Next steps: Visual pass to confirm images cover each card correctly on desktop/mobile and that placeholders appear if any image is missing.
+
+Date: 2025-11-12
+Time: N/A (timestamp command unavailable)
+Topics: Projects arch one-way ripple
+Code changes: Simplified the showcase animation in `src/components/ProjectSection.jsx` so the wave now travels from left to right on one cycle and right to left on the next, eliminating the previous double-hit behavior. Updated the per-card sequencing math to respect the single-direction pass.
+Decisions: Preserve existing amplitudes and easing; only adjust the timing logic to remove the double-touch per side.
+Next steps: Verify the motion feels intentional—left sweep, settle, then right sweep—and tune the period or spacing if you want a slower/faster pass.
+
+Date: 2025-11-12
+Time: N/A (timestamp command unavailable)
+Topics: Projects horizontal hits only
+Code changes: Removed the vertical lift component from the project showcase animation in `src/components/ProjectSection.jsx`, keeping horizontal motion and rotations while forcing translate-y to stay at zero during each hit.
+Decisions: Maintain the existing easing and lateral offsets; strip vertical swing for a cleaner glide.
+Next steps: Confirm the animation now feels level across the cycle and adjust horizontal spacing if needed.
+
+

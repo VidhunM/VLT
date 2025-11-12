@@ -62,33 +62,31 @@ const ProjectSection = () => {
       }
 
       const elapsed = timestamp - start
-      const theta = ((elapsed % period) / period) * twoPi
-      const normalized = ((theta % twoPi) + twoPi) % twoPi
-      const halfCycleIndex = Math.floor(normalized / Math.PI)
-      const withinHalf = (normalized % Math.PI) / Math.PI
-      const extremeSide = halfCycleIndex % 2 === 0 ? 'right' : 'left'
-      const rippleProgress = Math.sin(withinHalf * Math.PI)
+      const cycleProgress = (elapsed % period) / period
+      const cycleIndex = Math.floor(elapsed / period)
+      const activeSide = cycleIndex % 2 === 0 ? 'left' : 'right'
+      const waveEnvelope = Math.sin(cycleProgress * Math.PI)
+      const waveStrength = waveEnvelope <= 0 ? 0 : easeOutCubic(waveEnvelope)
 
       cardsRef.current.forEach((card, idx) => {
         if (!card) return
 
         const sequenceIndex =
-          extremeSide === 'right' ? idx : cardsRef.current.length - 1 - idx
+          activeSide === 'right' ? cardsRef.current.length - 1 - idx : idx
         const activationRaw =
-          (rippleProgress - sequenceIndex * rippleSpacing) / rippleWidth
+          (waveStrength - sequenceIndex * rippleSpacing) / rippleWidth
         const clampedActivation = Math.max(0, Math.min(1, activationRaw))
         const easedActivation = easeOutCubic(clampedActivation)
         const directionalMagnitude =
-          (extremeSide === 'right' ? 1 : -1) * directionalPush * easedActivation
-        const lag = idx * 0.18
-        const localTheta = theta - lag
-        const follower = Math.sin(localTheta) * followAmplitude * easedActivation
-        const lift = (1 - Math.cos(localTheta)) * liftAmplitude * easedActivation
+          (activeSide === 'right' ? 1 : -1) * directionalPush * easedActivation
+        const lag = idx * 0.22
+        const localTheta = cycleProgress * twoPi - lag
+    const follower = Math.sin(localTheta) * followAmplitude * easedActivation
 
-        const cardX = directionalMagnitude + follower
-        const cardY = lift
+    const cardX = directionalMagnitude + follower
+    const cardY = 0
         const rotateAdjustment =
-          extremeSide === 'right' ? easedActivation * 3 : -easedActivation * 3
+          activeSide === 'right' ? easedActivation * 3 : -easedActivation * 3
 
         card.style.setProperty('--card-dynamic-translate-x', `${cardX}px`)
         card.style.setProperty('--card-dynamic-translate-y', `${cardY}px`)
@@ -119,10 +117,10 @@ const ProjectSection = () => {
       subtitle: "Community Gallery",
       type: "mobile",
       theme: "gradient",
-      image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      image: "https://images.unsplash.com/photo-1574285013029-29296a71930e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600",
       position: "far-left",
-      offsetX: "clamp(-460px, -40vw, -320px)",
-      offsetY: "clamp(50px, 8vw, 90px)",
+      offsetX: "clamp(-1020px, -50vw, -320px)",
+      offsetY: "clamp(120px, 10vw, 50px)",
       rotation: -30,
       zIndex: 2
     },
@@ -132,9 +130,9 @@ const ProjectSection = () => {
       subtitle: "The Corridor is a new gallery to discover unique, one-of-a-kind works of art.",
       type: "mobile",
       theme: "dark",
-      image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      image: "https://images.unsplash.com/photo-1564754943164-e83c08469116?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8dmVydGljYWx8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600",
       position: "left",
-      offsetX: "clamp(-320px, -28vw, -200px)",
+      offsetX: "clamp(-380px, -38vw, -200px)",
       offsetY: "clamp(20px, 2vw, 50px)",
       rotation: -18,
       zIndex: 3
@@ -146,11 +144,11 @@ const ProjectSection = () => {
       description: "In a world where unresolved conflicts and ineffective communication can lead to harm and disconnection, we provide tools for healthy relationships and effective communication.",
       type: "website",
       theme: "light",
-      image: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      image: "https://images.unsplash.com/photo-1531966662811-c6501e46eda6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHZlcnRpY2FsfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600",
       position: "center-left",
       offsetX: "clamp(-90px, -16vw, -90px)",
       offsetY: "clamp(-20px, -4vw, 20px)",
-      rotation: -6,
+      rotation: -4,
       zIndex: 5
     },
     {
@@ -159,11 +157,11 @@ const ProjectSection = () => {
       subtitle: "An immersive app that lets teams explore design systems in context.",
       type: "mobile",
       theme: "dark",
-      image: "https://images.unsplash.com/photo-1604079628040-94301bb21b14?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+      image: "https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHZlcnRpY2FsfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600",
       position: "center-right",
-      offsetX: "clamp(90px, 16vw, 180px)",
-      offsetY: "clamp(-20px, -4vw, 20px)",
-      rotation: 4,
+      offsetX: "clamp(220px, 16vw, 180px)",
+      offsetY: "clamp(-18px, -4vw, 18px)",
+      rotation: 6,
       zIndex: 5
     },
     {
@@ -172,10 +170,11 @@ const ProjectSection = () => {
       subtitle: "AI • MOTION • WEB • BRAND • STRATEGY • AI • MOTION • WEB",
       type: "card",
       theme: "white",
+      image: "https://images.unsplash.com/photo-1530236668220-b9c6c098c9aa?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHZlcnRpY2FsfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600",
       position: "right",
-      offsetX: "clamp(240px, 28vw, 340px)",
+      offsetX: "clamp(520px, 28vw, 340px)",
       offsetY: "clamp(20px, 2vw, 50px)",
-      rotation: 18,
+      rotation: 10,
       zIndex: 5
     },
     {
@@ -184,8 +183,9 @@ const ProjectSection = () => {
       subtitle: "Design System",
       type: "card",
       theme: "dark",
+      image: "https://images.unsplash.com/photo-1564698010692-0fe284aae806?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHZlcnRpY2FsfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600",
       position: "far-right",
-      offsetX: "clamp(360px, 40vw, 480px)",
+      offsetX: "clamp(820px, 40vw, 480px)",
       offsetY: "clamp(50px, 8vw, 90px)",
       rotation: 20,
       zIndex: 6
@@ -210,120 +210,28 @@ const ProjectSection = () => {
       cardsRef.current[index] = el
     }
 
-    if (project.type === 'mobile') {
-      return (
-        <div
-          key={project.id}
-          className={`${baseClasses} ${animationClass}`}
-          style={cardStyle}
-          ref={setCardRef}
-          data-base-z={project.zIndex ?? 1}
-        >
-          <div className="mockup-frame mobile-frame">
-            <div className="mockup-screen">
-              <div className="mockup-header">
-                <div className="status-bar">
-                  <span className="time">9:41</span>
-                  <div className="status-icons">
-                    <span className="signal"></span>
-                    <span className="wifi"></span>
-                    <span className="battery"></span>
-                  </div>
-                </div>
-              </div>
-              <div className="mockup-content">
-                <h3 className="mockup-title">{project.title}</h3>
-                <p className="mockup-subtitle">{project.subtitle}</p>
-                {project.image && (
-                  <div className="mockup-image">
-                    <img src={project.image} alt={project.title} />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    }
+    const imageUrl = project.image
+    const altText = project.title ? `${project.title} visual` : 'Project visual'
 
-    if (project.type === 'website') {
-      return (
-        <div
-          key={project.id}
-          className={`${baseClasses} ${animationClass}`}
-          style={cardStyle}
-          ref={setCardRef}
-          data-base-z={project.zIndex ?? 1}
-        >
-          <div className="mockup-frame website-frame">
-            <div className="mockup-screen">
-              <div className="website-header">
-                <div className="website-nav">
-                  <div className="logo">A</div>
-                  <nav className="nav-links">
-                    <a href="#">Services</a>
-                    <a href="#">Workshops</a>
-                    <a href="#">Our Team</a>
-                  </nav>
-                  <button className="cta-button">Request Consultation</button>
-                </div>
-              </div>
-              <div className="website-content">
-                <h2 className="website-title">{project.title}</h2>
-                <p className="website-subtitle">{project.subtitle}</p>
-                <p className="website-description">{project.description}</p>
-                <div className="website-features">
-                  <div className="feature-block">Training</div>
-                  <div className="feature-block">Facilitation</div>
-                </div>
-              </div>
+    return (
+      <div
+        key={project.id}
+        className={`${baseClasses} ${animationClass}`}
+        style={cardStyle}
+        ref={setCardRef}
+        data-base-z={project.zIndex ?? 1}
+      >
+        <div className="project-image-wrapper">
+          {imageUrl ? (
+            <img src={imageUrl} alt={altText} loading="lazy" />
+          ) : (
+            <div className="project-image-placeholder">
+              {project.title && <span>{project.title}</span>}
             </div>
-          </div>
+          )}
         </div>
-      )
-    }
-
-    if (project.type === 'card') {
-      return (
-        <div
-          key={project.id}
-          className={`${baseClasses} ${animationClass}`}
-          style={cardStyle}
-          ref={setCardRef}
-          data-base-z={project.zIndex ?? 1}
-        >
-          <div className="mockup-frame card-frame">
-            <div className="mockup-screen">
-              {project.theme === 'white' ? (
-                <div className="white-card-content">
-                  <div className="keyword-list">
-                    <div className="keyword">STRATEGY</div>
-                    <div className="keyword">AI</div>
-                    <div className="keyword">MOTION</div>
-                    <div className="keyword">WEB</div>
-                    <div className="keyword">BRAND</div>
-                    
-                  </div>
-                </div>
-              ) : (
-                <div className="dark-card-content">
-                  <h3 className="card-title">{project.title}</h3>
-                  <p className="card-subtitle">{project.subtitle}</p>
-                  <div className="geometric-shapes">
-                    <div className="shape circle"></div>
-                    <div className="shape square"></div>
-                    <div className="shape triangle"></div>
-                    <div className="shape grid-lines"></div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )
-    }
-
-    return null
+      </div>
+    )
   }
 
   return (
