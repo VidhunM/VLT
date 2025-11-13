@@ -216,22 +216,22 @@ const OurService = () => {
                     ? 'clamp(170px, 38vw, 260px)' 
                     : isMobile 
                     ? 'clamp(330px, 55vw, 460px)' 
-                    : 'clamp(280px, 32vw, 410px)',
+                    : 'clamp(280px, 28vw, 420px)',
                   height: isSmallMobile 
                     ? 'clamp(170px, 38vw, 260px)' 
                     : isMobile 
                     ? 'clamp(330px, 55vw, 460px)' 
-                    : 'clamp(390px, 48vw, 540px)',
+                    : 'clamp(280px, 28vw, 420px)',
                   marginLeft: isSmallMobile 
                     ? 'calc(-1 * clamp(170px, 38vw, 260px) / 2)' 
                     : isMobile 
                     ? 'calc(-1 * clamp(330px, 55vw, 460px) / 2)' 
-                    : 'calc(-1 * clamp(280px, 32vw, 410px) / 2)',
+                    : 'calc(-1 * clamp(280px, 28vw, 420px) / 2)',
                   marginTop: isSmallMobile 
                     ? 'calc(-1 * clamp(170px, 38vw, 260px) / 2)' 
                     : isMobile 
                     ? 'calc(-1 * clamp(330px, 55vw, 460px) / 2)' 
-                    : 'calc(-1 * clamp(390px, 48vw, 540px) / 2)',
+                    : 'calc(-1 * clamp(280px, 28vw, 420px) / 2)',
                   borderRadius: 30,
                   overflow: 'hidden',
                   background: isMobile ? '#808080' : '#111',
