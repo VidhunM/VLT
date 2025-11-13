@@ -18,13 +18,13 @@ const PROJECTS = [
     title: 'LUDEO®',
     category: 'Tech, Gaming',
     link: '#',
-    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80',
+    image: 'https://images.unsplash.com/photo-1533022139390-e31c488d69e2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fG1vYmlsZSUyMGFwcCUyMGRldmVsb3BtZW50fGVufDB8fDB8fHww',
   },
   {
     title: 'KTM AGENCY',
     category: 'Agency, PR',
     link: '#',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+    image: 'https://plus.unsplash.com/premium_photo-1688678097388-a0c77ea9ace1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGlvdHxlbnwwfHwwfHx8MA%3D%3D',
   },
   {
     title: 'NEIGHBORS & FRIENDS',

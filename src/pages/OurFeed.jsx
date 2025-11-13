@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Header from "../components/Header";
 
 const IMAGES = [
@@ -11,8 +11,8 @@ const IMAGES = [
   "https://images.unsplash.com/photo-1504208434309-cb69f4fe52b0?q=80&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1543852786-1cf6624b9987?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1499084732479-de2c02d45fc4?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1521312703500-9ce0c0a0e2d9?q=80&w=800&auto=format&fit=crop",
+  "https://plus.unsplash.com/premium_photo-1688686804638-fadb460edc4a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fGlvdHxlbnwwfHwwfHx8MA%3D%3D",
+  "https://images.unsplash.com/photo-1488229297570-58520851e868?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGlvdHxlbnwwfHwwfHx8MA%3D%3D",
   "https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?q=80&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=800&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop",
@@ -23,6 +23,89 @@ const IMAGES = [
 
 function OurFeed() {
   const ringGroupRef = useRef(null);
+  const [highlightIndex, setHighlightIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(3);
+  
+  // Responsive cards per view
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      if (window.innerWidth <= 768) {
+        setCardsPerView(1);
+      } else if (window.innerWidth <= 1024) {
+        setCardsPerView(2);
+      } else {
+        setCardsPerView(3);
+      }
+    };
+    
+    updateCardsPerView();
+    window.addEventListener('resize', updateCardsPerView);
+    return () => window.removeEventListener('resize', updateCardsPerView);
+  }, []);
+  
+  // Extended highlights data
+  const highlights = [
+    {
+      title: "OCTOBER 2025",
+      description: "Kue is honored to partner on a new short film that melds meticulous storytelling with bold, purpose-driven motion GFX.",
+      image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1600&auto=format&fit=crop"
+    },
+    {
+      title: "SEPTEMBER 2025",
+      description: "We're thrilled to begin a new partnership with award-winning leadership on upcoming brand, web, and AI campaigns.",
+      image: IMAGES[3]
+    },
+    {
+      title: "AUGUST 2025",
+      description: "We refreshed our brand and website to reflect a sharper, more intentional identity aligned with our partners.",
+      image: IMAGES[4]
+    },
+    {
+      title: "JULY 2025",
+      description: "Launching innovative design solutions that push creative boundaries and deliver exceptional user experiences.",
+      image: IMAGES[5]
+    },
+    {
+      title: "JUNE 2025",
+      description: "Collaborating with industry leaders to create cutting-edge digital experiences that resonate with global audiences.",
+      image: IMAGES[6]
+    },
+    {
+      title: "MAY 2025",
+      description: "Expanding our creative capabilities with new talent and advanced technologies to serve our growing client base.",
+      image: IMAGES[7]
+    },
+    {
+      title: "APRIL 2025",
+      description: "Celebrating milestone achievements in design excellence and strategic brand positioning across multiple sectors.",
+      image: IMAGES[8]
+    },
+    {
+      title: "MARCH 2025",
+      description: "Introducing breakthrough visual narratives that combine artistry with data-driven insights for maximum impact.",
+      image: IMAGES[9]
+    },
+    {
+      title: "FEBRUARY 2025",
+      description: "Building stronger connections through thoughtful design that speaks directly to audience needs and aspirations.",
+      image: IMAGES[10]
+    }
+  ];
+  
+  const maxIndex = Math.max(0, highlights.length - cardsPerView);
+  
+  // Reset index when cardsPerView changes
+  useEffect(() => {
+    setHighlightIndex((prev) => Math.min(prev, maxIndex));
+  }, [cardsPerView, maxIndex]);
+  
+  const handlePrev = () => {
+    setHighlightIndex((prev) => Math.max(0, prev - 1));
+  };
+  
+  const handleNext = () => {
+    setHighlightIndex((prev) => Math.min(maxIndex, prev + 1));
+  };
   
   // Build cylindrical ring structure (center column removed)
   const ringItems = useMemo(() => {
@@ -336,52 +419,144 @@ function OurFeed() {
           </div>
         </div>
 
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px 64px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                style={{
-                  background: "#fff",
-                  borderRadius: 10,
-                  boxShadow: "0 8px 28px rgba(0,0,0,0.08)",
-                  overflow: "hidden",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <div style={{ width: "100%", aspectRatio: "1 / 1", background: "#eee" }}>
-                  <img
-                    src={
-                      i === 2
-                        ? "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1600&auto=format&fit=crop"
-                        : IMAGES[(i + 3) % IMAGES.length]
-                    }
-                    alt="highlight"
-                    style={{
-                      width: "120%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                      willChange: "transform",
-                      animation: "feedPan 12s ease-in-out infinite",
-                    }}
-                  />
-                </div>
-                <div style={{ padding: 20 }}>
-                  <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: 0.5, marginBottom: 10 }}>
-                    {["OCTOBER 2025", "SEPTEMBER 2025", "AUGUST 2025"][i]}
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px 64px", position: "relative" }}>
+          {/* Navigation Arrows */}
+          <button
+            onClick={handlePrev}
+            disabled={highlightIndex === 0}
+            style={{
+              position: "absolute",
+              left: 0,
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 10,
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              border: "2px solid #000",
+              background: highlightIndex === 0 ? "#f5f5f5" : "#fff",
+              color: highlightIndex === 0 ? "#999" : "#000",
+              cursor: highlightIndex === 0 ? "not-allowed" : "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 20,
+              transition: "all 0.3s ease",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            }}
+            onMouseEnter={(e) => {
+              if (highlightIndex > 0) {
+                e.currentTarget.style.background = "#000";
+                e.currentTarget.style.color = "#fff";
+                e.currentTarget.style.transform = "translateY(-50%) scale(1.1)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (highlightIndex > 0) {
+                e.currentTarget.style.background = "#fff";
+                e.currentTarget.style.color = "#000";
+                e.currentTarget.style.transform = "translateY(-50%) scale(1)";
+              }
+            }}
+          >
+            ←
+          </button>
+          
+          <button
+            onClick={handleNext}
+            disabled={highlightIndex >= maxIndex}
+            style={{
+              position: "absolute",
+              right: 0,
+              top: "50%",
+              transform: "translateY(-50%)",
+              zIndex: 10,
+              width: 48,
+              height: 48,
+              borderRadius: "50%",
+              border: "2px solid #000",
+              background: highlightIndex >= maxIndex ? "#f5f5f5" : "#fff",
+              color: highlightIndex >= maxIndex ? "#999" : "#000",
+              cursor: highlightIndex >= maxIndex ? "not-allowed" : "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 20,
+              transition: "all 0.3s ease",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            }}
+            onMouseEnter={(e) => {
+              if (highlightIndex < maxIndex) {
+                e.currentTarget.style.background = "#000";
+                e.currentTarget.style.color = "#fff";
+                e.currentTarget.style.transform = "translateY(-50%) scale(1.1)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (highlightIndex < maxIndex) {
+                e.currentTarget.style.background = "#fff";
+                e.currentTarget.style.color = "#000";
+                e.currentTarget.style.transform = "translateY(-50%) scale(1)";
+              }
+            }}
+          >
+            →
+          </button>
+          
+          {/* Carousel Container */}
+          <div
+            style={{
+              overflow: "hidden",
+              padding: "0 60px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: 24,
+                transform: `translateX(calc(-${highlightIndex * (100 / cardsPerView)}% - ${highlightIndex * (24 / cardsPerView)}%))`,
+                transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                willChange: "transform",
+              }}
+            >
+              {highlights.map((highlight, i) => (
+                <div
+                  key={i}
+                  style={{
+                    flex: `0 0 calc(${100 / cardsPerView}% - ${(24 * (cardsPerView - 1)) / cardsPerView}px)`,
+                    background: "#fff",
+                    borderRadius: 10,
+                    boxShadow: "0 8px 28px rgba(0,0,0,0.08)",
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div style={{ width: "100%", aspectRatio: "1 / 1", background: "#eee", overflow: "hidden" }}>
+                    <img
+                      src={highlight.image}
+                      alt="highlight"
+                      style={{
+                        width: "120%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                        willChange: "transform",
+                        animation: "feedPan 12s ease-in-out infinite",
+                      }}
+                    />
                   </div>
-                  <div style={{ fontSize: 14, lineHeight: 1.7, color: "#333" }}>
-                    {[
-                      "Kue is honored to partner on a new short film that melds meticulous storytelling with bold, purpose-driven motion GFX.",
-                      "We’re thrilled to begin a new partnership with award-winning leadership on upcoming brand, web, and AI campaigns.",
-                      "We refreshed our brand and website to reflect a sharper, more intentional identity aligned with our partners.",
-                    ][i]}
+                  <div style={{ padding: 20 }}>
+                    <div style={{ fontSize: 18, fontWeight: 800, letterSpacing: 0.5, marginBottom: 10 }}>
+                      {highlight.title}
+                    </div>
+                    <div style={{ fontSize: 14, lineHeight: 1.7, color: "#333" }}>
+                      {highlight.description}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
