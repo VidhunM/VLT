@@ -3992,57 +3992,149 @@ a.btn-our-people {
 
 /* Team Values Section */
 .team-values-section {
-  padding: 80px 0;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  position: relative;
+  padding: clamp(72px, 12vw, 160px) clamp(16px, 5vw, 32px);
+  background: #021b27;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-values-overlay {
+  position: absolute;
+  inset: -18%;
+  z-index: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(232, 236, 240, 0.88) 100%);
+  pointer-events: none;
+  overflow: hidden;
+  filter: drop-shadow(0 26px 60px rgba(25, 32, 45, 0.25));
+}
+
+.team-values-overlay::before {
+  content: '';
+  position: absolute;
+  inset: -26%;
+  background-image: radial-gradient(rgba(60, 191, 159, 0.7) 12%, transparent 16%);
+  background-size: 36px 36px;
+  opacity: 0.58;
+  transform-origin: center;
+  animation: dotWaveSingle 8s ease-in-out infinite;
+}
+
+@keyframes dotWaveSingle {
+  0% {
+    background-position: 0 0;
+    transform: translate3d(-14%, -18%, 0) rotateZ(-7deg) skewX(-3deg);
+  }
+  25% {
+    background-position: 32px 18px;
+    transform: translate3d(-6%, 12%, 0) rotateZ(-4deg) skewX(-1deg);
+  }
+  50% {
+    background-position: 64px 30px;
+    transform: translate3d(12%, 18%, 0) rotateZ(-1deg) skewX(1deg);
+  }
+  75% {
+    background-position: 32px 48px;
+    transform: translate3d(4%, -8%, 0) rotateZ(-3deg) skewX(-2deg);
+  }
+  100% {
+    background-position: 0 64px;
+    transform: translate3d(-14%, -18%, 0) rotateZ(-7deg) skewX(-3deg);
+  }
 }
 
 .team-values-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  position: relative;
+  z-index: 1;
+  width: min(900px, 100%);
+  padding: 0 clamp(12px, 5vw, 28px);
+}
+
+.team-values-card {
+  position: relative;
+  width: min(840px, 100%);
+  padding: clamp(18px, 3.6vw, 36px) clamp(20px, 4vw, 44px);
+  border-radius: clamp(12px, 2.6vw, 18px);
+  background: rgba(6, 33, 45, 0.94);
   text-align: center;
+  color: #e9f3f8;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(5px);
 }
 
-.values-title {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 3rem;
-  background: linear-gradient(135deg, #fff 0%, #ccc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.values-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
-}
-
-.value-item {
-  background: rgba(74, 124, 89, 0.1);
-  padding: 2rem;
-  border-radius: 15px;
-  border: 1px solid rgba(74, 124, 89, 0.3);
-  transition: all 0.3s ease;
-}
-
-.value-item:hover {
-  background: rgba(74, 124, 89, 0.2);
-  transform: translateY(-5px);
-}
-
-.value-item h3 {
-  font-size: 1.5rem;
+.team-values-card h2 {
+  font-size: clamp(30px, 5vw, 52px);
+  margin-bottom: clamp(20px, 5vw, 36px);
+  font-family: 'Times New Roman', serif;
   font-weight: 600;
-  margin-bottom: 1rem;
-  color: #4a7c59;
+  color: #f6fbff;
 }
 
-.value-item p {
-  color: #ccc;
-  line-height: 1.6;
+.team-values-card p {
+  font-size: clamp(14px, 2vw, 18px);
+  line-height: 1.7;
+  margin-bottom: clamp(8px, 2vw, 16px);
+  color: rgba(233, 243, 248, 0.9);
+}
+
+.team-values-card p:last-of-type {
+  margin-bottom: clamp(24px, 5vw, 40px);
+}
+
+.team-values-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: 2px solid #ff6b2b;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: clamp(14px, 2vw, 16px);
+  letter-spacing: 0.4px;
+  background: transparent;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.team-values-button:hover {
+  background: #ff6b2b;
+  color: #082230;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(255, 107, 43, 0.35);
+}
+
+.team-values-button:active {
+  transform: translateY(0);
+}
+
+.team-values-button .cta-dot {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ff6b2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 4px rgba(255, 107, 43, 0.25);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-values-button:hover .cta-dot {
+  background: #ffe9dd;
+  box-shadow: 0 0 0 4px rgba(8, 34, 48, 0.12);
+}
+
+.team-values-button svg {
+  fill: #ffffff;
+  transition: fill 0.3s ease;
+}
+
+.team-values-button:hover svg {
+  fill: #082230;
 }
 
 /* Team CTA Section */

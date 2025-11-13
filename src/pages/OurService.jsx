@@ -3,61 +3,62 @@ import Header from '../components/Header';
 import FlowAnimation from '../components/FlowAnimation';
 
 const SERVICES = [
-  { img: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80', keywords: ['BRAND', 'WEB', 'MOTION', 'AI'] },
-  { img: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80', keywords: ['WEB', 'STRATEGY', 'UI/UX'] },
-  { img: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80', keywords: ['MOTION', 'CONTENT', 'SOCIAL'] },
-  { img: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80', keywords: ['BRAND', 'PRINT', 'IDENTITY'] },
-  { img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80', keywords: ['AI', 'INNOVATION', 'CONSULT'] },
-  { img: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80', keywords: ['DIGITAL', 'STRATEGY', 'BRAND'] },
-  { img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80', keywords: ['UX', 'UI', 'DEVELOPMENT'] },
-  { img: 'https://images.unsplash.com/photo-1519121783406-9933958887c9?auto=format&fit=crop&w=800&q=80', keywords: ['RESEARCH', 'ANALYTICS', 'MOTION'] },
+  // 1st - vulture logo
+  { img: 'https://images.unsplash.com/photo-1557343569-b1d5b655b7cb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZHJvbmVzfGVufDB8MXwwfHx8MA%3D%3D', keywords: ['WEB', 'STRATEGY', 'UI/UX'] }, // 2nd - drone-technology
+  { img: 'https://plus.unsplash.com/premium_photo-1683120963435-6f9355d4a776?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXJ0aWZpY2lhbCUyMGludGVsbGlnZW5jZXxlbnwwfDF8MHx8fDA%3D', keywords: ['MOTION', 'CONTENT', 'SOCIAL'] }, // 3rd - artificial-intelligence // 4th - vulture logo
+  { img: 'https://plus.unsplash.com/premium_photo-1688678097958-0620a452f0e8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW90fGVufDB8MXwwfHx8MA%3D%3D', keywords: ['AI', 'INNOVATION', 'CONSULT'] }, // 5th - iot-development
+  { img: 'https://images.unsplash.com/photo-1633250391894-397930e3f5f2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bW9iaWxlJTIwYXBwJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D', keywords: ['DIGITAL', 'STRATEGY', 'BRAND'] }, // 6th - application-development
+  { img: 'https://images.unsplash.com/photo-1557343569-b1d5b655b7cb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZHJvbmVzfGVufDB8MXwwfHx8MA%3D%3D', keywords: ['WEB', 'STRATEGY', 'UI/UX'] }, // 2nd - drone-technology
+  { img: 'https://plus.unsplash.com/premium_photo-1683120963435-6f9355d4a776?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXJ0aWZpY2lhbCUyMGludGVsbGlnZW5jZXxlbnwwfDF8MHx8fDA%3D', keywords: ['MOTION', 'CONTENT', 'SOCIAL'] }, // 3rd - artificial-intelligence // 4th - vulture logo
+  { img: 'https://plus.unsplash.com/premium_photo-1688678097958-0620a452f0e8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW90fGVufDB8MXwwfHx8MA%3D%3D', keywords: ['AI', 'INNOVATION', 'CONSULT'] }, // 5th - iot-development
+  { img: 'https://images.unsplash.com/photo-1633250391894-397930e3f5f2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bW9iaWxlJTIwYXBwJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D', keywords: ['DIGITAL', 'STRATEGY', 'BRAND'] }, // 6th - application-development
 ];
 
 const CARD_COUNT = SERVICES.length;
 
 const PROJECTS = [
   {
-    title: 'ACTIVE RESEARCH COLLECTIVE®',
+    title: 'drone-technology',
     meta: 'DTC, HEALTH & WELLNESS • 1-MONTH',
     description:
       'A new wellness brand thoughtfully built from the ground up with purpose and precision. We crafted the website, store and packaging to confidently compete alongside established names in the space.',
     image:
-      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=1600&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1506947411487-a56738267384?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZHJvbmVzfGVufDB8fDB8fHww',
     link: '#'
   },
   {
-    title: 'LUDEO®',
+    title: 'artificial-intelligence',
     meta: 'TECH, STARTUP • 1-MONTH',
     description:
       'Launching with a clear roadmap and strong identity, the site we built keeps pace with an evolving brand and supports growth without sacrificing performance.',
     image:
-      'https://images.unsplash.com/photo-1550291652-38c4b04a57b8?q=80&w=1600&auto=format&fit=crop',
+      'https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXJ0aWZpY2lhbCUyMGludGVsbGlnZW5jZXxlbnwwfHwwfHx8MA%3D%3D',
     link: '#'
   },
   {
-    title: 'NOMAD COFFEE®',
+    title: 'iot-development',
     meta: 'DTC, HOSPITALITY • 2-MONTHS',
     description:
       'From packaging to storefront, we unified brand touchpoints and built an experience that scales from local to national demand.',
     image:
-      'https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1600&auto=format&fit=crop',
+      'https://plus.unsplash.com/premium_photo-1688678097473-2ce11d23e30c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW90fGVufDB8fDB8fHww',
     link: '#'
   },
   {
-    title: 'ATLAS FITNESS®',
+    title: 'application-development',
     meta: 'HEALTH & FITNESS • 6-WEEKS',
     description:
       'A conversion-focused site with strong visuals and clear messaging, designed to showcase programs and drive signups across devices.',
     image:
-      'https://images.unsplash.com/photo-1558611848-73f7eb4001a1?q=80&w=1600&auto=format&fit=crop',
+      'https://plus.unsplash.com/premium_photo-1661326248013-3107a4b2bd91?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bW9iaWxlJTIwYXBwJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D',
     link: '#'
   }
 ];
 
-const KLogo = () => (
+const VLogo = () => (
   <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="90" height="90" fill="transparent" />
-    <path d="M20 65V25H34.5V41L45.5 25H61L44 49.25L65 65H49.5L34.5 51.5V65H20Z" fill="white" />
+    <path d="M20 25L35 65H45L60 25H48L38 55L28 25H20Z" fill="white" />
   </svg>
 );
 
@@ -251,8 +252,10 @@ const OurService = () => {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover',
-                      filter: 'brightness(0.85)',
+                      objectFit: s.img.includes('Vlt_logo') ? 'contain' : 'cover',
+                      filter: s.img.includes('Vlt_logo') ? 'none' : 'brightness(0.85)',
+                      backgroundColor: s.img.includes('Vlt_logo') ? '#111' : 'transparent',
+                      padding: s.img.includes('Vlt_logo') ? '20px' : '0',
                       backfaceVisibility: 'inherit',
                     }}
                   />
@@ -267,21 +270,23 @@ const OurService = () => {
                     }}
                   />
                 </div>
-                <div
-                  style={{
-                    position: 'relative',
-                    zIndex: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100%',
-                  }}
-                >
-                  <div style={{ marginTop: 36, marginBottom: 26 }}>
-                    <KLogo />
+                {!s.img.includes('Vlt_logo') && (
+                  <div
+                    style={{
+                      position: 'relative',
+                      zIndex: 2,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                    }}
+                  >
+                    <div style={{ marginTop: 36, marginBottom: 26 }}>
+                      <VLogo />
+                    </div>
                   </div>
-                </div>
+                )}
                 <div
                   style={{
                     position: 'absolute',

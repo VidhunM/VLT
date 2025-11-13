@@ -460,27 +460,31 @@ const OurTeam = () => {
         </div>
       </section>
 
-      {/* Values Section */}
+      {/* Values Section → CTA */}
       <section className="team-values-section">
+        <div className="team-values-overlay" aria-hidden="true" />
         <div className="team-values-container">
-          <h2 className="values-title">Our Core Values</h2>
-          <div className="values-grid">
-            <div className="value-item">
-              <h3>Innovation</h3>
-              <p>We constantly push boundaries to deliver cutting-edge solutions.</p>
-            </div>
-            <div className="value-item">
-              <h3>Collaboration</h3>
-              <p>Teamwork is at the heart of everything we create.</p>
-            </div>
-            <div className="value-item">
-              <h3>Excellence</h3>
-              <p>We strive for perfection in every project we undertake.</p>
-            </div>
-            <div className="value-item">
-              <h3>Integrity</h3>
-              <p>Trust and transparency guide our relationships with clients.</p>
-            </div>
+          <div className="team-values-card">
+            <h2>Let's work together</h2>
+            <p>
+              We believe the best results come from collaborating with passionate people.
+              Whether you have a vision or need guidance, we're here to help transform
+              challenges into opportunities.
+            </p>
+            <p>
+              Let's start the conversation and bring your aspirations to life!
+            </p>
+            <a className="team-values-button" href="/contact">
+              <span>Let's Talk</span>
+              <span className="cta-dot" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" role="presentation">
+                  <circle cx="5" cy="5" r="2" />
+                  <circle cx="15" cy="5" r="2" />
+                  <circle cx="5" cy="15" r="2" />
+                  <circle cx="15" cy="15" r="2" />
+                </svg>
+              </span>
+            </a>
           </div>
         </div>
       </section>

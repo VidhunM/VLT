@@ -71,16 +71,45 @@ const Home = () => {
     const totalLetters = letters.length
     const filledLetters = Math.floor(totalLetters * textFillProgress)
     
+    // Helper function to calculate global index including newlines
+    const getGlobalIndex = (lineIndex, letterIndex) => {
+      let index = 0
+      for (let i = 0; i < lineIndex; i++) {
+        index += textLines[i].length + 1 // +1 for newline character
+      }
+      index += letterIndex
+      return index
+    }
+    
+    // Calculate character positions for phrases that should always be black
+    // "NO SCOPE LIMITATIONS." spans from line 2 ("DEPARTMENT WITH NO SCOPE") to line 3 ("LIMITATIONS.")
+    const line2Text = 'DEPARTMENT WITH NO SCOPE'
+    const noScopeStart = getGlobalIndex(2, line2Text.indexOf('NO SCOPE'))
+    const noScopeEnd = getGlobalIndex(3, 'LIMITATIONS.'.length)
+    
+    // "EVERYTHING WE WORK ON" is the entire line 7
+    const line7Start = getGlobalIndex(7, 0)
+    const line7End = getGlobalIndex(7, textLines[7].length)
+    
     return textLines.map((line, lineIndex) => (
       <React.Fragment key={lineIndex}>
         {line.split('').map((letter, letterIndex) => {
-          // Calculate global index across all lines
-          const globalIndex = textLines.slice(0, lineIndex).join('').length + letterIndex
+          // Calculate global index across all lines including newlines
+          const globalIndex = getGlobalIndex(lineIndex, letterIndex)
+          
+          // Check if this character is in "NO SCOPE LIMITATIONS." or "EVERYTHING WE WORK ON"
+          const isNoScopeLimitations = globalIndex >= noScopeStart && globalIndex < noScopeEnd
+          const isEverythingWeWorkOn = globalIndex >= line7Start && globalIndex < line7End
+          
+          // Always black if in these phrases, otherwise animate
+          const isAlwaysBlack = isNoScopeLimitations || isEverythingWeWorkOn
+          const isFilled = isAlwaysBlack || globalIndex < filledLetters
+          
           return (
             <span
               key={`${lineIndex}-${letterIndex}`}
               style={{
-                color: globalIndex < filledLetters ? '#000' : '#999',
+                color: isFilled ? '#000' : '#999',
                 transition: 'color 0.1s linear'
               }}
             >
@@ -701,53 +730,53 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                     desc:
                       'We uncover what makes your brand different and craft a positioning that resonates with your audience. From messaging frameworks to go-to-market clarity, we set the foundation for growth.'
                   },
-                  { title: 'Brand Identity', desc: 'Naming, identity systems, guidelines, and brand toolkits built for consistency.' },
-                  { title: 'Web Design & Development', desc: 'Modern, performant websites in React and headless CMS with a focus on UX.' },
-                  { title: 'Shopify, Amazon, E–Commerce', desc: 'Conversion-first storefronts, PDPs, and growth-focused CRO & analytics.' },
-                  { title: 'Motion Design', desc: 'Logo stings, product animations, and social motion packages.' },
-                  { title: 'AI Image & Video', desc: 'Generative image/video pipelines to scale creative with control.' },
-                  { title: 'Automations, Integrations, APIs', desc: 'Ops automation, CRM/ERP integrations, and custom API development.' },
-                  { title: 'Direction & Consultation', desc: 'Executive creative direction and advisory for brand and product.' }
+                  { title: 'Software Development', desc: 'Custom software solutions built with modern technologies and best practices.' },
+                  { title: 'Dedicated Software Teams', desc: 'Expert development teams dedicated to your project for seamless collaboration.' },
+                  { title: 'Application Development', desc: 'Native and cross-platform applications for web, mobile, and desktop.' },
+                  { title: 'QA & Testing', desc: 'Comprehensive quality assurance and testing services to ensure reliability and performance.' },
+                  { title: 'eCommerce', desc: 'Full-featured eCommerce platforms and solutions to drive online sales and growth.' },
+                  { title: 'Cloud Services', desc: 'Cloud infrastructure, deployment, and management services for scalable solutions.' }
                 ]
                 return (
                   <>
-                    {/* Active description */}
-                  <div style={{ marginBottom: 24 }}>
-                      <div style={{ fontSize: 14, color: '#8c8c8c', marginBottom: 8 }}>— {items[activeCapability].title}</div>
-                      <div style={{ fontSize: 16, lineHeight: 1.6 }}>{items[activeCapability].desc}</div>
-                  </div>
               {/* List */}
               <div style={{ borderTop: '1px solid #e6e6e6' }}>
                 {[
-                  'Brand Identity',
-                  'Web Design & Development',
-                  'Shopify, Amazon, E–Commerce',
-                  'Motion Design',
-                  'AI Image & Video',
-                  'Automations, Integrations, APIs',
-                  'Direction & Consultation'
+                  'Software Development',
+                  'Dedicated Software Teams',
+                  'Application Development',
+                  'QA & Testing',
+                  'eCommerce',
+                  'Cloud Services'
                 ].map((label, idx) => {
                   const computedIndex = idx + 1
                   const isActive = activeCapability === computedIndex
                   return (
-                    <button
-                      key={label}
-                      onClick={() => setActiveCapability(computedIndex)}
-                      style={{
-                        width: '100%',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        padding: '18px 0',
-                        border: 'none',
-                        borderBottom: '1px solid #e6e6e6',
-                        background: 'transparent',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <span style={{ fontSize: 16, fontWeight: 600, textAlign: 'left' }}>{label}</span>
-                      <span style={{ fontSize: 22, lineHeight: 1, opacity: 0.9 }}>{isActive ? '−' : '+'}</span>
-                    </button>
+                    <React.Fragment key={label}>
+                      <button
+                        onClick={() => setActiveCapability(isActive ? 0 : computedIndex)}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          padding: '18px 0',
+                          border: 'none',
+                          borderBottom: '1px solid #e6e6e6',
+                          background: 'transparent',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        <span style={{ fontSize: 16, fontWeight: 600, textAlign: 'left' }}>{label}</span>
+                        <span style={{ fontSize: 22, lineHeight: 1, opacity: 0.9 }}>{isActive ? '−' : '+'}</span>
+                      </button>
+                      {isActive && (
+                        <div style={{ padding: '8px 0 16px' }}>
+                          <div style={{ fontSize: 14, color: '#8c8c8c', marginBottom: 8 }}>— {items[computedIndex].title}</div>
+                          <div style={{ fontSize: 16, lineHeight: 1.6 }}>{items[computedIndex].desc}</div>
+                        </div>
+                      )}
+                    </React.Fragment>
                   )
                 })}
               </div>
