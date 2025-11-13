@@ -449,10 +449,6 @@ const OurTeam = () => {
                   <h3 className="member-name">{member.name}</h3>
                   <p className="member-position">{member.position}</p>
                   <p className="member-bio">{member.bio}</p>
-                  <div className="member-social">
-                    <a href={member.social.linkedin} className="social-link">LinkedIn</a>
-                    <a href={member.social.twitter} className="social-link">Twitter</a>
-                  </div>
                 </div>
               </div>
             ))}
