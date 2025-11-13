@@ -57,7 +57,7 @@ const Header = ({ logoSrc, menuItems }) => {
   const defaultMenu = [
     { label: 'Home', href: '/' },
     { label: 'Our Service', href: '/our-service' },
-    { label: 'Projects', href: '/work' },
+    { label: 'Our Projects', href: '/work' },
     { label: 'Our Team', href: '/our-team' },
     { label: 'Our Feed', href: '/our-feed' },
     { label: 'Contact', href: '/contact' }
