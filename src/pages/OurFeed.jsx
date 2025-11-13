@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Header from "../components/Header";
+import FlowAnimation from "../components/FlowAnimation";
 
 const IMAGES = [
   "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=800&auto=format&fit=crop",
@@ -560,6 +561,8 @@ function OurFeed() {
           </div>
         </div>
       </section>
+
+      <FlowAnimation />
     </div>
   );
 }

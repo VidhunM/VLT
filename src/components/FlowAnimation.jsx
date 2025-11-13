@@ -262,8 +262,7 @@ const FlowAnimation = () => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {[
                   { label: 'Our Service', path: '/our-service' },
-                  { label: 'Projects', path: '/work' },
-                  { label: 'Work', path: '/work' },
+                  { label: 'Our Projects', path: '/work' },
                   { label: 'Our Team', path: '/our-team' },
                   { label: 'Our Feed', path: '/our-feed' },
                   { label: 'Contact', path: '/contact' }

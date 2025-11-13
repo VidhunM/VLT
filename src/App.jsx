@@ -11,11 +11,13 @@ import CustomCursor from './components/CustomCursor'
 import CircleTransition from './components/CircleTransition'
 import OurService from './pages/OurService'
 import OurFeed from './pages/OurFeed'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <ScrollToTop />
         <CustomCursor />
         <CircleTransition />
         <Header />
