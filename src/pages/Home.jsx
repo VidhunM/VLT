@@ -362,6 +362,13 @@ const Home = () => {
       // Calculate if section is in view
       const isInView = rect.top < windowHeight && rect.bottom > 0
       
+      // Add/remove class to show/hide services container
+      if (isInView) {
+        servicesRef.current.classList.add('in-view')
+      } else {
+        servicesRef.current.classList.remove('in-view')
+      }
+      
       if (!isInView) {
         setService1Progress(0)
         setService2Progress(0)
