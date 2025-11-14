@@ -7,6 +7,37 @@ import MinimalistNav from '../components/MinimalistNav'
 import FlowAnimation from '../components/FlowAnimation'
 import { navigateWithCircle } from '../utils/navigation'
 
+const SERVICES = [
+  {
+    label: 'Our Services',
+    title: 'One Technology',
+    description:
+      'Unified technology solutions that integrate seamlessly across your entire business ecosystem. We provide comprehensive technology services that streamline operations, enhance productivity, and drive innovation through a single, cohesive platform.',
+    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=2015&auto=format&fit=crop&q=80'
+  },
+  {
+    label: 'Our Services',
+    title: 'Artificial Intelligence',
+    description:
+      'Cutting-edge AI solutions that transform your business through machine learning, natural language processing, and intelligent automation. We develop AI-powered systems that enhance decision-making, optimize processes, and unlock new possibilities for growth and innovation.',
+    image: 'https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?w=2070&auto=format&fit=crop&q=80'
+  },
+  {
+    label: 'Our Services',
+    title: 'IoT Development',
+    description:
+      'End-to-end Internet of Things solutions that connect devices, sensors, and systems to create smart, interconnected ecosystems. We build scalable IoT platforms that enable real-time data collection, analysis, and automation for enhanced operational efficiency and innovation.',
+    image: 'https://plus.unsplash.com/premium_photo-1688678097473-2ce11d23e30c?w=2064&auto=format&fit=crop&q=80'
+  },
+  {
+    label: 'Our Services',
+    title: 'Application Development',
+    description:
+      'Custom application development for web, mobile, and desktop platforms. We create robust, scalable applications tailored to your business needs, using modern frameworks and technologies to deliver high-performance solutions that drive user engagement and business growth.',
+    image: 'https://plus.unsplash.com/premium_photo-1661326248013-3107a4b2bd91?w=1973&auto=format&fit=crop&q=80'
+  }
+]
+
 const Home = () => {
   const emblemRef = useRef(null)
   const servicesRef = useRef(null)
@@ -16,10 +47,8 @@ const Home = () => {
   const [isExcellencePinned, setIsExcellencePinned] = useState(false)
   const [isExcellencePast, setIsExcellencePast] = useState(false)
   const [excellenceScrollProgress, setExcellenceScrollProgress] = useState(0)
-  const [service1Progress, setService1Progress] = useState(0)
-  const [service2Progress, setService2Progress] = useState(0)
-  const [service3Progress, setService3Progress] = useState(0)
-  const [service4Progress, setService4Progress] = useState(0)
+  const [serviceProgress, setServiceProgress] = useState(0)
+  const [isServicesMobile, setIsServicesMobile] = useState(false)
   const [selectedClient, setSelectedClient] = useState(0)
   const [activeCapability, setActiveCapability] = useState(0)
   const [scrollDirection, setScrollDirection] = useState('down')
@@ -171,6 +200,36 @@ const Home = () => {
     }
   ]
 
+  const servicesData = SERVICES
+  const totalServices = servicesData.length
+  const hasMultipleServices = totalServices > 1
+  const timelinePosition = hasMultipleServices ? serviceProgress * (totalServices - 1) : 0
+  const activeServiceIndex = Math.min(totalServices - 1, Math.floor(timelinePosition))
+  const nextServiceIndex = hasMultipleServices ? Math.min(totalServices - 1, activeServiceIndex + 1) : activeServiceIndex
+  const segmentProgress = hasMultipleServices ? timelinePosition - activeServiceIndex : 0
+
+  const getImageOpacity = (index) => {
+    if (index === activeServiceIndex) {
+      return hasMultipleServices ? 1 - segmentProgress : 1
+    }
+    if (hasMultipleServices && index === nextServiceIndex && nextServiceIndex !== activeServiceIndex) {
+      return segmentProgress
+    }
+    return 0
+  }
+
+  const contentTrackStyle = isServicesMobile
+    ? {}
+    : {
+        height: `${totalServices * 100}vh`,
+        transform: `translateY(-${timelinePosition * 100}vh)`
+      }
+
+  const serviceSectionStyle = {
+    '--service-panels': totalServices,
+    scrollMarginTop: '80px'
+  }
+
   // Scroll direction detection (set up once)
   useEffect(() => {
     const handleScroll = () => {
@@ -183,6 +242,15 @@ const Home = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
+  }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsServicesMobile(window.innerWidth <= 1024)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   // Excellence section scroll-based size increase
@@ -353,74 +421,40 @@ const Home = () => {
   // Scroll-based animation for Services section - images overlay on left, content scrolls upward like elevator
   useEffect(() => {
     const handleServicesScroll = () => {
-      if (!servicesRef.current) return
+      const section = servicesRef.current
+      if (!section) return
 
-      const rect = servicesRef.current.getBoundingClientRect()
+      const rect = section.getBoundingClientRect()
       const windowHeight = window.innerHeight
-      const sectionHeight = rect.height
-
-      // Calculate if section is in view
+      const sectionHeight = section.offsetHeight
       const isInView = rect.top < windowHeight && rect.bottom > 0
-      
-      // Add/remove class to show/hide services container
+
       if (isInView) {
-        servicesRef.current.classList.add('in-view')
+        section.classList.add('in-view')
       } else {
-        servicesRef.current.classList.remove('in-view')
-      }
-      
-      if (!isInView) {
-        setService1Progress(0)
-        setService2Progress(0)
-        setService3Progress(0)
-        setService4Progress(0)
+        section.classList.remove('in-view')
+        setServiceProgress(0)
         return
       }
 
-      const clamp = (value) => Math.max(0, Math.min(1, value))
+      let progress = 0
 
-      // Calculate progress through the services section
-      // When section enters viewport, start transitioning
-      let scrollProgress = 0
-      
       if (rect.top <= 0) {
-        // Section is pinned - calculate scroll progress
         const scrollableDistance = Math.max(sectionHeight - windowHeight, 1)
         const scrolled = Math.min(-rect.top, scrollableDistance)
-        scrollProgress = clamp(scrolled / scrollableDistance)
-      } else if (rect.top < windowHeight) {
-        // Section is entering viewport - smooth transition from excellence
-        const entryProgress = clamp((windowHeight - rect.top) / windowHeight)
-        scrollProgress = entryProgress * 0.15 // Start services transition early for smooth entry
+        progress = Math.max(0, Math.min(1, scrolled / scrollableDistance))
       }
 
-      // Divide scroll into 4 segments for 4 services
-      // Each service gets 25% of the scroll (0-0.25, 0.25-0.5, 0.5-0.75, 0.75-1.0)
-      const segment = 0.25
-      
-      // Service 1: visible from 0-25% scroll, fades out as service 2 appears
-      const service1Progress = clamp(1 - (scrollProgress / segment))
-      
-      // Service 2: visible from 25-50% scroll, image overlays service 1
-      const service2Progress = clamp((scrollProgress - segment) / segment)
-      
-      // Service 3: visible from 50-75% scroll, image overlays service 2
-      const service3Progress = clamp((scrollProgress - 2 * segment) / segment)
-      
-      // Service 4: visible from 75-100% scroll, image overlays service 3
-      const service4Progress = clamp((scrollProgress - 3 * segment) / segment)
-
-      setService1Progress(service1Progress)
-      setService2Progress(service2Progress)
-      setService3Progress(service3Progress)
-      setService4Progress(service4Progress)
+      setServiceProgress(progress)
     }
 
     window.addEventListener('scroll', handleServicesScroll, { passive: true })
+    window.addEventListener('resize', handleServicesScroll)
     handleServicesScroll()
 
     return () => {
       window.removeEventListener('scroll', handleServicesScroll)
+      window.removeEventListener('resize', handleServicesScroll)
     }
   }, [])
 
@@ -532,148 +566,42 @@ Our team comprises highly skilled IT professionals whose target is to provide to
         id="services" 
         className="services-section" 
         ref={servicesRef}
-        style={{ scrollMarginTop: '80px' }}
+        style={serviceSectionStyle}
       >
         <div className="services-container">
           {/* Fixed Image Container on Left - Images Overlay */}
           <div className="services-image-container">
-            {/* Service 1 Image */}
-            <div 
-              className="service-image-overlay service-image-1"
-              style={{
-                opacity: service1Progress,
-                zIndex: service1Progress > 0.1 ? 1 : 0,
-                transition: 'opacity 0.3s ease-out'
-              }}
-            >
-              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=2015&auto=format&fit=crop&q=80" alt="One Technology" />
-            </div>
-            
-            {/* Service 2 Image - Overlays Service 1 */}
-            <div 
-              className="service-image-overlay service-image-2"
-              style={{
-                opacity: service2Progress,
-                zIndex: service2Progress > 0.1 ? 2 : 0,
-                transition: 'opacity 0.3s ease-out'
-              }}
-            >
-              <img src="https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?w=2070&auto=format&fit=crop&q=80" alt="Artificial Intelligence" />
-            </div>
-            
-            {/* Service 3 Image - Overlays Service 2 */}
-            <div 
-              className="service-image-overlay service-image-3"
-              style={{
-                opacity: service3Progress,
-                zIndex: service3Progress > 0.1 ? 3 : 0,
-                transition: 'opacity 0.3s ease-out'
-              }}
-            >
-              <img src="https://plus.unsplash.com/premium_photo-1688678097473-2ce11d23e30c?w=2064&auto=format&fit=crop&q=80" alt="IoT Development" />
-            </div>
-            
-            {/* Service 4 Image - Overlays Service 3 */}
-            <div 
-              className="service-image-overlay service-image-4"
-              style={{
-                opacity: service4Progress,
-                zIndex: service4Progress > 0.1 ? 4 : 0,
-                transition: 'opacity 0.3s ease-out'
-              }}
-            >
-              <img src="https://plus.unsplash.com/premium_photo-1661326248013-3107a4b2bd91?w=1973&auto=format&fit=crop&q=80" alt="Application Development" />
-            </div>
+            {servicesData.map((service, index) => (
+              <div
+                key={service.title}
+                className={`service-image-overlay service-image-${index + 1}`}
+                style={{
+                  opacity: getImageOpacity(index),
+                  zIndex: index + 1,
+                  transition: 'opacity 0.3s ease-out'
+                }}
+              >
+                <img src={service.image} alt={service.title} />
+              </div>
+            ))}
           </div>
 
           {/* Scrollable Content Container on Right - Elevator Motion */}
           <div className="services-content-container">
-            {/* Service 1 Content */}
-            <div 
-              className="service-content-item service-content-1"
-              style={{
-                transform: `translateY(${-100 * (1 - service1Progress)}vh)`,
-                opacity: service1Progress > 0.1 ? 1 : service1Progress * 10,
-                transition: 'opacity 0.3s ease-out'
-              }}
-            >
-              <div className="service-content-section">
-                <div className="service-label">Our Services</div>
-                <h2 className="service-main-title">One Technology</h2>
-                <p className="service-description">
-                  Unified technology solutions that integrate seamlessly across your entire business ecosystem. We provide comprehensive technology services that streamline operations, enhance productivity, and drive innovation through a single, cohesive platform.
-                </p>
-                <button className="service-cta-btn">
-                  <span>Find Out More</span>
-                  <div className="btn-icon orange-dots"></div>
-                </button>
-              </div>
-            </div>
-
-            {/* Service 2 Content */}
-            <div 
-              className="service-content-item service-content-2"
-              style={{
-                transform: `translateY(${-100 * service2Progress}vh)`,
-                opacity: service2Progress > 0.1 ? 1 : service2Progress * 10,
-                transition: 'opacity 0.3s ease-out'
-              }}
-            >
-              <div className="service-content-section">
-                <div className="service-label">Our Services</div>
-                <h2 className="service-main-title">Artificial Intelligence</h2>
-                <p className="service-description">
-                  Cutting-edge AI solutions that transform your business through machine learning, natural language processing, and intelligent automation. We develop AI-powered systems that enhance decision-making, optimize processes, and unlock new possibilities for growth and innovation.
-                </p>
-                <button className="service-cta-btn">
-                  <span>Find Out More</span>
-                  <div className="btn-icon orange-dots"></div>
-                </button>
-              </div>
-            </div>
-
-            {/* Service 3 Content */}
-            <div 
-              className="service-content-item service-content-3"
-              style={{
-                transform: `translateY(${-200 * service3Progress}vh)`,
-                opacity: service3Progress > 0.1 ? 1 : service3Progress * 10,
-                transition: 'opacity 0.3s ease-out'
-              }}
-            >
-              <div className="service-content-section">
-                <div className="service-label">Our Services</div>
-                <h2 className="service-main-title">IoT Development</h2>
-                <p className="service-description">
-                  End-to-end Internet of Things solutions that connect devices, sensors, and systems to create smart, interconnected ecosystems. We build scalable IoT platforms that enable real-time data collection, analysis, and automation for enhanced operational efficiency and innovation.
-                </p>
-                <button className="service-cta-btn">
-                  <span>Find Out More</span>
-                  <div className="btn-icon orange-dots"></div>
-                </button>
-              </div>
-            </div>
-
-            {/* Service 4 Content */}
-            <div 
-              className="service-content-item service-content-4"
-              style={{
-                transform: `translateY(${-300 * service4Progress}vh)`,
-                opacity: service4Progress > 0.1 ? 1 : service4Progress * 10,
-                transition: 'opacity 0.3s ease-out'
-              }}
-            >
-              <div className="service-content-section">
-                <div className="service-label">Our Services</div>
-                <h2 className="service-main-title">Application Development</h2>
-                <p className="service-description">
-                  Custom application development for web, mobile, and desktop platforms. We create robust, scalable applications tailored to your business needs, using modern frameworks and technologies to deliver high-performance solutions that drive user engagement and business growth.
-                </p>
-                <button className="service-cta-btn">
-                  <span>Find Out More</span>
-                  <div className="btn-icon orange-dots"></div>
-                </button>
-              </div>
+            <div className="services-content-track" style={contentTrackStyle}>
+              {servicesData.map((service) => (
+                <div className="service-content-item" key={service.title}>
+                  <div className="service-content-section">
+                    <div className="service-label">{service.label}</div>
+                    <h2 className="service-main-title">{service.title}</h2>
+                    <p className="service-description">{service.description}</p>
+                    <button className="service-cta-btn">
+                      <span>Find Out More</span>
+                      <div className="btn-icon orange-dots"></div>
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

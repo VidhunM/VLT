@@ -1251,7 +1251,7 @@ a.btn-our-people {
   color: #1A202C;
   position: relative;
   overflow: hidden;
-  height: 400vh; /* Full height for 4 service cards */
+  height: calc(var(--service-panels, 4) * 100vh);
   scroll-margin-top: 80px; /* Ensures proper scroll positioning */
 }
 
@@ -1313,37 +1313,28 @@ a.btn-our-people {
 .services-content-container {
   position: relative;
   width: 100%;
-  height: 400vh; /* Total height for all 4 services */
+  height: 100vh;
   overflow: hidden;
   background: white;
 }
 
-.service-content-item {
+.services-content-track {
   position: absolute;
+  top: 0;
   left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  transition: transform 0.08s linear;
+}
+
+.service-content-item {
   width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  will-change: transform, opacity;
-}
-
-/* Position each content item at its initial position */
-.service-content-1 {
-  top: 0;
-}
-
-.service-content-2 {
-  top: 100vh;
-}
-
-.service-content-3 {
-  top: 200vh;
-}
-
-.service-content-4 {
-  top: 300vh;
 }
 
 /* Legacy styles for service-content-section (now used inside service-content-item) */
@@ -1949,7 +1940,7 @@ a.btn-our-people {
 
   /* Services Section Mobile */
   .services-section {
-    height: 400vh; /* Full height for 4 service cards */
+    height: auto;
   }
   
   .services-container {
@@ -1970,17 +1961,15 @@ a.btn-our-people {
     position: relative;
   }
 
-  .service-content-item {
+  .services-content-track {
     position: relative;
-    height: auto;
-    min-height: 50vh;
+    height: auto !important;
+    transform: none !important;
   }
 
-  .service-content-1,
-  .service-content-2,
-  .service-content-3,
-  .service-content-4 {
-    top: auto;
+  .service-content-item {
+    height: auto;
+    min-height: 50vh;
   }
 
   /* Our Service 3D Carousel Mobile - Full structure visible */

@@ -556,4 +556,10 @@ Code changes: Removed the vertical lift component from the project showcase anim
 Decisions: Maintain the existing easing and lateral offsets; strip vertical swing for a cleaner glide.
 Next steps: Confirm the animation now feels level across the cycle and adjust horizontal spacing if needed.
 
+Date: 2025-11-14
+Time: N/A
+Topics: Excellence → Services scroll-driven transition with stacked imagery
+Code changes: In `src/pages/Home.jsx`, replaced the four independent service progress states with a single scroll timeline, introduced responsive detection, and drove both the left image overlays and the right content elevator from a shared `SERVICES` data array. Updated `src/styles/main.css` so the services section height is controlled via CSS variables, added a `.services-content-track`, and refreshed mobile overrides to fall back to stacked content while keeping the desktop pin/elevator behavior.
+Decisions: Keep services content data-driven for upcoming admin wiring; limit the elevator animation to desktop/tablet while letting mobile see natural stacking with the same imagery.
+Next steps: Manually verify the Excellence → Services handoff on multiple breakpoints to confirm the image overlays and elevator motion feel smooth; adjust scroll thresholds if needed.
 
