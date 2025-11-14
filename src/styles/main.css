@@ -3198,62 +3198,66 @@ a.btn-our-people {
 
 /* Contact Section Styles */
 .contact-section {
-  padding: 100px 0;
-  background: #333;
-  color: white;
+  padding: 120px 0;
+  background: #ffffff;
+  color: #0e0e0e;
+  position: relative;
+  overflow: hidden;
 }
 
 .contact-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 48px;
   text-align: center;
+  position: relative;
 }
 
-.contact-title {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
+.contact-floating-icons {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.contact-description {
-  font-size: 1.2rem;
-  color: #ccc;
-  margin-bottom: 3rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+@media (max-width: 900px) {
+  .contact-floating-icons {
+    --icon-scale: 0.75;
+  }
 }
 
-.contact-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
+@media (max-width: 640px) {
+  .contact-floating-icons {
+    display: none;
+  }
 }
 
-.contact-item {
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  backdrop-filter: blur(10px);
-  transition: transform 0.3s ease;
+.contact-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  animation: contactIconFloat var(--icon-duration, 8s) ease-in-out infinite;
+  animation-delay: var(--icon-delay, 0s);
+  filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.18));
 }
 
-.contact-item:hover {
-  transform: translateY(-5px);
+.contact-icon-svg {
+  width: 100%;
+  height: 100%;
 }
 
-.contact-item h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #ff6b35;
-}
-
-.contact-item p {
-  color: #ccc;
-  font-size: 1.1rem;
+@keyframes contactIconFloat {
+  0% {
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: translate3d(0, -14px, 12px) rotateX(-6deg) rotateY(-4deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+  }
 }
 
 /* Flow Animation Styles */

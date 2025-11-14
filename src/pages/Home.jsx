@@ -72,84 +72,280 @@ const Home = () => {
     })
   }
 
+  const floatingIcons = [
+    {
+      id: 'ps',
+      color: '#ffffff',
+      accent: 'rgba(10, 102, 255, 0.45)',
+      position: { top: '8%', left: '6%' },
+      delay: '0s',
+      size: 120,
+      rotation: -18
+    },
+    {
+      id: 'gpt',
+      color: '#ffffff',
+      accent: 'rgba(16, 163, 127, 0.4)',
+      position: { top: '14%', right: '8%' },
+      delay: '0.6s',
+      size: 126,
+      rotation: -26
+    },
+    {
+      id: 'chimp',
+      color: '#2b1800',
+      accent: 'rgba(255, 193, 7, 0.45)',
+      position: { bottom: '20%', left: '9%' },
+      delay: '1.1s',
+      size: 134,
+      rotation: 12
+    },
+    {
+      id: 'strap',
+      color: '#000',
+      accent: 'rgba(0, 0, 0, 0.3)',
+      position: { bottom: '18%', right: '7%' },
+      delay: '1.8s',
+      size: 130,
+      rotation: -8
+    }
+  ]
+
+  const renderLogoShape = (iconId) => {
+    switch (iconId) {
+      case 'ps':
+        return (
+          <g transform="translate(60 60)">
+            <ellipse rx="22" ry="22" fill="#0F3C68" />
+            <path
+              d="M-12 -15v30h7.2c8.6 0 13.6-5.6 13.6-14.9 0-9.5-5-15.1-13.6-15.1H-12zm7.4 22.6H-6v-15.2h1.4c4.2 0 6.6 2.8 6.6 7.5 0 4.5-2.4 7.7-6.6 7.7z"
+              fill="#8DD3FF"
+            />
+            <path
+              d="M9.5 -9.5c-3.8-2.5-11.6-1.1-11.2 4.2 0.3 3.5 3.4 5.4 7.6 6.8 3.7 1.2 5.2 2 5.2 3.6 0 2.2-3.1 2.9-5.6 1.6-1.6-0.8-2.8-2-3.6-3.1l-4.6 4.5c2 2.9 5.2 5.2 9.9 5.2 6 0 10.3-3.5 10.3-8.9 0-3.5-1.8-6-6.9-7.9-3.1-1.2-5-1.7-5-3.3 0-1.4 1.3-2.2 3.6-2.2 1.8 0 3.8 0.7 5.5 2l4.2-4.5c-1.7-1.8-3.9-3.2-6.4-4.1z"
+              fill="#8DD3FF"
+            />
+          </g>
+        )
+      case 'gpt':
+        return (
+          <g transform="translate(60 60)">
+            <circle r="22" fill="#10765A" />
+            <path
+              d="M0-14c6 0 11 5 11 11 0 5-3 9-9 12-6 3-10 7-10 13 0 6 5 11 11 11"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M-12-2c-5 0-9-4-9-9 0-6 5-11 11-11 5 0 9 3 11 8 2 6 6 9 12 9 6 0 11-5 11-11"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+        )
+      case 'chimp':
+        return (
+          <g transform="translate(60 60)">
+            <circle r="22" fill="#FFD25A" />
+            <circle cx="-6" cy="-5" r="3" fill="#3B2200" />
+            <circle cx="6" cy="-5" r="3" fill="#3B2200" />
+            <path
+              d="M-10 4c2 5 6 8 10 8s8-3 10-8"
+              fill="none"
+              stroke="#3B2200"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+            <path
+              d="M-15 -2c-2-6 2-12 9-13 6-1 11 2 12 7"
+              fill="none"
+              stroke="#3B2200"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+          </g>
+        )
+      case 'strap':
+        return (
+          <g transform="translate(60 60)">
+            <circle r="22" fill="#ffffff" stroke="#141414" strokeWidth="2" />
+            <path
+              d="M-10 -12h12c6 0 10 3 10 8 0 4-3 7-7 7h-10c-3 0-5 2-5 4s2 4 5 4h13"
+              fill="none"
+              stroke="#141414"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </g>
+        )
+      default:
+        return null
+    }
+  }
+
+  const renderIconSvg = (icon) => {
+    const svgSize = icon.size
+    const colors = {
+      ps: {
+        outer: ['#FCFDFF', '#E3F1FF'],
+        stroke: '#BFD9FF',
+        inner: '#0E3C6F',
+        innerStroke: '#1390FF',
+        text: '#E3F3FF'
+      },
+      gpt: {
+        outer: ['#FCFFFD', '#E3FFF5'],
+        stroke: '#C4F3E1',
+        inner: '#0C6F52',
+        innerStroke: '#19B287',
+        text: '#FFFFFF'
+      },
+      chimp: {
+        outer: ['#FFFDF4', '#FFEEC6'],
+        stroke: '#FFE3A5',
+        inner: '#F4B000',
+        innerStroke: '#FFCD32',
+        text: '#402100'
+      },
+      strap: {
+        outer: ['#FFFFFF', '#F2F2F2'],
+        stroke: '#F0F0F0',
+        inner: '#FFFFFF',
+        innerStroke: '#CFCFCF',
+        text: '#111111'
+      }
+    }
+    const palette = colors[icon.id] || colors.ps
+    const innerRect = { x: 36, y: 26, width: 48, height: 68, rx: 22, ry: 22 }
+    return (
+      <svg
+        width={svgSize}
+        height={svgSize}
+        viewBox="0 0 120 120"
+        xmlns="http://www.w3.org/2000/svg"
+        className="contact-icon-svg"
+      >
+        <defs>
+          <linearGradient id={`outer-gradient-${icon.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={palette.outer[0]} />
+            <stop offset="100%" stopColor={palette.outer[1]} />
+          </linearGradient>
+          <linearGradient id={`inner-gradient-${icon.id}`} x1="30%" y1="20%" x2="80%" y2="80%">
+            <stop offset="0%" stopColor={palette.innerStroke} stopOpacity="0.9" />
+            <stop offset="100%" stopColor={palette.inner} />
+          </linearGradient>
+          <filter id={`glow-${icon.id}`} x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="12" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        <clipPath id={`inner-clip-${icon.id}`}>
+            <rect {...innerRect} />
+        </clipPath>
+        </defs>
+        <g filter={`url(#glow-${icon.id})`} transform={`rotate(${icon.rotation || -15} 60 60)`}>
+          <rect
+            x="16"
+            y="6"
+            width="88"
+            height="108"
+            rx="30"
+            ry="30"
+            fill={`url(#outer-gradient-${icon.id})`}
+            stroke={palette.stroke}
+            strokeWidth="1.4"
+          />
+          <rect
+            {...innerRect}
+            fill={`url(#inner-gradient-${icon.id})`}
+            stroke={palette.innerStroke}
+            strokeWidth="1.8"
+          />
+        <g clipPath={`url(#inner-clip-${icon.id})`}>
+            <rect
+              {...innerRect}
+              fill={palette.inner}
+              opacity="0.15"
+            />
+            {renderLogoShape(icon.id)}
+          </g>
+        </g>
+      </svg>
+    )
+  }
+
+  const easeProgress = (t, power = 1.4) => {
+    if (t <= 0) return 0
+    if (t >= 1) return 1
+    return Math.pow(t, power)
+  }
+
   // Calculate text color based on fill progress (gray to black interpolation)
   const getTextColor = (progress) => {
+    const eased = easeProgress(progress, 3)
     const gray = [153, 153, 153] // #999
     const black = [0, 0, 0]
-    const r = Math.round(gray[0] + (black[0] - gray[0]) * progress)
-    const g = Math.round(gray[1] + (black[1] - gray[1]) * progress)
-    const b = Math.round(gray[2] + (black[2] - gray[2]) * progress)
+    const r = Math.round(gray[0] + (black[0] - gray[0]) * eased)
+    const g = Math.round(gray[1] + (black[1] - gray[1]) * eased)
+    const b = Math.round(gray[2] + (black[2] - gray[2]) * eased)
     return `rgb(${r}, ${g}, ${b})`
   }
 
   // Render all text with letter-by-letter animation across all rows
   const renderAnimatedText = () => {
     const textLines = [
-      'THINK OF US AS YOUR',
-      'DEDICATED, IN-HOUSE CREATIVE',
-      'DEPARTMENT WITH NO SCOPE',
-      'LIMITATIONS. EASILY SUBMIT',
-      'AND MONITOR TASKS WITH',
-      'ENDLESS REVISIONS UNTIL YOU',
-      'ARE 100% SATISFIED WITH',
-      'EVERYTHING WE WORK ON'
+      'THINK OF US AS YOUR DEDICATED,',
+      'IN-HOUSE CREATIVE DEPARTMENT',
+      'NO SCOPE LIMITATIONS. EASILY SUBMIT',
+      'AND MONITOR TASKS WITH ENDLESS REVISIONS',
+      'UNTIL YOU ARE 100% SATISFIED',
+      'WITH EVERYTHING WE WORK ON'
     ]
     
-    // Combine all text into one string with line breaks preserved
-    const allText = textLines.join('\n')
-    const letters = allText.split('')
-    const totalLetters = letters.length
-    const filledLetters = Math.floor(totalLetters * textFillProgress)
-    
-    // Helper function to calculate global index including newlines
-    const getGlobalIndex = (lineIndex, letterIndex) => {
-      let index = 0
-      for (let i = 0; i < lineIndex; i++) {
-        index += textLines[i].length + 1 // +1 for newline character
-      }
-      index += letterIndex
-      return index
-    }
-    
-    // Calculate character positions for phrases that should always be black
-    // "NO SCOPE LIMITATIONS." spans from line 2 ("DEPARTMENT WITH NO SCOPE") to line 3 ("LIMITATIONS.")
-    const line2Text = 'DEPARTMENT WITH NO SCOPE'
-    const noScopeStart = getGlobalIndex(2, line2Text.indexOf('NO SCOPE'))
-    const noScopeEnd = getGlobalIndex(3, 'LIMITATIONS.'.length)
-    
-    // "EVERYTHING WE WORK ON" is the entire line 7
-    const line7Start = getGlobalIndex(7, 0)
-    const line7End = getGlobalIndex(7, textLines[7].length)
-    
-    return textLines.map((line, lineIndex) => (
-      <React.Fragment key={lineIndex}>
-        {line.split('').map((letter, letterIndex) => {
-          // Calculate global index across all lines including newlines
-          const globalIndex = getGlobalIndex(lineIndex, letterIndex)
-          
-          // Check if this character is in "NO SCOPE LIMITATIONS." or "EVERYTHING WE WORK ON"
-          const isNoScopeLimitations = globalIndex >= noScopeStart && globalIndex < noScopeEnd
-          const isEverythingWeWorkOn = globalIndex >= line7Start && globalIndex < line7End
-          
-          // Always black if in these phrases, otherwise animate
-          const isAlwaysBlack = isNoScopeLimitations || isEverythingWeWorkOn
-          const isFilled = isAlwaysBlack || globalIndex < filledLetters
-          
-          return (
-            <span
-              key={`${lineIndex}-${letterIndex}`}
-              style={{
-                color: isFilled ? '#000' : '#999',
-                transition: 'color 0.1s linear'
-              }}
-            >
-              {letter}
-            </span>
-          )
-        })}
-        {lineIndex < textLines.length - 1 && <br />}
-      </React.Fragment>
-    ))
+    const lineLengths = textLines.map((line) => line.length)
+    const totalLetters = lineLengths.reduce((sum, len) => sum + len, 0)
+    let cumulativeLength = 0
+
+    return textLines.map((line, lineIndex) => {
+      const lineLength = lineLengths[lineIndex]
+      const lineStartRatio = totalLetters === 0 ? 0 : cumulativeLength / totalLetters
+      const lineSpanRatio = totalLetters === 0 ? 1 : lineLength / totalLetters
+      cumulativeLength += lineLength
+
+      const rawLineProgress = (textFillProgress - lineStartRatio) / lineSpanRatio
+      const clampedLineProgress = Math.max(0, Math.min(1, rawLineProgress))
+      const easedLineProgress = easeProgress(clampedLineProgress, 4.5)
+      const filledLetters = Math.floor(lineLength * easedLineProgress)
+
+      return (
+        <React.Fragment key={lineIndex}>
+          {line.split('').map((letter, letterIndex) => {
+            const isFilled = letterIndex < filledLetters
+            return (
+              <span
+                key={`${lineIndex}-${letterIndex}`}
+                style={{
+                  color: isFilled ? '#000' : getTextColor(easedLineProgress),
+                  transition: 'color 0.15s linear'
+                }}
+              >
+                {letter}
+              </span>
+            )
+          })}
+          {lineIndex < textLines.length - 1 && <br />}
+        </React.Fragment>
+      )
+    })
   }
 
   // Client data with different images
@@ -403,23 +599,31 @@ const Home = () => {
 
       const rect = contactRef.current.getBoundingClientRect()
       const windowHeight = window.innerHeight
-      
-      // Calculate if section is in view
+      const sectionHeight = rect.height
+      const totalScrollDistance = windowHeight + sectionHeight
+
       const isInView = rect.top < windowHeight && rect.bottom > 0
-      
+
       if (!isInView) {
         setTextFillProgress(0)
         return
       }
 
-      // Simple linear progress based on section position
-      // 0 when section enters from bottom, 1 when section is fully scrolled past top
-      const sectionHeight = rect.height
-      const scrollDistance = windowHeight + sectionHeight
-      const scrolled = windowHeight - rect.top
-      const progress = Math.max(0, Math.min(1, scrolled / scrollDistance))
-      
-      setTextFillProgress(progress)
+      const startTrigger = windowHeight * 0.8
+      const endTrigger = windowHeight * -0.2
+
+      if (rect.top >= startTrigger) {
+        setTextFillProgress(0)
+        return
+      }
+
+      if (rect.top <= endTrigger) {
+        setTextFillProgress(1)
+        return
+      }
+
+      const progress = (windowHeight - rect.top) / totalScrollDistance
+      setTextFillProgress(Math.max(0, Math.min(1, progress)))
     }
 
     window.addEventListener('scroll', handleContactScroll, { passive: true })
@@ -727,7 +931,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
               <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 16 }}>
                 <div style={{ transform: `scale(${imageScale})`, transition: 'transform 0.1s ease-out', transformOrigin: 'center center' }}>
                   <img 
-                    src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80" 
+                    src="https://images.unsplash.com/photo-1551739440-5dd934d3a94a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y29tcHV0ZXJ8ZW58MHwxfDB8fHww" 
                     alt="Capabilities"
                     style={{ width: '100%', height: 'auto', display: 'block' }}
                   />
@@ -832,36 +1036,57 @@ Our team comprises highly skilled IT professionals whose target is to provide to
 
       {/* Contact Section */}
       <section id="contact" className="contact-section" ref={contactRef} style={{ background: '#fff', padding: '120px 0', position: 'relative', overflow: 'hidden' }}>
-        <div className="contact-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 48px', position: 'relative' }}>
+        <div
+          className="contact-container"
+          style={{
+            maxWidth: 1200,
+            margin: '0 auto',
+            padding: '0 48px',
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '60vh',
+            textAlign: 'center'
+          }}
+        >
           {/* Floating 3D Icons */}
-          <div style={{ position: 'absolute', top: '10%', left: '5%', width: 60, height: 60, opacity: 0.3, zIndex: 1 }}>
-            <div style={{ width: '100%', height: '100%', background: '#0066FF', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.1)', transform: 'perspective(1000px) rotateY(15deg)' }}>
-              <span style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>Ps</span>
-            </div>
-          </div>
-          <div style={{ position: 'absolute', top: '10%', right: '5%', width: 60, height: 60, opacity: 0.3, zIndex: 1 }}>
-            <div style={{ width: '100%', height: '100%', background: '#10A37F', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.1)', transform: 'perspective(1000px) rotateY(-15deg)' }}>
-              <span style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>GPT</span>
-            </div>
-          </div>
-          <div style={{ position: 'absolute', bottom: '20%', left: '5%', width: 60, height: 60, opacity: 0.3, zIndex: 1 }}>
-            <div style={{ width: '100%', height: '100%', background: '#FFC107', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.1)', transform: 'perspective(1000px) rotateY(15deg)' }}>
-              <span style={{ fontSize: 24 }}>🐵</span>
-            </div>
-          </div>
-          <div style={{ position: 'absolute', bottom: '20%', right: '5%', width: 60, height: 60, opacity: 0.3, zIndex: 1 }}>
-            <div style={{ width: '100%', height: '100%', background: '#fff', border: '2px solid #000', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 8px 16px rgba(0,0,0,0.1)', transform: 'perspective(1000px) rotateY(-15deg)' }}>
-              <span style={{ color: '#000', fontSize: 24, fontWeight: 'bold' }}>S</span>
-            </div>
+          <div className="contact-floating-icons">
+            {floatingIcons.map((icon) => (
+              <div
+                key={icon.id}
+                className="contact-icon"
+                style={{
+                  ...icon.position,
+                  width: `${icon.size}px`,
+                  height: `${icon.size}px`,
+                  '--icon-delay': icon.delay,
+                  '--icon-glow': icon.accent
+                }}
+              >
+                {renderIconSvg(icon)}
+              </div>
+            ))}
           </div>
 
           {/* Main Text with Fill Animation */}
-          <div className="contact-animated-text" style={{ textAlign: 'center', position: 'relative', zIndex: 2, paddingLeft: '80px' }}>
+          <div
+            className="contact-animated-text"
+            style={{
+              textAlign: 'center',
+              position: 'relative',
+              zIndex: 2,
+              maxWidth: 820,
+              width: '100%',
+              padding: '0 48px'
+            }}
+          >
             <h2 style={{ 
-              fontSize: 'clamp(32px, 5vw, 64px)', 
+              fontSize: 'clamp(30px, 4.6vw, 60px)', 
               lineHeight: 1.2, 
-              fontWeight: 700,
-              letterSpacing: '-1px',
+              fontWeight: 600,
+              letterSpacing: '-0.8px',
               marginBottom: 40
             }}>
               {renderAnimatedText()}
@@ -879,5 +1104,4 @@ Our team comprises highly skilled IT professionals whose target is to provide to
 }
 
 export default Home
-
 
