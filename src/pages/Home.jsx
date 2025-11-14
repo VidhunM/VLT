@@ -600,7 +600,6 @@ const Home = () => {
       const rect = contactRef.current.getBoundingClientRect()
       const windowHeight = window.innerHeight
       const sectionHeight = rect.height
-      const totalScrollDistance = windowHeight + sectionHeight
 
       const isInView = rect.top < windowHeight && rect.bottom > 0
 
@@ -609,8 +608,8 @@ const Home = () => {
         return
       }
 
-      const startTrigger = windowHeight * 0.8
-      const endTrigger = windowHeight * -0.2
+      const startTrigger = windowHeight * 0.65
+      const endTrigger = -sectionHeight * 0.35
 
       if (rect.top >= startTrigger) {
         setTextFillProgress(0)
@@ -622,8 +621,14 @@ const Home = () => {
         return
       }
 
-      const progress = (windowHeight - rect.top) / totalScrollDistance
-      setTextFillProgress(Math.max(0, Math.min(1, progress)))
+      const totalDistance = startTrigger - endTrigger
+      const targetProgress = Math.max(0, Math.min(1, (startTrigger - rect.top) / totalDistance))
+      setTextFillProgress((prev) => {
+        const diff = targetProgress - prev
+        if (Math.abs(diff) < 0.0005) return targetProgress
+        const step = diff * 0.04
+        return Math.max(0, Math.min(1, prev + step))
+      })
     }
 
     window.addEventListener('scroll', handleContactScroll, { passive: true })
