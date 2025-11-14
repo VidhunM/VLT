@@ -1260,9 +1260,22 @@ a.btn-our-people {
   margin: 0;
   padding: 0;
   position: relative;
-  height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  min-height: calc(var(--service-panels, 4) * 100vh);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  visibility: hidden;
+}
+
+.services-section.in-view .services-container {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.services-section.is-fixed .services-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -1270,25 +1283,19 @@ a.btn-our-people {
   height: 100vh;
   z-index: 2;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
-  visibility: hidden;
-}
-
-/* Show services container only when services section is in view */
-.services-section.in-view .services-container {
-  opacity: 1;
-  pointer-events: auto;
-  visibility: visible;
 }
 
 /* Fixed Image Container on Left - Images Overlay */
 .services-image-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   background: #f8f9fa;
+}
+
+.services-section.is-fixed .services-image-container {
+  height: 100vh;
 }
 
 .service-image-overlay {
@@ -1313,9 +1320,13 @@ a.btn-our-people {
 .services-content-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   background: white;
+}
+
+.services-section.is-fixed .services-content-container {
+  height: 100vh;
 }
 
 .services-content-track {
@@ -1331,10 +1342,14 @@ a.btn-our-people {
 
 .service-content-item {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.services-section.is-fixed .service-content-item {
+  height: 100vh;
 }
 
 /* Legacy styles for service-content-section (now used inside service-content-item) */

@@ -48,6 +48,7 @@ const Home = () => {
   const [isExcellencePast, setIsExcellencePast] = useState(false)
   const [excellenceScrollProgress, setExcellenceScrollProgress] = useState(0)
   const [serviceProgress, setServiceProgress] = useState(0)
+  const [serviceRelease, setServiceRelease] = useState(0)
   const [isServicesMobile, setIsServicesMobile] = useState(false)
   const [selectedClient, setSelectedClient] = useState(0)
   const [activeCapability, setActiveCapability] = useState(0)
@@ -207,8 +208,12 @@ const Home = () => {
   const activeServiceIndex = Math.min(totalServices - 1, Math.floor(timelinePosition))
   const nextServiceIndex = hasMultipleServices ? Math.min(totalServices - 1, activeServiceIndex + 1) : activeServiceIndex
   const segmentProgress = hasMultipleServices ? timelinePosition - activeServiceIndex : 0
+  const isReleasingPhase = serviceRelease > 0
 
   const getImageOpacity = (index) => {
+    if (isReleasingPhase) {
+      return index === totalServices - 1 ? Math.max(0, 1 - serviceRelease) : 0
+    }
     if (index === activeServiceIndex) {
       return hasMultipleServices ? 1 - segmentProgress : 1
     }
@@ -227,8 +232,15 @@ const Home = () => {
 
   const serviceSectionStyle = {
     '--service-panels': totalServices,
+    '--service-release': serviceRelease,
     scrollMarginTop: '80px'
   }
+
+  const servicesContainerStyle = isServicesMobile
+    ? undefined
+    : serviceRelease > 0
+    ? { opacity: Math.max(0, 1 - serviceRelease) }
+    : undefined
 
   // Scroll direction detection (set up once)
   useEffect(() => {
@@ -427,23 +439,67 @@ const Home = () => {
       const rect = section.getBoundingClientRect()
       const windowHeight = window.innerHeight
       const sectionHeight = section.offsetHeight
-      const isInView = rect.top < windowHeight && rect.bottom > 0
 
-      if (isInView) {
+      if (isServicesMobile) {
         section.classList.add('in-view')
-      } else {
-        section.classList.remove('in-view')
+        section.classList.remove('is-fixed')
         setServiceProgress(0)
+        setServiceRelease(0)
         return
       }
 
-      let progress = 0
+      const isBefore = rect.top >= windowHeight
+      const isAfter = rect.bottom <= 0
+      const isEntering = rect.top < windowHeight && rect.bottom > 0
+      const shouldPin = rect.top <= 0 && rect.bottom >= windowHeight
+      const isReleasing = !shouldPin && !isAfter && rect.bottom < windowHeight
 
-      if (rect.top <= 0) {
-        const scrollableDistance = Math.max(sectionHeight - windowHeight, 1)
-        const scrolled = Math.min(-rect.top, scrollableDistance)
-        progress = Math.max(0, Math.min(1, scrolled / scrollableDistance))
+      if (isBefore) {
+        section.classList.remove('in-view')
+        section.classList.remove('is-fixed')
+        setServiceProgress(0)
+        setServiceRelease(0)
+        return
       }
+
+      if (isAfter) {
+        section.classList.remove('in-view')
+        section.classList.remove('is-fixed')
+        setServiceProgress(1)
+        setServiceRelease(0)
+        return
+      }
+
+      if (isEntering || shouldPin || isReleasing) {
+        section.classList.add('in-view')
+      } else {
+        section.classList.remove('in-view')
+      }
+
+      if (shouldPin) {
+        section.classList.add('is-fixed')
+        setServiceRelease(0)
+      } else if (isReleasing) {
+        section.classList.add('is-fixed')
+        const releaseDistance = Math.max(windowHeight, 1)
+        const releaseProgress = Math.min(1, Math.max(0, (windowHeight - rect.bottom) / releaseDistance))
+        setServiceProgress(1)
+        setServiceRelease(releaseProgress)
+        return
+      } else {
+        section.classList.remove('is-fixed')
+        setServiceRelease(0)
+      }
+
+      if (!isEntering && !shouldPin) {
+        setServiceProgress(0)
+        setServiceRelease(0)
+        return
+      }
+
+      const scrollableDistance = Math.max(sectionHeight - windowHeight, 1)
+      const scrolled = Math.min(-rect.top, scrollableDistance)
+      const progress = Math.max(0, Math.min(1, scrolled / scrollableDistance))
 
       setServiceProgress(progress)
     }
@@ -456,7 +512,7 @@ const Home = () => {
       window.removeEventListener('scroll', handleServicesScroll)
       window.removeEventListener('resize', handleServicesScroll)
     }
-  }, [])
+  }, [isServicesMobile])
 
   // Hide nav when FlowAnimation footer is in view
   useEffect(() => {
@@ -568,7 +624,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
         ref={servicesRef}
         style={serviceSectionStyle}
       >
-        <div className="services-container">
+        <div className="services-container" style={servicesContainerStyle}>
           {/* Fixed Image Container on Left - Images Overlay */}
           <div className="services-image-container">
             {servicesData.map((service, index) => (
@@ -589,19 +645,26 @@ Our team comprises highly skilled IT professionals whose target is to provide to
           {/* Scrollable Content Container on Right - Elevator Motion */}
           <div className="services-content-container">
             <div className="services-content-track" style={contentTrackStyle}>
-              {servicesData.map((service) => (
-                <div className="service-content-item" key={service.title}>
-                  <div className="service-content-section">
-                    <div className="service-label">{service.label}</div>
-                    <h2 className="service-main-title">{service.title}</h2>
-                    <p className="service-description">{service.description}</p>
-                    <button className="service-cta-btn">
-                      <span>Find Out More</span>
-                      <div className="btn-icon orange-dots"></div>
-                    </button>
+              {servicesData.map((service, index) => {
+                const isLast = index === totalServices - 1
+                const releaseStyles =
+                  isReleasingPhase && isLast
+                    ? { opacity: Math.max(0, 1 - serviceRelease) }
+                    : undefined
+                return (
+                  <div className="service-content-item" key={service.title} style={releaseStyles}>
+                    <div className="service-content-section">
+                      <div className="service-label">{service.label}</div>
+                      <h2 className="service-main-title">{service.title}</h2>
+                      <p className="service-description">{service.description}</p>
+                      <button className="service-cta-btn">
+                        <span>Find Out More</span>
+                        <div className="btn-icon orange-dots"></div>
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>
