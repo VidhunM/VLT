@@ -350,7 +350,7 @@ const Home = () => {
     }
   }, [])
 
-  // Scroll-based animation for Services section - first card stays fixed, others slide up sequentially
+  // Scroll-based animation for Services section - images overlay on left, content scrolls upward like elevator
   useEffect(() => {
     const handleServicesScroll = () => {
       if (!servicesRef.current) return
@@ -372,27 +372,41 @@ const Home = () => {
 
       const clamp = (value) => Math.max(0, Math.min(1, value))
 
-      let nextService1 = 1
-      let nextService2 = 0
-      let nextService3 = 0
-      let nextService4 = 0
-
+      // Calculate progress through the services section
+      // When section enters viewport, start transitioning
+      let scrollProgress = 0
+      
       if (rect.top <= 0) {
-        // Once the section is pinned, drive the remaining cards sequentially.
+        // Section is pinned - calculate scroll progress
         const scrollableDistance = Math.max(sectionHeight - windowHeight, 1)
         const scrolled = Math.min(-rect.top, scrollableDistance)
-        const progress = clamp(scrolled / scrollableDistance)
-        const segment = 1 / 3
-
-        nextService2 = clamp(progress / segment)
-        nextService3 = clamp((progress - segment) / segment)
-        nextService4 = clamp((progress - 2 * segment) / segment)
+        scrollProgress = clamp(scrolled / scrollableDistance)
+      } else if (rect.top < windowHeight) {
+        // Section is entering viewport - smooth transition from excellence
+        const entryProgress = clamp((windowHeight - rect.top) / windowHeight)
+        scrollProgress = entryProgress * 0.15 // Start services transition early for smooth entry
       }
 
-      setService1Progress(nextService1)
-      setService2Progress(nextService2)
-      setService3Progress(nextService3)
-      setService4Progress(nextService4)
+      // Divide scroll into 4 segments for 4 services
+      // Each service gets 25% of the scroll (0-0.25, 0.25-0.5, 0.5-0.75, 0.75-1.0)
+      const segment = 0.25
+      
+      // Service 1: visible from 0-25% scroll, fades out as service 2 appears
+      const service1Progress = clamp(1 - (scrollProgress / segment))
+      
+      // Service 2: visible from 25-50% scroll, image overlays service 1
+      const service2Progress = clamp((scrollProgress - segment) / segment)
+      
+      // Service 3: visible from 50-75% scroll, image overlays service 2
+      const service3Progress = clamp((scrollProgress - 2 * segment) / segment)
+      
+      // Service 4: visible from 75-100% scroll, image overlays service 3
+      const service4Progress = clamp((scrollProgress - 3 * segment) / segment)
+
+      setService1Progress(service1Progress)
+      setService2Progress(service2Progress)
+      setService3Progress(service3Progress)
+      setService4Progress(service4Progress)
     }
 
     window.addEventListener('scroll', handleServicesScroll, { passive: true })
@@ -514,20 +528,68 @@ Our team comprises highly skilled IT professionals whose target is to provide to
         style={{ scrollMarginTop: '80px' }}
       >
         <div className="services-container">
-          {/* Service 1: One Technology - Slides up first */}
-          <div 
-            className="service-overlay service-1"
-            style={{
-              transform: `translate3d(0, ${100 - service1Progress * 100}vh, 0)`,
-              opacity: service1Progress,
-              pointerEvents: service1Progress > 0.5 ? 'auto' : 'none',
-              transition: 'opacity 0.1s ease-out'
-            }}
-          >
-            <div className="service-row">
-              <div className="service-image-section">
-                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=2015&auto=format&fit=crop&q=80" alt="One Technology" />
-              </div>
+          {/* Fixed Image Container on Left - Images Overlay */}
+          <div className="services-image-container">
+            {/* Service 1 Image */}
+            <div 
+              className="service-image-overlay service-image-1"
+              style={{
+                opacity: service1Progress,
+                zIndex: service1Progress > 0.1 ? 1 : 0,
+                transition: 'opacity 0.3s ease-out'
+              }}
+            >
+              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=2015&auto=format&fit=crop&q=80" alt="One Technology" />
+            </div>
+            
+            {/* Service 2 Image - Overlays Service 1 */}
+            <div 
+              className="service-image-overlay service-image-2"
+              style={{
+                opacity: service2Progress,
+                zIndex: service2Progress > 0.1 ? 2 : 0,
+                transition: 'opacity 0.3s ease-out'
+              }}
+            >
+              <img src="https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?w=2070&auto=format&fit=crop&q=80" alt="Artificial Intelligence" />
+            </div>
+            
+            {/* Service 3 Image - Overlays Service 2 */}
+            <div 
+              className="service-image-overlay service-image-3"
+              style={{
+                opacity: service3Progress,
+                zIndex: service3Progress > 0.1 ? 3 : 0,
+                transition: 'opacity 0.3s ease-out'
+              }}
+            >
+              <img src="https://plus.unsplash.com/premium_photo-1688678097473-2ce11d23e30c?w=2064&auto=format&fit=crop&q=80" alt="IoT Development" />
+            </div>
+            
+            {/* Service 4 Image - Overlays Service 3 */}
+            <div 
+              className="service-image-overlay service-image-4"
+              style={{
+                opacity: service4Progress,
+                zIndex: service4Progress > 0.1 ? 4 : 0,
+                transition: 'opacity 0.3s ease-out'
+              }}
+            >
+              <img src="https://plus.unsplash.com/premium_photo-1661326248013-3107a4b2bd91?w=1973&auto=format&fit=crop&q=80" alt="Application Development" />
+            </div>
+          </div>
+
+          {/* Scrollable Content Container on Right - Elevator Motion */}
+          <div className="services-content-container">
+            {/* Service 1 Content */}
+            <div 
+              className="service-content-item service-content-1"
+              style={{
+                transform: `translateY(${-100 * (1 - service1Progress)}vh)`,
+                opacity: service1Progress > 0.1 ? 1 : service1Progress * 10,
+                transition: 'opacity 0.3s ease-out'
+              }}
+            >
               <div className="service-content-section">
                 <div className="service-label">Our Services</div>
                 <h2 className="service-main-title">One Technology</h2>
@@ -540,22 +602,16 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                 </button>
               </div>
             </div>
-          </div>
 
-          {/* Service 2: Artificial Intelligence - Slides up over Service 1 */}
-          <div 
-            className="service-overlay service-2"
-            style={{
-              transform: `translate3d(0, ${100 - service2Progress * 100}vh, 0)`,
-              opacity: service2Progress,
-              pointerEvents: service2Progress > 0.5 ? 'auto' : 'none',
-              transition: 'opacity 0.1s ease-out'
-            }}
-          >
-            <div className="service-row">
-              <div className="service-image-section">
-                <img src="https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?w=2070&auto=format&fit=crop&q=80" alt="Artificial Intelligence" />
-              </div>
+            {/* Service 2 Content */}
+            <div 
+              className="service-content-item service-content-2"
+              style={{
+                transform: `translateY(${-100 * service2Progress}vh)`,
+                opacity: service2Progress > 0.1 ? 1 : service2Progress * 10,
+                transition: 'opacity 0.3s ease-out'
+              }}
+            >
               <div className="service-content-section">
                 <div className="service-label">Our Services</div>
                 <h2 className="service-main-title">Artificial Intelligence</h2>
@@ -568,22 +624,16 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                 </button>
               </div>
             </div>
-          </div>
 
-          {/* Service 3: IoT Development - Slides up over Service 2 */}
-          <div 
-            className="service-overlay service-3"
-            style={{
-              transform: `translate3d(0, ${100 - service3Progress * 100}vh, 0)`,
-              opacity: service3Progress,
-              pointerEvents: service3Progress > 0.5 ? 'auto' : 'none',
-              transition: 'opacity 0.1s ease-out'
-            }}
-          >
-            <div className="service-row">
-              <div className="service-image-section">
-                <img src="https://plus.unsplash.com/premium_photo-1688678097473-2ce11d23e30c?w=2064&auto=format&fit=crop&q=80" alt="IoT Development" />
-              </div>
+            {/* Service 3 Content */}
+            <div 
+              className="service-content-item service-content-3"
+              style={{
+                transform: `translateY(${-200 * service3Progress}vh)`,
+                opacity: service3Progress > 0.1 ? 1 : service3Progress * 10,
+                transition: 'opacity 0.3s ease-out'
+              }}
+            >
               <div className="service-content-section">
                 <div className="service-label">Our Services</div>
                 <h2 className="service-main-title">IoT Development</h2>
@@ -596,22 +646,16 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                 </button>
               </div>
             </div>
-          </div>
 
-          {/* Service 4: Application Development - Slides up over Service 3 */}
-          <div 
-            className="service-overlay service-4"
-            style={{
-              transform: `translate3d(0, ${100 - service4Progress * 100}vh, 0)`,
-              opacity: service4Progress,
-              pointerEvents: service4Progress > 0.5 ? 'auto' : 'none',
-              transition: 'opacity 0.1s ease-out'
-            }}
-          >
-            <div className="service-row">
-              <div className="service-image-section">
-                <img src="https://plus.unsplash.com/premium_photo-1661326248013-3107a4b2bd91?w=1973&auto=format&fit=crop&q=80" alt="Application Development" />
-              </div>
+            {/* Service 4 Content */}
+            <div 
+              className="service-content-item service-content-4"
+              style={{
+                transform: `translateY(${-300 * service4Progress}vh)`,
+                opacity: service4Progress > 0.1 ? 1 : service4Progress * 10,
+                transition: 'opacity 0.3s ease-out'
+              }}
+            >
               <div className="service-content-section">
                 <div className="service-label">Our Services</div>
                 <h2 className="service-main-title">Application Development</h2>
@@ -837,3 +881,5 @@ Our team comprises highly skilled IT professionals whose target is to provide to
 }
 
 export default Home
+
+

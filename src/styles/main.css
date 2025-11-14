@@ -1260,97 +1260,81 @@ a.btn-our-people {
   padding: 0;
   position: relative;
   height: 100%;
-}
-
-/* Service Overlay Container - Base styles for animated services */
-.service-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  opacity: 0;
-  transform: translateY(100vh);
-  transition: none;
-  will-change: transform, opacity;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Service 1 - Fixed position for scroll-based animation */
-.service-overlay.service-1 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-  /* Remove default transform and opacity - handled by inline styles */
-  transform: translateY(100vh);
-  opacity: 0;
-}
-
-/* Service 2, 3, 4 - Fixed position for scroll-based animation */
-.service-overlay.service-2,
-.service-overlay.service-3,
-.service-overlay.service-4 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-  /* Remove default transform and opacity - handled by inline styles */
-  transform: translateY(100vh);
-  opacity: 0;
-}
-
-/* Scroll-based animations are now handled via inline styles in JSX */
-
-/* Z-index stacking - each service covers the previous one */
-.service-1 {
-  z-index: 1;
-}
-
-.service-2 {
-  z-index: 2;
-}
-
-.service-3 {
-  z-index: 3;
-}
-
-.service-4 {
-  z-index: 4;
-}
-
-.service-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100vh;
-  position: relative;
+  z-index: 1;
 }
 
-.service-image-section {
+/* Fixed Image Container on Left - Images Overlay */
+.services-image-container {
   position: relative;
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
+  background: #f8f9fa;
+}
+
+.service-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+  will-change: opacity;
 }
 
-.service-image-section img {
+.service-image-overlay img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.3s ease;
 }
 
-.service-row:hover .service-image-section img {
-  transform: scale(1.05);
+/* Scrollable Content Container on Right - Elevator Motion */
+.services-content-container {
+  position: relative;
+  width: 100%;
+  height: 400vh; /* Total height for all 4 services */
+  overflow: hidden;
+  background: white;
 }
 
+.service-content-item {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+
+/* Position each content item at its initial position */
+.service-content-1 {
+  top: 0;
+}
+
+.service-content-2 {
+  top: 100vh;
+}
+
+.service-content-3 {
+  top: 200vh;
+}
+
+.service-content-4 {
+  top: 300vh;
+}
+
+/* Legacy styles for service-content-section (now used inside service-content-item) */
 .service-content-section {
   padding: 4rem 3rem;
   display: flex;
@@ -1358,6 +1342,8 @@ a.btn-our-people {
   justify-content: center;
   background: white;
   position: relative;
+  width: 100%;
+  max-width: 600px;
 }
 
 .service-label {
@@ -1954,14 +1940,35 @@ a.btn-our-people {
     height: 400vh; /* Full height for 4 service cards */
   }
   
-  .service-overlay {
-    height: 100vh;
-    position: fixed;
+  .services-container {
+    grid-template-columns: 1fr;
+    position: relative;
+    height: auto;
   }
 
-  .service-row {
-    grid-template-columns: 1fr;
-    height: 100vh;
+  .services-image-container {
+    position: relative;
+    height: 50vh;
+    order: 1;
+  }
+
+  .services-content-container {
+    order: 2;
+    height: auto;
+    position: relative;
+  }
+
+  .service-content-item {
+    position: relative;
+    height: auto;
+    min-height: 50vh;
+  }
+
+  .service-content-1,
+  .service-content-2,
+  .service-content-3,
+  .service-content-4 {
+    top: auto;
   }
 
   /* Our Service 3D Carousel Mobile - Full structure visible */
