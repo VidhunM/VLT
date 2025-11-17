@@ -1,5 +1,4 @@
 import React from 'react'
-import MinimalistNav from '../components/MinimalistNav'
 import Header from '../components/Header'
 import FlowAnimation from '../components/FlowAnimation'
 
@@ -7,7 +6,6 @@ const Contact = () => {
   return (
     <div className="contact-page-dark">
       <Header logoSrc={'/assets/Images/Vlt_logo1.png'} />
-      <MinimalistNav />
       <div className="contact-wrapper">
         <div className="contact-container">
         {/* Left Info */}
@@ -15,14 +13,14 @@ const Contact = () => {
           <div className="sidebar-block">
             <span className="contact-head">Head Office</span>
             <address className="contact-address">
-              MacMillan House,<br />
-              Paddington Stn.<br />
-              London, W2 1FT
+              7th Floor, Centre Point,<br />
+              2/4, Mount Pollamallee High Road,<br />
+              Manapakkam, Porur, Chennai
             </address>
           </div>
           <div className="sidebar-block">
             <span className="contact-head">Phone</span>
-            <a href="tel:+4402073871268" className="contact-phone">+44 (0)20 7387 1268</a>
+            <a href="tel:+919791670504" className="contact-phone">+91 9791670504</a>
           </div>
           <a href="#" className="contact-linkedin">LinkedIn</a>
         </div>
@@ -43,11 +41,13 @@ const Contact = () => {
           <div className="form-row">
             <div className="form-field">
               <label htmlFor="sector">Sector / Service</label>
-              <select id="sector">
-                <option>Select an option</option>
-                <option>Infrastructure</option>
-                <option>Consulting</option>
-                <option>Other</option>
+              <select id="sector" defaultValue="" required>
+                <option value="" disabled>Select an option</option>
+                <option value="drone-technology">Drone Technology</option>
+                <option value="artificial-intelligence">Artificial Intelligence</option>
+                <option value="iot-development">IoT Development</option>
+                <option value="application-development">Application Development</option>
+                <option value="other">Other</option>
               </select>
             </div>
             <div className="form-field">
