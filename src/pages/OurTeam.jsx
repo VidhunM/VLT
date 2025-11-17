@@ -6,6 +6,7 @@ import FlowAnimation from '../components/FlowAnimation'
 const OurTeam = () => {
   const boardSectionRef = useRef(null)
   const boardWrapperRef = useRef(null)
+  const boardHeaderRef = useRef(null)
   const sliderRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [selectedDirector, setSelectedDirector] = useState(null)
@@ -13,6 +14,7 @@ const OurTeam = () => {
   const [activeFilter, setActiveFilter] = useState('All')
   const [isMobile, setIsMobile] = useState(false)
   const [isSectionInView, setIsSectionInView] = useState(false)
+  const [isSectionPinned, setIsSectionPinned] = useState(false)
   const [cardWidth, setCardWidth] = useState(520) // Default desktop width
 
   const boardMembers = [
@@ -241,13 +243,14 @@ const OurTeam = () => {
     }
     
     const handleScroll = () => {
-      if (boardSectionRef.current) {
+      if (boardSectionRef.current && boardHeaderRef.current) {
         // Measure card width on first scroll if not measured yet
         if (cardWidth === 520) {
           measureCardWidth()
         }
         
         const rect = boardSectionRef.current.getBoundingClientRect()
+        const headerRect = boardHeaderRef.current.getBoundingClientRect()
         const windowHeight = window.innerHeight
         
         // Check if mobile device
@@ -258,70 +261,101 @@ const OurTeam = () => {
         const sectionTop = rect.top
         const sectionBottom = rect.bottom
         const sectionHeight = rect.height
+        const headerTop = headerRect.top
+        const headerBottom = headerRect.bottom
         
-        // If section is in viewport
+        // Check if header has completely scrolled past the top of viewport
+        // Animation starts only after "Board of Directors" text has scrolled up and out of view
+        const headerHasScrolledPast = headerBottom < 0
+        
+        // Only start animation after header has scrolled past
         if (sectionTop < windowHeight && sectionBottom > 0) {
           // Mark section as in view for animation trigger
           setIsSectionInView(true)
           
-          // Calculate how much of the section is visible
-          const visibleHeight = Math.min(sectionBottom, windowHeight) - Math.max(sectionTop, 0)
+          let progress = 0
+          const totalCards = boardMembers.length
           
-          // Progress from 0 to 1 as section moves through viewport
-          let progress = 1 - (sectionBottom / (windowHeight + sectionHeight))
-          progress = Math.min(Math.max(progress, 0), 1)
+          // Only calculate progress if header has scrolled past (header bottom < 0)
+          if (headerHasScrolledPast) {
+            // Calculate how far we've scrolled past when header bottom reached 0
+            // Start progress from when header fully exits viewport
+            const scrollFromHeaderPass = Math.abs(headerBottom)
+            
+            // Animation distance: calculate based on remaining section height after header
+            // Use the visible section area for smooth, proportional animation
+            const headerHeight = headerRect.height
+            const remainingSectionHeight = Math.max(sectionHeight - headerHeight, windowHeight)
+            
+            // Animation distance: allow smooth progression through all images
+            // Adjust multiplier (1.2-1.8) to control animation speed - higher = slower
+            const animationDistance = remainingSectionHeight * 1.5
+            
+            // Calculate progress from 0 to 1 based on scroll distance after header passes
+            progress = Math.min(scrollFromHeaderPass / Math.max(animationDistance, 1), 1)
+          } else {
+            // Header hasn't passed yet, keep progress at 0 and images at start
+            progress = 0
+          }
           
           let adjustedProgress = 0
           
-          // On mobile, implement the new scroll behavior:
-          // 1. Initially, section appears fully in view
-          // 2. Enable image-by-image scrolling where only images move
-          // 3. After final image, section comes back into full view
+          // Seamless image-by-image scrolling based on scroll progress
+          // Direct mapping from scroll progress (0-1) to card index (0 to totalCards-1)
+          // Smooth, linear progression for seamless transitions
+          
           if (isMobileDevice) {
-            const totalCards = boardMembers.length
+            // Mobile: Smooth transitions with slight hold at start and end
+            const startHold = 0.15  // Hold first image briefly
+            const endHold = 0.15    // Hold last image briefly
+            const animationRange = 1 - startHold - endHold
             
-            // Define scroll phases:
-            // Phase 1 (0-25%): Section fully visible, no movement
-            // Phase 2 (25-75%): Image-by-image scrolling
-            // Phase 3 (75-100%): Section fully visible again
-            
-            if (progress < 0.25) {
-              // Phase 1: Keep first image fully visible (no movement)
+            if (progress < startHold) {
+              // Hold at first image
               adjustedProgress = 0
-            } else if (progress < 0.75) {
-              // Phase 2: Image-by-image scrolling
-              // Map 25-75% progress to 0 to (totalCards-1)
-              const phaseProgress = (progress - 0.25) / 0.5
-              adjustedProgress = phaseProgress * (totalCards - 1)
+            } else if (progress < 1 - endHold) {
+              // Smooth animation through all images
+              const animationProgress = (progress - startHold) / animationRange
+              adjustedProgress = animationProgress * (totalCards - 1)
             } else {
-              // Phase 3: Keep last image fully visible (no movement)
+              // Hold at last image
               adjustedProgress = totalCards - 1
             }
           } else {
-            // Desktop: First 25% of scroll progress: keep first image stuck (translateX = 0)
-            // After 25%: start translating image by image
-            const stickyThreshold = 0.25
-            
-            if (progress > stickyThreshold) {
-              // Map remaining 75% progress to card indices (0 to totalCards - 1)
-              const remainingProgress = (progress - stickyThreshold) / (1 - stickyThreshold)
-              const totalCards = boardMembers.length
-              // Calculate which card index to show (0 = first card, totalCards-1 = last card)
-              // This will be used to calculate pixel translation
-              adjustedProgress = remainingProgress * (totalCards - 1)
-            }
+            // Desktop: Seamless linear progression
+            // Direct mapping: scroll progress directly controls image position
+            adjustedProgress = Math.min(progress * (totalCards - 1), totalCards - 1)
           }
           
+          // Pin section when animation is in progress
+          // Pin only after: header has scrolled past AND animation is active (not at last image yet)
+          // Keep pinned during entire animation sequence until last image completes
+          // Release when: last image is fully shown (adjustedProgress >= totalCards - 1)
+          const animationStarted = headerHasScrolledPast && progress > 0
+          const animationComplete = adjustedProgress >= totalCards - 1
+          const sectionInViewport = sectionBottom > 0 && sectionTop < windowHeight
+          
+          // Pin during active animation (after header passes), release when complete or section exits viewport
+          // Don't pin until header has fully scrolled past
+          const shouldPin = headerHasScrolledPast && animationStarted && !animationComplete && sectionInViewport
+          
+          setIsSectionPinned(shouldPin)
           setScrollProgress(adjustedProgress)
         } else if (sectionTop >= windowHeight) {
           // Section not yet reached
           setScrollProgress(0)
           setIsSectionInView(false)
+          setIsSectionPinned(false)
         } else if (sectionBottom <= 0) {
-          // Section fully scrolled past - show last image
+          // Section fully scrolled past - show last image, release pin
           const totalCards = boardMembers.length
           setScrollProgress(totalCards - 1)
           setIsSectionInView(true)
+          setIsSectionPinned(false)
+        } else {
+          // Section in view but header hasn't scrolled past yet
+          setScrollProgress(0)
+          setIsSectionPinned(false)
         }
       }
     }
@@ -372,9 +406,12 @@ const OurTeam = () => {
       </section>
 
       {/* Board of Directors Section */}
-      <section className="board-section" ref={boardSectionRef}>
+      <section 
+        className={`board-section ${isSectionPinned ? 'is-pinned' : ''}`}
+        ref={boardSectionRef}
+      >
         <div className="board-container">
-          <div className="board-header">
+          <div className="board-header" ref={boardHeaderRef}>
             <h2 className="board-title">Board of Directors</h2>
           </div>
           <div className="board-members-container">
@@ -385,8 +422,10 @@ const OurTeam = () => {
                 // Calculate translateX based on scroll progress
                 // scrollProgress: 0 = first image stuck, 0 to (totalCards-1) = card index to show
                 // Translate by card index * cardWidth (including gap) to show images one by one
+                // No transition for seamless scroll-driven animation
                 transform: `translateX(-${scrollProgress * cardWidth}px)`,
-                transition: isMobile ? 'transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                transition: 'none',
+                willChange: 'transform'
               }}
             >
               {boardMembers.map((member, index) => (
