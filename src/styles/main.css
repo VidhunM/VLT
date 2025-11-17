@@ -4565,8 +4565,8 @@ a.btn-our-people {
 /* ===== Contact Page - Split Layout ===== */
 .contact-page-dark {
   min-height: 100vh;
-  background: #1b402f;
-  color: #fff;
+  background: #fff;
+  color: #000;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -4616,7 +4616,7 @@ a.btn-our-people {
 .contact-address {
   font-size: 1.18rem;
   font-style: normal;
-  color: #fff;
+  color: #000;
   line-height: 1.5;
   margin-bottom: 0;
   text-align: left;
@@ -4624,7 +4624,7 @@ a.btn-our-people {
 .contact-phone {
   font-size: 1.22rem;
   font-weight: 700;
-  color: #fff;
+  color: #000;
   text-decoration: none;
   text-align: left;
   display: block;
@@ -4635,9 +4635,9 @@ a.btn-our-people {
 .contact-linkedin {
   margin-top: 18px;
   padding: 7px 32px;
-  border: 2px solid #fff;
+  border: 2px solid #000;
   border-radius: 28px;
-  color: #fff;
+  color: #000;
   background: transparent;
   text-decoration: none;
   font-weight: 600;
@@ -4648,8 +4648,8 @@ a.btn-our-people {
   text-align: left;
 }
 .contact-linkedin:hover {
-  background: #fff;
-  color: #16272B;
+  background: #000;
+  color: #fff;
 }
 
 .contact-form {
@@ -4679,7 +4679,7 @@ a.btn-our-people {
   text-align: left;
 }
 .contact-form label {
-  color: #fff;
+  color: #000;
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 10px;
@@ -4691,8 +4691,8 @@ a.btn-our-people {
 .contact-form textarea {
   background: transparent;
   border: none;
-  border-bottom: 2px solid #fff;
-  color: #fff;
+  border-bottom: 2px solid #000;
+  color: #000;
   font-size: 1.15rem;
   padding: 7px 0 6px 0;
   outline: none;
@@ -4708,7 +4708,7 @@ a.btn-our-people {
 }
 .contact-form input::placeholder,
 .contact-form textarea::placeholder {
-  color: #a7b3b9;
+  color: #999;
   opacity: 1;
 }
 .contact-form select {
@@ -4718,7 +4718,7 @@ a.btn-our-people {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000000' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0 center;
   background-size: 12px;
@@ -4727,7 +4727,7 @@ a.btn-our-people {
   color: #fff;
 }
 .contact-form select:valid {
-  color: #fff;
+  color: #000;
 }
 .contact-form select option {
   color: #000;
@@ -4756,7 +4756,7 @@ a.btn-our-people {
 /* Location Map Section */
 .location-section {
   width: 100%;
-  background: #1b402f;
+  background: #fff;
   padding: 60px 0 80px 0;
 }
 
@@ -4780,7 +4780,7 @@ a.btn-our-people {
 .location-title {
   font-size: 3.5rem;
   font-weight: 500;
-  color: #fff;
+  color: #000;
   line-height: 1.2;
   margin: 0;
   font-family: 'Georgia', serif;
@@ -4806,7 +4806,7 @@ a.btn-our-people {
 }
 
 .location-item p {
-  color: #fff;
+  color: #000;
   font-size: 1.1rem;
   line-height: 1.6;
   margin: 0;
@@ -4820,7 +4820,7 @@ a.btn-our-people {
 }
 
 .location-contact p {
-  color: #fff;
+  color: #000;
   font-size: 1.1rem;
   margin: 0;
   text-align: left;
@@ -4834,7 +4834,7 @@ a.btn-our-people {
 }
 
 .location-contact a:hover {
-  color: #fff;
+  color: #000;
   text-decoration: underline;
 }
 

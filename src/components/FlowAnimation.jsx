@@ -204,7 +204,7 @@ const FlowAnimation = () => {
     <div
       className="flow-animation-wrapper"
       style={{
-        background: '#1b402f',
+        background: '#00853E',
         padding: '80px 48px 40px',
         color: '#fff'
       }}
@@ -287,7 +287,7 @@ const FlowAnimation = () => {
                 CONTACT
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                <div className="flow-animation-address" style={{ fontSize: 14, color: '#999' }}>
+                <div className="flow-animation-address" style={{ fontSize: 14, color: '#fff' }}>
                   7th Floor, Centre Point,<br />
                   2/4, Mount Pollamallee High Road,<br />
                   Manapakkam, Porur, Chennai
