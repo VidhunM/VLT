@@ -204,7 +204,7 @@ const FlowAnimation = () => {
     <div
       className="flow-animation-wrapper"
       style={{
-        background: '#00853E',
+        background: '#006B3C',
         padding: '80px 48px 40px',
         color: '#fff'
       }}
