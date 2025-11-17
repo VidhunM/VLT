@@ -102,17 +102,6 @@ const ProjectDetail = () => {
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <section className="project-gallery">
-        <div className="project-gallery-container">
-          {project.galleryImages.map((image, index) => (
-            <div key={index} className="project-gallery-item">
-              <img src={image} alt={`${project.title} - Gallery ${index + 1}`} />
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Other Recent Projects Section */}
       <section className="project-other-projects">
         <div className="project-other-projects-container">
