@@ -61,8 +61,27 @@ const ProjectDetail = () => {
           <p className="project-subtitle">{project.subtitle}</p>
           <div className="project-services">{project.services}</div>
         </div>
-        <div className="project-hero-image" style={{ backgroundImage: `url(${project.heroImage})` }}></div>
       </section>
+
+      {/* Hero Images Section */}
+      {project.heroImage && (
+        <section className="project-hero-images">
+          <div className="project-hero-images-container">
+            <div className="project-hero-image-main">
+              <img src={project.heroImage} alt={project.title} />
+            </div>
+            {project.galleryImages && project.galleryImages.length > 0 && (
+              <div className="project-hero-images-grid">
+                {project.galleryImages.slice(0, 3).map((image, index) => (
+                  <div key={index} className="project-hero-image-item">
+                    <img src={image} alt={`${project.title} - Image ${index + 1}`} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Content Section */}
       <section className="project-content">

@@ -6043,6 +6043,10 @@ a.btn-our-people {
     --ace-y: 72px;
     clip-path: inset(0 0 90% 0 round 26px);
   }
+
+  .project-hero-images-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -6556,22 +6560,64 @@ body.transitioning {
 }
 
 .project-hero-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: blur(8px);
-  opacity: 0.3;
-  z-index: 1;
+  display: none;
 }
 
 .project-hero-content {
   position: relative;
   z-index: 2;
+}
+
+/* Hero Images Section */
+.project-hero-images {
+  width: 100%;
+  padding: 0 5% 60px;
+  background: white;
+}
+
+.project-hero-images-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.project-hero-image-main {
+  width: 100%;
+  margin-bottom: 40px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.project-hero-image-main img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.project-hero-images-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.project-hero-image-item {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  aspect-ratio: 4 / 3;
+}
+
+.project-hero-image-item img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.project-hero-image-item:hover img {
+  transform: scale(1.05);
 }
 
 /* Content Section */
@@ -6753,6 +6799,19 @@ body.transitioning {
   .project-hero {
     padding: 30px 24px 60px;
     min-height: 50vh;
+  }
+
+  .project-hero-images {
+    padding: 0 24px 40px;
+  }
+
+  .project-hero-image-main {
+    margin-bottom: 24px;
+  }
+
+  .project-hero-images-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .project-content {
