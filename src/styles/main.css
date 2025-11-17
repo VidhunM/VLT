@@ -1327,6 +1327,16 @@ a.btn-our-people {
 
 .services-section.is-fixed .services-content-container {
   height: 100vh;
+  pointer-events: auto;
+}
+
+.services-section.is-fixed .service-content-item {
+  pointer-events: auto;
+}
+
+.services-section.is-fixed .service-cta-btn {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .services-content-track {

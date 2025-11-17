@@ -26,6 +26,7 @@ function OurFeed() {
   const ringGroupRef = useRef(null);
   const [highlightIndex, setHighlightIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
+  const [selectedHighlight, setSelectedHighlight] = useState(null);
   
   // Responsive cards per view
   useEffect(() => {
@@ -99,6 +100,17 @@ function OurFeed() {
   useEffect(() => {
     setHighlightIndex((prev) => Math.min(prev, maxIndex));
   }, [cardsPerView, maxIndex]);
+
+  // Close modal on ESC key press
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape" && selectedHighlight) {
+        setSelectedHighlight(null);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [selectedHighlight]);
   
   const handlePrev = () => {
     setHighlightIndex((prev) => Math.max(0, prev - 1));
@@ -523,6 +535,7 @@ function OurFeed() {
               {highlights.map((highlight, i) => (
                 <div
                   key={i}
+                  onClick={() => setSelectedHighlight(highlight)}
                   style={{
                     flex: `0 0 calc(${100 / cardsPerView}% - ${(24 * (cardsPerView - 1)) / cardsPerView}px)`,
                     background: "#fff",
@@ -531,6 +544,16 @@ function OurFeed() {
                     overflow: "hidden",
                     display: "flex",
                     flexDirection: "column",
+                    cursor: "pointer",
+                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.15)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.08)";
                   }}
                 >
                   <div style={{ width: "100%", aspectRatio: "1 / 1", background: "#eee", overflow: "hidden" }}>
@@ -561,6 +584,141 @@ function OurFeed() {
           </div>
         </div>
       </section>
+
+      {/* Highlight Popup Modal */}
+      {selectedHighlight && (
+        <div
+          onClick={() => setSelectedHighlight(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.85)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "20px",
+            cursor: "pointer",
+            backdropFilter: "blur(8px)",
+            animation: "fadeIn 0.3s ease",
+          }}
+        >
+          <style>{`
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes slideUp {
+              from { transform: translateY(20px); opacity: 0; }
+              to { transform: translateY(0); opacity: 1; }
+            }
+          `}</style>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: "900px",
+              maxHeight: "90vh",
+              width: "100%",
+              background: "#fff",
+              borderRadius: "16px",
+              overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 24px 80px rgba(0,0,0,0.4)",
+              cursor: "default",
+              animation: "slideUp 0.3s ease",
+            }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedHighlight(null)}
+              style={{
+                position: "absolute",
+                top: "16px",
+                right: "16px",
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                border: "none",
+                background: "rgba(0, 0, 0, 0.7)",
+                color: "#fff",
+                fontSize: "24px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 10,
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(0, 0, 0, 0.9)";
+                e.currentTarget.style.transform = "scale(1.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(0, 0, 0, 0.7)";
+                e.currentTarget.style.transform = "scale(1)";
+              }}
+            >
+              ×
+            </button>
+
+            {/* Image */}
+            <div
+              style={{
+                width: "100%",
+                aspectRatio: "16 / 9",
+                background: "#000",
+                overflow: "hidden",
+                position: "relative",
+              }}
+            >
+              <img
+                src={selectedHighlight.image}
+                alt={selectedHighlight.title}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  display: "block",
+                }}
+              />
+            </div>
+
+            {/* Content */}
+            <div
+              style={{
+                padding: "32px",
+                overflowY: "auto",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "28px",
+                  fontWeight: 800,
+                  letterSpacing: "0.5px",
+                  marginBottom: "16px",
+                  color: "#000",
+                }}
+              >
+                {selectedHighlight.title}
+              </h2>
+              <p
+                style={{
+                  fontSize: "16px",
+                  lineHeight: "1.8",
+                  color: "#333",
+                  margin: 0,
+                }}
+              >
+                {selectedHighlight.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       <FlowAnimation />
     </div>

@@ -866,7 +866,19 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                       <div className="service-label">{service.label}</div>
                       <h2 className="service-main-title">{service.title}</h2>
                       <p className="service-description">{service.description}</p>
-                      <button className="service-cta-btn">
+                      <button 
+                        className="service-cta-btn"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          try {
+                            handleNavigationClick(e, '/our-service')
+                          } catch (error) {
+                            console.error('Navigation error:', error)
+                            navigate('/our-service')
+                          }
+                        }}
+                      >
                         <span>Find Out More</span>
                         <div className="btn-icon orange-dots"></div>
                       </button>
