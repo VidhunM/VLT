@@ -6,6 +6,7 @@ const HeroThree = () => {
   const [selectedProject, setSelectedProject] = useState(0)
   const [previousProject, setPreviousProject] = useState(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [imagesLoaded, setImagesLoaded] = useState({})
   const transitionTimeoutRef = useRef(null)
   const navigate = useNavigate()
   
@@ -36,6 +37,34 @@ const HeroThree = () => {
 
   const projectCount = projects.length
 
+  // Preload all images to prevent broken images during animation
+  useEffect(() => {
+    const loadImage = (src) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => resolve(src)
+        img.onerror = reject
+        img.src = src
+      })
+    }
+
+    const preloadImages = async () => {
+      const loaded = {}
+      for (let i = 0; i < projects.length; i++) {
+        try {
+          await loadImage(projects[i].bgImage)
+          loaded[i] = true
+        } catch (error) {
+          console.warn(`Failed to load image for project ${i}:`, error)
+          loaded[i] = false
+        }
+      }
+      setImagesLoaded(loaded)
+    }
+
+    preloadImages()
+  }, [])
+
   const goToProject = useCallback((next) => {
     if (!projectCount) return
 
@@ -61,17 +90,17 @@ const HeroThree = () => {
       transitionTimeoutRef.current = setTimeout(() => {
         setPreviousProject(null)
         transitionTimeoutRef.current = null
-      }, 1100)
+      }, 2500)
 
       return nextIndex
     })
   }, [projectCount])
 
-  // Auto-rotate through projects every 4 seconds
+  // Auto-rotate through projects every 6.5 seconds (increased to match slower animation)
   useEffect(() => {
     const interval = setInterval(() => {
       goToProject((current) => (current + 1) % projectCount)
-    }, 4000)
+    }, 6500)
 
     return () => clearInterval(interval)
   }, [goToProject, projectCount])
@@ -101,13 +130,19 @@ const HeroThree = () => {
           <div
             key={`prev-${projects[previousProject].name}`}
             className="hero-bg-layer hero-bg-previous"
-            style={{ backgroundImage: `url(${projects[previousProject].bgImage})` }}
+            style={{ 
+              backgroundImage: `url(${projects[previousProject].bgImage})`,
+              opacity: imagesLoaded[previousProject] === false ? 0 : undefined
+            }}
           ></div>
         )}
         <div 
           className="hero-bg-layer hero-bg-active" 
           key={`active-${projects[selectedProject].name}`}
-          style={{ backgroundImage: `url(${projects[selectedProject].bgImage})` }}
+          style={{ 
+            backgroundImage: `url(${projects[selectedProject].bgImage})`,
+            opacity: imagesLoaded[selectedProject] === false ? 0 : undefined
+          }}
         ></div>
         <div className="hero-overlay"></div>
       </div>

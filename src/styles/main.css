@@ -455,17 +455,19 @@ a, button, .project-item, .nav-link {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   will-change: transform, opacity;
+  -webkit-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .hero-bg-active {
-  -webkit-animation: heroSlideIn 1.1s ease-in-out forwards;
-  animation: heroSlideIn 1.1s ease-in-out forwards;
+  -webkit-animation: heroSlideIn 2.5s ease-in-out forwards;
+  animation: heroSlideIn 2.5s ease-in-out forwards;
   z-index: 2;
 }
 
 .hero-bg-previous {
-  -webkit-animation: heroSlideOut 1.1s ease-in-out forwards;
-  animation: heroSlideOut 1.1s ease-in-out forwards;
+  -webkit-animation: heroSlideOut 2.5s ease-in-out forwards;
+  animation: heroSlideOut 2.5s ease-in-out forwards;
   z-index: 1;
 }
 
@@ -473,7 +475,10 @@ a, button, .project-item, .nav-link {
   0% {
     -webkit-transform: translateX(40%) scale(0.8);
     transform: translateX(40%) scale(0.8);
-    opacity: 1;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.3;
   }
   100% {
     -webkit-transform: translateX(0) scale(1);
@@ -486,7 +491,10 @@ a, button, .project-item, .nav-link {
   0% {
     -webkit-transform: translateX(40%) scale(0.8);
     transform: translateX(40%) scale(0.8);
-    opacity: 1;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.3;
   }
   100% {
     -webkit-transform: translateX(0) scale(1);
@@ -501,10 +509,13 @@ a, button, .project-item, .nav-link {
     transform: translateX(0) scale(1);
     opacity: 1;
   }
+  80% {
+    opacity: 0.5;
+  }
   100% {
     -webkit-transform: translateX(-40%) scale(0.75);
     transform: translateX(-40%) scale(0.75);
-    opacity: 1;
+    opacity: 0;
   }
 }
 
@@ -514,10 +525,13 @@ a, button, .project-item, .nav-link {
     transform: translateX(0) scale(1);
     opacity: 1;
   }
+  80% {
+    opacity: 0.5;
+  }
   100% {
     -webkit-transform: translateX(-40%) scale(0.75);
     transform: translateX(-40%) scale(0.75);
-    opacity: 1;
+    opacity: 0;
   }
 }
 
@@ -6891,5 +6905,589 @@ body.transitioning {
   .project-other-project-item {
     padding: 16px 0;
     gap: 10px;
+  }
+}
+
+/* ============================================
+   COMPREHENSIVE MOBILE RESPONSIVE STYLES
+   Covers all pages and components for mobile devices
+   ============================================ */
+
+/* Extra Small Mobile (320px - 374px) */
+@media (max-width: 374px) {
+  /* Base Typography */
+  body {
+    font-size: 14px;
+  }
+
+  /* Hero Section */
+  .hero-title {
+    font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero-description {
+    font-size: clamp(0.9rem, 4vw, 1.1rem) !important;
+  }
+
+  .hero-content-bottom {
+    left: 1rem !important;
+    bottom: clamp(10rem, 20vh, 14rem) !important;
+    max-width: calc(100% - 2rem) !important;
+  }
+
+  .hero-actions {
+    left: 1rem !important;
+    right: 1rem !important;
+    bottom: clamp(0.5rem, 2vh, 1rem) !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .hero-actions .btn {
+    width: 100% !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Header */
+  .logo-image {
+    height: 30px !important;
+  }
+
+  .nav-circle-btn {
+    width: 36px !important;
+    height: 36px !important;
+    top: 0.75rem !important;
+    right: 1rem !important;
+  }
+
+  .circle-v {
+    font-size: 1rem !important;
+  }
+
+  /* Contact Page */
+  .contact-wrapper {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .contact-sidebar {
+    padding: 1.5rem 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .contact-form {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .form-row {
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  .form-field {
+    width: 100% !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Our Team Page */
+  .team-hero h1 {
+    font-size: clamp(1.8rem, 8vw, 2.2rem) !important;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+    padding: 1rem !important;
+  }
+
+  .member-card {
+    padding: 1rem !important;
+  }
+
+  .member-name {
+    font-size: 1.2rem !important;
+  }
+
+  .member-position {
+    font-size: 0.9rem !important;
+  }
+
+  /* Work Page */
+  .work-hero h1 {
+    font-size: clamp(1.8rem, 8vw, 2.5rem) !important;
+    padding: 2rem 1rem !important;
+  }
+
+  /* Statistics Section */
+  .statistics-section {
+    padding: 2rem 1rem !important;
+  }
+
+  .stat-item {
+    padding: 1rem !important;
+  }
+
+  .stat-number {
+    font-size: 2rem !important;
+  }
+
+  .stat-label {
+    font-size: 0.85rem !important;
+  }
+}
+
+/* Small Mobile (375px - 479px) */
+@media (min-width: 375px) and (max-width: 479px) {
+  /* Hero Section */
+  .hero-title {
+    font-size: clamp(2rem, 7vw, 3rem) !important;
+  }
+
+  .hero-description {
+    font-size: clamp(1rem, 4.5vw, 1.2rem) !important;
+  }
+
+  .hero-content-bottom {
+    left: 1.25rem !important;
+    bottom: clamp(11rem, 22vh, 16rem) !important;
+    max-width: calc(100% - 2.5rem) !important;
+  }
+
+  .hero-actions {
+    left: 1.25rem !important;
+    right: 1.25rem !important;
+    gap: 0.875rem !important;
+  }
+
+  .hero-actions .btn {
+    padding: 0.7rem 1.25rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* Header */
+  .logo-image {
+    height: 32px !important;
+  }
+
+  .nav-circle-btn {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  /* Contact Page */
+  .contact-wrapper {
+    padding: 2rem 1.25rem !important;
+  }
+
+  .contact-form {
+    padding: 2rem 1.25rem !important;
+  }
+
+  /* Our Team Page */
+  .team-hero h1 {
+    font-size: clamp(2rem, 7vw, 2.5rem) !important;
+  }
+
+  .team-grid {
+    padding: 1.25rem !important;
+  }
+}
+
+/* Standard Mobile (480px - 767px) */
+@media (min-width: 480px) and (max-width: 767px) {
+  /* Hero Section */
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 3.5rem) !important;
+  }
+
+  .hero-description {
+    font-size: clamp(1.1rem, 4vw, 1.3rem) !important;
+  }
+
+  .hero-content-bottom {
+    left: 1.5rem !important;
+    bottom: clamp(12rem, 24vh, 18rem) !important;
+    max-width: calc(100% - 3rem) !important;
+  }
+
+  .hero-actions {
+    left: 1.5rem !important;
+    right: 1.5rem !important;
+    flex-direction: row !important;
+    gap: 1rem !important;
+  }
+
+  .hero-actions .btn {
+    flex: 0 1 auto !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Contact Page */
+  .contact-wrapper {
+    padding: 2.5rem 1.5rem !important;
+  }
+
+  .contact-form {
+    padding: 2.5rem 1.5rem !important;
+  }
+
+  .form-row {
+    flex-direction: row !important;
+    gap: 1rem !important;
+  }
+
+  .form-field {
+    flex: 1 1 0 !important;
+  }
+
+  /* Our Team Page */
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem !important;
+    padding: 1.5rem !important;
+  }
+}
+
+/* Tablet Portrait (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  /* Hero Section */
+  .hero-title {
+    font-size: clamp(3rem, 5vw, 4rem) !important;
+  }
+
+  .hero-description {
+    font-size: clamp(1.2rem, 3vw, 1.4rem) !important;
+  }
+
+  .hero-content-bottom {
+    left: 2rem !important;
+    bottom: clamp(8rem, 15vh, 12rem) !important;
+    max-width: 500px !important;
+  }
+
+  .hero-actions {
+    right: 2rem !important;
+    bottom: clamp(2rem, 5vh, 4rem) !important;
+  }
+
+  /* Contact Page */
+  .contact-wrapper {
+    flex-direction: row !important;
+    gap: 2rem !important;
+    padding: 3rem 2rem !important;
+  }
+
+  .contact-sidebar {
+    flex: 0 0 280px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .contact-form {
+    flex: 1 !important;
+  }
+
+  /* Our Team Page */
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 2rem !important;
+  }
+}
+
+/* Universal Mobile Fixes (All mobile sizes) */
+@media (max-width: 991px) {
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  * {
+    max-width: 100% !important;
+  }
+
+  /* Ensure all containers respect viewport */
+  .container,
+  .excellence-container,
+  .hero-container,
+  .contact-container,
+  .team-container,
+  .work-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: clamp(1rem, 4vw, 2rem) !important;
+    padding-right: clamp(1rem, 4vw, 2rem) !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Header fixes */
+  .header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+  }
+
+  /* Navigation menu mobile */
+  .nav-menu {
+    font-size: clamp(1rem, 4vw, 1.2rem) !important;
+  }
+
+  .nav-link {
+    padding: 0.75rem 0 !important;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem) !important;
+  }
+
+  /* Buttons - ensure touch-friendly size */
+  .btn,
+  button,
+  a.btn {
+    min-height: 44px !important;
+    min-width: 44px !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: clamp(0.85rem, 3.5vw, 1rem) !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1) !important;
+  }
+
+  /* Images responsive */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Text overflow prevention */
+  h1, h2, h3, h4, h5, h6,
+  .hero-title,
+  .hero-description,
+  p,
+  span {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+  }
+
+  /* Section spacing */
+  section {
+    padding: clamp(2rem, 6vh, 4rem) 0 !important;
+  }
+
+  /* Grid layouts - stack on mobile */
+  .grid,
+  .services-grid,
+  .projects-grid,
+  .team-grid {
+    grid-template-columns: 1fr !important;
+    gap: clamp(1.5rem, 4vw, 2.5rem) !important;
+  }
+
+  /* Flex containers */
+  .flex-container,
+  .row {
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Cards and containers */
+  .card,
+  .project-card,
+  .member-card,
+  .service-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: clamp(1rem, 3vw, 1.5rem) !important;
+    margin: 0 auto !important;
+  }
+
+  /* Forms */
+  .contact-form,
+  .form {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: clamp(1.5rem, 4vw, 2.5rem) !important;
+  }
+
+  .form-field input,
+  .form-field textarea,
+  .form-field select {
+    width: 100% !important;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem) !important;
+    padding: 0.75rem !important;
+  }
+
+  /* Modal/Dialog */
+  .modal,
+  .dialog {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    margin: 2.5vh auto !important;
+    padding: clamp(1.5rem, 4vw, 2.5rem) !important;
+  }
+
+  /* Footer */
+  .flow-animation-wrapper,
+  footer {
+    padding: clamp(2rem, 5vh, 3rem) clamp(1rem, 4vw, 2rem) !important;
+  }
+
+  /* Statistics Section */
+  .statistics-section {
+    padding: clamp(2rem, 5vh, 3rem) clamp(1rem, 4vw, 2rem) !important;
+  }
+
+  .statistics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: clamp(1rem, 3vw, 1.5rem) !important;
+  }
+
+  /* Excellence Section */
+  .excellence-section {
+    padding: clamp(3rem, 8vh, 5rem) clamp(1rem, 4vw, 2rem) !important;
+  }
+
+  .excellence-title {
+    font-size: clamp(2rem, 6vw, 3.5rem) !important;
+  }
+
+  .excellence-subtitle {
+    font-size: clamp(1.2rem, 4vw, 1.8rem) !important;
+  }
+
+  /* Services Section */
+  .services-section {
+    padding: clamp(3rem, 8vh, 5rem) clamp(1rem, 4vw, 2rem) !important;
+  }
+
+  /* Our Service Page */
+  .our-service-page {
+    padding: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .service-carousel-3d {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Our Feed Page */
+  .our-feed-page {
+    padding: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  /* Our Team Page */
+  .board-section {
+    padding: clamp(2rem, 5vh, 3rem) clamp(1rem, 4vw, 2rem) !important;
+  }
+
+  .board-members-slider {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+  }
+
+  .board-member-card {
+    scroll-snap-align: start !important;
+    min-width: 280px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Work Page */
+  .work-page {
+    padding: 0 !important;
+  }
+
+  .work-hero {
+    padding: clamp(3rem, 8vh, 5rem) clamp(1rem, 4vw, 2rem) !important;
+  }
+
+  /* Project Detail Page */
+  .project-detail-page {
+    padding: 0 !important;
+  }
+
+  .project-hero {
+    padding: clamp(2rem, 6vh, 4rem) clamp(1rem, 4vw, 2rem) !important;
+  }
+
+  /* Contact Page */
+  .contact-page-dark {
+    padding: 0 !important;
+    min-height: 100vh !important;
+  }
+
+  .contact-wrapper {
+    flex-direction: column !important;
+    padding: clamp(2rem, 5vh, 3rem) clamp(1rem, 4vw, 2rem) !important;
+    gap: 2rem !important;
+  }
+
+  .contact-sidebar {
+    width: 100% !important;
+    padding: clamp(1.5rem, 4vw, 2rem) !important;
+  }
+
+  .contact-form {
+    width: 100% !important;
+    padding: clamp(1.5rem, 4vw, 2rem) !important;
+  }
+
+  /* Location Section */
+  .location-section {
+    padding: clamp(2rem, 5vh, 3rem) clamp(1rem, 4vw, 2rem) !important;
+  }
+
+  .location-map {
+    height: clamp(250px, 40vh, 400px) !important;
+    min-height: 250px !important;
+  }
+}
+
+/* Landscape Mobile (max-width: 991px and landscape) */
+@media (max-width: 991px) and (orientation: landscape) {
+  .hero-three {
+    min-height: auto !important;
+    height: 100vh !important;
+  }
+
+  .hero-content-bottom {
+    bottom: clamp(6rem, 12vh, 10rem) !important;
+  }
+
+  .hero-actions {
+    bottom: clamp(1rem, 3vh, 2rem) !important;
+  }
+
+  section {
+    padding: clamp(1.5rem, 4vh, 3rem) 0 !important;
+  }
+}
+
+/* High DPI Mobile Displays */
+@media (max-width: 991px) and (-webkit-min-device-pixel-ratio: 2) {
+  /* Ensure crisp rendering on retina displays */
+  img,
+  .hero-bg-layer {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Print Styles - Hide on mobile print */
+@media print {
+  .header,
+  .nav,
+  .nav-circle-btn,
+  .hero-actions,
+  .flow-animation-wrapper {
+    display: none !important;
   }
 }

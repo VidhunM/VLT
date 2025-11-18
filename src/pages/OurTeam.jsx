@@ -395,12 +395,6 @@ const OurTeam = () => {
         <div className="team-hero-overlay">
           <div className="team-hero-content">
             <h1 className="team-hero-title">We are Vulture Lines.</h1>
-            <div className="team-hero-actions">
-              <button className="btn-join-team-hero">
-                <span>Join The Team</span>
-                <div className="btn-icon orange-dots"></div>
-              </button>
-            </div>
           </div>
         </div>
       </section>
