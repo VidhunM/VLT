@@ -27,22 +27,25 @@ function OurFeed() {
   const [highlightIndex, setHighlightIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
   const [selectedHighlight, setSelectedHighlight] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   
-  // Responsive cards per view
+  // Responsive cards per view and mobile detection
   useEffect(() => {
-    const updateCardsPerView = () => {
-      if (window.innerWidth <= 768) {
+    const updateResponsive = () => {
+      const width = window.innerWidth;
+      setIsMobile(width <= 768);
+      if (width <= 768) {
         setCardsPerView(1);
-      } else if (window.innerWidth <= 1024) {
+      } else if (width <= 1024) {
         setCardsPerView(2);
       } else {
         setCardsPerView(3);
       }
     };
     
-    updateCardsPerView();
-    window.addEventListener('resize', updateCardsPerView);
-    return () => window.removeEventListener('resize', updateCardsPerView);
+    updateResponsive();
+    window.addEventListener('resize', updateResponsive);
+    return () => window.removeEventListener('resize', updateResponsive);
   }, []);
   
   // Extended highlights data
@@ -125,13 +128,14 @@ function OurFeed() {
     const ringItems = [];
     let imgIdx = 0;
     
-    const baseZ = -200; // Negative Z brings elements closer to camera
-    const ringRadius = 440; // Slightly increased radius for middle row (wider structure)
-    const outerRingRadius = 470; // Slightly increased radius for 1st and 3rd rows (wider structure)
-    const ringImageSize = 115; // Slightly decreased image size
+    // Responsive sizing for mobile
+    const baseZ = isMobile ? -120 : -200; // Negative Z brings elements closer to camera
+    const ringRadius = isMobile ? 220 : 440; // Reduced radius for mobile
+    const outerRingRadius = isMobile ? 240 : 470; // Reduced radius for mobile
+    const ringImageSize = isMobile ? 60 : 115; // Smaller images on mobile
     
     // Cylindrical ring: 3 vertical levels, each with 6 images in a circle
-    const ringYLevels = [-130, 0, 130]; // Slightly decreased vertical spread
+    const ringYLevels = isMobile ? [-70, 0, 70] : [-130, 0, 130]; // Reduced vertical spread on mobile
     const imagesPerLevel = 6;
     
     ringYLevels.forEach((y, levelIdx) => {
@@ -157,7 +161,7 @@ function OurFeed() {
     });
     
     return ringItems;
-  }, []);
+  }, [isMobile]);
 
   // Animation: map scroll progress to rotation, then rotate the ring.
   useEffect(() => {
@@ -170,8 +174,8 @@ function OurFeed() {
     const autoRotSpeed = 0.3; // Automatic rotation speed (degrees per frame)
     const baseRotationOffsetX = 0; // No X tilt - keep everything centered
     const baseRotationOffsetZ = -350; // Fixed -350 degree Z-axis rotation (not rotating)
-    const verticalOffset = -40; // Move structure slightly downward (less negative = down)
-    const horizontalOffset = -60; // Move structure to left (negative = left)
+    const verticalOffset = isMobile ? -20 : -40; // Move structure slightly downward (less negative = down)
+    const horizontalOffset = isMobile ? -30 : -60; // Move structure to left (negative = left)
     
     // Scroll stop detection
     let scrollTimeout = null;
@@ -236,11 +240,11 @@ function OurFeed() {
       ringNode.style.transformStyle = "preserve-3d";
 
       // Update ring items: rotate around center and face camera
-      const centerZ = -200; // Match the baseZ from useMemo (negative = closer)
+      const centerZ = isMobile ? -120 : -200; // Match the baseZ from useMemo (negative = closer)
       ringChildren.forEach((child) => {
         const p = child.__pos;
         // Use each item's stored radius (different for each row)
-        const itemRadius = p.radius || 440;
+        const itemRadius = p.radius || (isMobile ? 220 : 440);
         // Calculate new position after rotation (using combined rotation)
         const rotatedAngle = p.angle + (finalRotY * Math.PI / 180);
         const newX = itemRadius * Math.sin(rotatedAngle);
@@ -285,7 +289,7 @@ function OurFeed() {
         clearTimeout(scrollTimeout);
       }
     };
-  }, [ringItems]);
+  }, [ringItems, isMobile]);
 
   return (
     <div style={{ background: "#fff", minHeight: "100vh", color: "#000" }}>
@@ -334,9 +338,9 @@ function OurFeed() {
           style={{
             position: "relative",
             width: "100%",
-            height: "130vh",
+            height: isMobile ? "80vh" : "130vh",
             overflow: "hidden",
-            perspective: "800px",
+            perspective: isMobile ? "400px" : "800px",
             perspectiveOrigin: "50% 50%",
             display: "flex",
             alignItems: "center",
@@ -585,7 +589,7 @@ function OurFeed() {
         </div>
       </section>
 
-      {/* Highlight Popup Modal */}
+      {/* Highlight Popup Modal - Simple Newspaper Frame */}
       {selectedHighlight && (
         <div
           onClick={() => setSelectedHighlight(null)}
@@ -619,17 +623,19 @@ function OurFeed() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              maxWidth: "900px",
+              maxWidth: "850px",
               maxHeight: "90vh",
               width: "100%",
               background: "#fff",
-              borderRadius: "16px",
+              border: "4px solid #000",
+              borderRadius: "0",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "0 24px 80px rgba(0,0,0,0.4)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
               cursor: "default",
               animation: "slideUp 0.3s ease",
+              position: "relative",
             }}
           >
             {/* Close Button */}
@@ -637,29 +643,31 @@ function OurFeed() {
               onClick={() => setSelectedHighlight(null)}
               style={{
                 position: "absolute",
-                top: "16px",
-                right: "16px",
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                border: "none",
-                background: "rgba(0, 0, 0, 0.7)",
-                color: "#fff",
+                top: "12px",
+                right: "12px",
+                width: "36px",
+                height: "36px",
+                borderRadius: "0",
+                border: "2px solid #000",
+                background: "#fff",
+                color: "#000",
                 fontSize: "24px",
+                fontWeight: "bold",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 zIndex: 10,
                 transition: "all 0.2s ease",
+                lineHeight: "1",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(0, 0, 0, 0.9)";
-                e.currentTarget.style.transform = "scale(1.1)";
+                e.currentTarget.style.background = "#000";
+                e.currentTarget.style.color = "#fff";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(0, 0, 0, 0.7)";
-                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.background = "#fff";
+                e.currentTarget.style.color = "#000";
               }}
             >
               ×
@@ -673,6 +681,7 @@ function OurFeed() {
                 background: "#000",
                 overflow: "hidden",
                 position: "relative",
+                borderBottom: "3px solid #000",
               }}
             >
               <img
@@ -690,27 +699,53 @@ function OurFeed() {
             {/* Content */}
             <div
               style={{
-                padding: "32px",
+                padding: "32px 40px",
                 overflowY: "auto",
+                background: "#fff",
               }}
             >
+              {/* Simple Divider Line */}
+              <div
+                style={{
+                  width: "100%",
+                  height: "2px",
+                  background: "#000",
+                  marginBottom: "24px",
+                }}
+              />
+              
               <h2
                 style={{
                   fontSize: "28px",
-                  fontWeight: 800,
-                  letterSpacing: "0.5px",
+                  fontWeight: 700,
+                  letterSpacing: "1px",
                   marginBottom: "16px",
                   color: "#000",
+                  fontFamily: "'Times New Roman', serif",
+                  textTransform: "uppercase",
+                  lineHeight: "1.3",
                 }}
               >
                 {selectedHighlight.title}
               </h2>
+
+              {/* Simple Divider */}
+              <div
+                style={{
+                  width: "80px",
+                  height: "1px",
+                  background: "#000",
+                  marginBottom: "20px",
+                }}
+              />
+
               <p
                 style={{
                   fontSize: "16px",
                   lineHeight: "1.8",
                   color: "#333",
                   margin: 0,
+                  fontFamily: "'Georgia', serif",
                 }}
               >
                 {selectedHighlight.description}
