@@ -149,6 +149,14 @@ a, button, .project-item, .nav-link {
   margin-left: auto;
 }
 
+/* Hamburger button is now fixed in top right corner */
+.nav-actions .nav-circle-btn {
+  position: fixed !important;
+  top: 0.75rem !important;
+  right: 1.25rem !important;
+  z-index: 1000 !important;
+}
+
 .nav-logo {
   text-decoration: none;
   display: flex;
@@ -338,10 +346,23 @@ a, button, .project-item, .nav-link {
   background: #ffffff;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  position: fixed !important;
+  top: 0.75rem !important;
+  right: 1.25rem !important;
+  z-index: 1000 !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure button content is visible */
+.nav-circle-btn > * {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .nav-circle-btn:hover {
@@ -387,6 +408,104 @@ a, button, .project-item, .nav-link {
 .circle-v::after {
   top: 50%;
   transform: translate(-50%, 90%);
+}
+
+/* Hamburger Icon - 3 Lines */
+.hamburger-icon {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 22px !important;
+  height: 18px !important;
+  gap: 4px !important;
+  transition: all 0.3s ease;
+  visibility: visible !important;
+  opacity: 1 !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.hamburger-line {
+  width: 100% !important;
+  height: 3px !important;
+  min-height: 3px !important;
+  max-height: 3px !important;
+  background: #2f4f1f !important;
+  background-color: #2f4f1f !important;
+  border-radius: 2px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 11 !important;
+}
+
+.hamburger-icon.active .hamburger-line:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger-icon.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-icon.active .hamburger-line:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.nav-circle-btn:hover .hamburger-line {
+  background: #2f4f1f;
+}
+
+/* Global rule to ensure hamburger lines are always visible on all devices */
+.nav-circle-btn .hamburger-icon {
+  display: flex !important;
+  flex-direction: column !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.nav-circle-btn .hamburger-line {
+  display: block !important;
+  background: #2f4f1f !important;
+  background-color: #2f4f1f !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: 3px !important;
+  min-height: 3px !important;
+  width: 100% !important;
+  position: relative !important;
+  z-index: 11 !important;
+}
+
+/* Force visibility - override any potential hiding */
+.nav-circle-btn * .hamburger-icon,
+.nav-circle-btn > .hamburger-icon {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.nav-circle-btn * .hamburger-line,
+.nav-circle-btn .hamburger-icon .hamburger-line {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background: #2f4f1f !important;
+  background-color: #2f4f1f !important;
 }
 
 /* Hero Section */
@@ -1644,10 +1763,59 @@ a.btn-our-people {
   .nav-circle-btn {
     width: 40px;
     height: 40px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .circle-v {
     font-size: 1.2rem;
+  }
+
+  .hamburger-icon {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    height: 16px !important;
+    gap: 3px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 10 !important;
+    position: relative !important;
+  }
+
+  .hamburger-line {
+    display: block !important;
+    width: 100% !important;
+    height: 3px !important;
+    min-height: 3px !important;
+    max-height: 3px !important;
+    background: #2f4f1f !important;
+    background-color: #2f4f1f !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    border-radius: 2px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    z-index: 11 !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(1) {
+    transform: translateY(5px) rotate(45deg) !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(2) {
+    opacity: 0 !important;
+    transform: scaleX(0) !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg) !important;
   }
 
   .logo-image {
@@ -5030,10 +5198,46 @@ a.btn-our-people {
   .nav-circle-btn {
     width: 40px;
     height: 40px;
-    position: fixed;
-    top: 1rem;
-    right: 1.5rem;
-    z-index: 101;
+    position: fixed !important;
+    top: 0.75rem !important;
+    right: 1.25rem !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .hamburger-icon {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 20px !important;
+    height: 16px !important;
+    gap: 3px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 10 !important;
+    position: relative !important;
+  }
+
+  .hamburger-line {
+    display: block !important;
+    width: 100% !important;
+    height: 3px !important;
+    min-height: 3px !important;
+    max-height: 3px !important;
+    background: #2f4f1f !important;
+    background-color: #2f4f1f !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    border-radius: 2px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    z-index: 11 !important;
   }
 
   /* Circle Menu Overlay Mobile - Full View - Ensure proper visibility */
@@ -5395,8 +5599,59 @@ a.btn-our-people {
   .nav-circle-btn {
     width: 45px;
     height: 45px;
-    top: 0.75rem !important;
-    right: 1rem !important;
+    position: fixed !important;
+    top: 0.25rem !important;
+    right: 0.75rem !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .hamburger-icon {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 19px !important;
+    height: 15px !important;
+    gap: 3.5px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 10 !important;
+    position: relative !important;
+  }
+
+  .hamburger-line {
+    display: block !important;
+    width: 100% !important;
+    height: 3px !important;
+    min-height: 3px !important;
+    max-height: 3px !important;
+    background: #2f4f1f !important;
+    background-color: #2f4f1f !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    border-radius: 2px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    z-index: 11 !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(1) {
+    transform: translateY(5.5px) rotate(45deg) !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(2) {
+    opacity: 0 !important;
+    transform: scaleX(0) !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(3) {
+    transform: translateY(-5.5px) rotate(-45deg) !important;
   }
 
   /* Circle Menu Overlay Small Mobile */
@@ -5688,8 +5943,59 @@ a.btn-our-people {
   .nav-circle-btn {
     width: 38px !important;
     height: 38px !important;
-    top: 0.5rem !important;
-    right: 0.75rem !important;
+    position: fixed !important;
+    top: 0.125rem !important;
+    right: 0.5rem !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .hamburger-icon {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 14px !important;
+    gap: 3px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 10 !important;
+    position: relative !important;
+  }
+
+  .hamburger-line {
+    display: block !important;
+    width: 100% !important;
+    height: 3px !important;
+    min-height: 3px !important;
+    max-height: 3px !important;
+    background: #2f4f1f !important;
+    background-color: #2f4f1f !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    border-radius: 2px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    z-index: 11 !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(1) {
+    transform: translateY(5px) rotate(45deg) !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(2) {
+    opacity: 0 !important;
+    transform: scaleX(0) !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg) !important;
   }
 
   /* Hero */
@@ -6147,11 +6453,59 @@ a.btn-our-people {
 /* Circle Transition Styles */
 .circle-transition {
   pointer-events: none;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  overflow: hidden !important;
 }
 
 .circle-transition-inner {
-  transform-origin: center;
+  transform-origin: center center !important;
   will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Mobile-specific fixes for circle transition */
+@media (max-width: 768px) {
+  .circle-transition {
+    width: 100dvw !important;
+    height: 100dvh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 99999 !important;
+  }
+
+  .circle-transition-inner {
+    transform-origin: center center !important;
+    -webkit-transform-origin: center center !important;
+    will-change: transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .circle-transition {
+    width: 100dvw !important;
+    height: 100dvh !important;
+    min-width: 100vw !important;
+    min-height: 100vh !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 99999 !important;
+  }
 }
 
 /* Enhanced navigation interaction */
@@ -6958,12 +7312,63 @@ body.transitioning {
   .nav-circle-btn {
     width: 36px !important;
     height: 36px !important;
-    top: 0.75rem !important;
-    right: 1rem !important;
+    position: fixed !important;
+    top: 0.25rem !important;
+    right: 0.75rem !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   .circle-v {
     font-size: 1rem !important;
+  }
+
+  .hamburger-icon {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 18px !important;
+    height: 14px !important;
+    gap: 3px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 10 !important;
+    position: relative !important;
+  }
+
+  .hamburger-line {
+    display: block !important;
+    width: 100% !important;
+    height: 3px !important;
+    min-height: 3px !important;
+    max-height: 3px !important;
+    background: #2f4f1f !important;
+    background-color: #2f4f1f !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    border-radius: 2px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    z-index: 11 !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(1) {
+    transform: translateY(5px) rotate(45deg) !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(2) {
+    opacity: 0 !important;
+    transform: scaleX(0) !important;
+  }
+
+  .hamburger-icon.active .hamburger-line:nth-child(3) {
+    transform: translateY(-5px) rotate(-45deg) !important;
   }
 
   /* Contact Page */

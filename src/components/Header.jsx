@@ -74,8 +74,12 @@ const Header = ({ logoSrc, menuItems }) => {
           </Link>
         </div>
         <div className="nav-actions">
-          <button className="nav-circle-btn" onClick={toggleMenu}>
-            <span className="circle-v">{isMenuOpen ? 'V' : '='}</span>
+          <button className="nav-circle-btn" onClick={toggleMenu} aria-label="Toggle menu">
+            <span className={`hamburger-icon ${isMenuOpen ? 'active' : ''}`}>
+              <span className="hamburger-line"></span>
+              <span className="hamburger-line"></span>
+              <span className="hamburger-line"></span>
+            </span>
           </button>
         </div>
       </nav>
