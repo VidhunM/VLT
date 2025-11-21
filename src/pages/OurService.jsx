@@ -58,7 +58,7 @@ const PROJECTS = [
 const VLogo = () => (
   <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="90" height="90" fill="transparent" />
-    <path d="M20 25L35 65H45L60 25H48L38 55L28 25H20Z" fill="white" />
+    <path d="M20 25L35 65H45L60 25H48L38 55L28 25H20Z" fill="#1a1a1a" />
   </svg>
 );
 
@@ -234,7 +234,7 @@ const OurService = () => {
                     : 'calc(-1 * clamp(390px, 48vw, 540px) / 2)',
                   borderRadius: 30,
                   overflow: 'hidden',
-                  background: isMobile ? '#808080' : '#111',
+                  background: '#f5f5f5', // Dark white background for modern creative studio vibe
                   transformOrigin: 'center center',
                   transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                   transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -242,7 +242,13 @@ const OurService = () => {
                   backfaceVisibility: 'visible',
                   zIndex,
                   opacity,
-                  boxShadow: '0 20px 60px rgba(0,0,0,0.35)',
+                  // Enhanced layered drop shadows for depth and modern aesthetic
+                  boxShadow: `
+                    0 4px 6px -1px rgba(0, 0, 0, 0.08),
+                    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                    0 20px 25px -5px rgba(0, 0, 0, 0.12),
+                    0 30px 40px -8px rgba(0, 0, 0, 0.15)
+                  `,
                 }}
               >
                 <div style={{ position: 'absolute', inset: 0 }}>
@@ -253,12 +259,13 @@ const OurService = () => {
                       width: '100%',
                       height: '100%',
                       objectFit: s.img.includes('Vlt_logo') ? 'contain' : 'cover',
-                      filter: s.img.includes('Vlt_logo') ? 'none' : 'brightness(0.85)',
-                      backgroundColor: s.img.includes('Vlt_logo') ? '#111' : 'transparent',
+                      filter: s.img.includes('Vlt_logo') ? 'none' : 'brightness(1.02) saturate(1.05)',
+                      backgroundColor: s.img.includes('Vlt_logo') ? 'transparent' : 'transparent',
                       padding: s.img.includes('Vlt_logo') ? '20px' : '0',
                       backfaceVisibility: 'inherit',
                     }}
                   />
+                  {/* Subtle overlay for light background - maintains image clarity while adding depth */}
                   <div
                     style={{
                       position: 'absolute',
@@ -266,7 +273,8 @@ const OurService = () => {
                       left: 0,
                       width: '100%',
                       height: '100%',
-                      background: 'linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.3))',
+                      background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 50%, rgba(0,0,0,0.06) 100%)',
+                      pointerEvents: 'none',
                     }}
                   />
                 </div>
@@ -280,9 +288,15 @@ const OurService = () => {
                       alignItems: 'center',
                       justifyContent: 'center',
                       height: '100%',
+                      // Subtle backdrop for logo visibility on varied images
+                      background: 'radial-gradient(circle at center, rgba(245, 245, 245, 0.3) 0%, transparent 70%)',
                     }}
                   >
-                    <div style={{ marginTop: 36, marginBottom: 26 }}>
+                    <div style={{ 
+                      marginTop: 36, 
+                      marginBottom: 26,
+                      filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
+                    }}>
                       <VLogo />
                     </div>
                   </div>
@@ -290,32 +304,41 @@ const OurService = () => {
                 <div
                   style={{
                     position: 'absolute',
-                    bottom: 18,
-                    left: 26,
+                    bottom: 24,
+                    left: 32,
                     zIndex: 2,
-                    color: '#fff',
+                    color: '#1a1a1a', // High contrast dark text on light background
                     fontWeight: 700,
-                    letterSpacing: '1px',
-                    fontSize: '1.1em',
+                    letterSpacing: '1.2px',
+                    fontSize: isSmallMobile ? '0.85em' : isMobile ? '0.95em' : '1.1em',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: 2,
+                    gap: 4,
+                    fontFamily: 'system-ui, -apple-system, "Segoe UI", sans-serif',
+                    textShadow: '0 1px 3px rgba(255, 255, 255, 0.9)', // Subtle text shadow for clarity on images
                   }}
                 >
                   {s.keywords.map((str) => (
-                    <span key={str}>{str}</span>
+                    <span key={str} style={{ 
+                      lineHeight: '1.5',
+                      textTransform: 'uppercase',
+                      display: 'block',
+                    }}>{str}</span>
                   ))}
                 </div>
                 <div
                   style={{
                     position: 'absolute',
-                    bottom: 18,
-                    right: 22,
+                    bottom: 24,
+                    right: 28,
                     zIndex: 2,
-                    fontSize: 12,
-                    color: '#fff',
+                    fontSize: isSmallMobile ? '10px' : '12px',
+                    color: '#4a4a4a', // High contrast dark text
                     opacity: 0.9,
-                    fontWeight: 400,
+                    fontWeight: 500,
+                    fontFamily: 'system-ui, -apple-system, "Segoe UI", sans-serif',
+                    letterSpacing: '0.4px',
+                    textShadow: '0 1px 3px rgba(255, 255, 255, 0.9)',
                   }}
                 >
                   © 2025 VLT CONCEPTS, LLC.
