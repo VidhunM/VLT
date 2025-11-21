@@ -149,11 +149,9 @@ a, button, .project-item, .nav-link {
   margin-left: auto;
 }
 
-/* Hamburger button is now fixed in top right corner */
+/* Hamburger button positioned like logo - sticky on top */
 .nav-actions .nav-circle-btn {
-  position: fixed !important;
-  top: 0.75rem !important;
-  right: 1.25rem !important;
+  position: relative !important;
   z-index: 1000 !important;
 }
 
@@ -256,10 +254,51 @@ a, button, .project-item, .nav-link {
   background-size: 22px 22px !important;
 }
 
-.nav-overlay-open ~ .nav-actions .nav-circle-btn {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.7);
+/* Hide hamburger icon when hero section is out of view */
+/* Hamburger positioned like logo - sticky on top with header */
+.nav-circle-btn.hero-out-of-view {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  /* No transform - stays with header like logo */
+  transition: opacity 0.3s ease, visibility 0.3s ease !important;
+}
+
+/* Show hamburger icon when hero section is in view */
+/* Hamburger positioned like logo - sticky on top with header */
+.nav-circle-btn.hero-in-view {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  /* No transform - stays with header like logo */
+  transition: opacity 0.3s ease, visibility 0.3s ease !important;
+}
+
+/* Overlay open state takes priority - hide button when overlay is open */
+.nav-overlay-open ~ .nav-actions .nav-circle-btn,
+.nav-overlay-open ~ .nav-actions .nav-circle-btn.hero-in-view,
+.nav-overlay-open ~ .nav-actions .nav-circle-btn.hero-out-of-view {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.7) !important;
+}
+
+/* Ensure hero visibility classes work on mobile as well */
+/* Hamburger positioned like logo on mobile - sticky on top with header */
+@media (max-width: 991px) {
+  .nav-circle-btn.hero-out-of-view {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    /* No transform - stays with header like logo */
+  }
+  
+  .nav-circle-btn.hero-in-view {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    /* No transform - stays with header like logo */
+  }
 }
 
 .nav-overlay-content {
@@ -345,17 +384,17 @@ a, button, .project-item, .nav-link {
   border-radius: 50%;
   background: #ffffff;
   cursor: pointer;
-  transition: all 0.3s ease;
+  /* Only transition properties that change, not position or transform */
+  transition: opacity 0.3s ease, visibility 0.3s ease, background 0.3s ease, border-color 0.3s ease !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   padding: 0 !important;
-  position: fixed !important;
-  top: 0.75rem !important;
-  right: 1.25rem !important;
+  position: relative !important;
   z-index: 1000 !important;
   overflow: visible !important;
   box-sizing: border-box !important;
+  /* Positioned like logo - sticky on top with header */
 }
 
 /* Ensure button content is visible */
@@ -368,7 +407,7 @@ a, button, .project-item, .nav-link {
 .nav-circle-btn:hover {
   background: rgba(47, 79, 31, 0.08);
   border-color: #2f4f1f;
-  transform: scale(1.05);
+  /* No transform - stays with header like logo */
 }
 
 .nav-circle-btn:hover .circle-v {
@@ -5198,9 +5237,7 @@ a.btn-our-people {
   .nav-circle-btn {
     width: 40px;
     height: 40px;
-    position: fixed !important;
-    top: 0.75rem !important;
-    right: 1.25rem !important;
+    position: relative !important;
     z-index: 1000 !important;
     display: flex !important;
     align-items: center !important;
@@ -5599,9 +5636,7 @@ a.btn-our-people {
   .nav-circle-btn {
     width: 45px;
     height: 45px;
-    position: fixed !important;
-    top: 0.25rem !important;
-    right: 0.75rem !important;
+    position: relative !important;
     z-index: 1000 !important;
     display: flex !important;
     align-items: center !important;
@@ -5943,9 +5978,7 @@ a.btn-our-people {
   .nav-circle-btn {
     width: 38px !important;
     height: 38px !important;
-    position: fixed !important;
-    top: 0.125rem !important;
-    right: 0.5rem !important;
+    position: relative !important;
     z-index: 1000 !important;
     display: flex !important;
     align-items: center !important;
@@ -7312,9 +7345,7 @@ body.transitioning {
   .nav-circle-btn {
     width: 36px !important;
     height: 36px !important;
-    position: fixed !important;
-    top: 0.25rem !important;
-    right: 0.75rem !important;
+    position: relative !important;
     z-index: 1000 !important;
     display: flex !important;
     align-items: center !important;

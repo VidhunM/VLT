@@ -1,10 +1,88 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { navigateWithCircle } from '../utils/navigation'
 
 const Header = ({ logoSrc, menuItems }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isHeroInView, setIsHeroInView] = useState(true)
   const navigate = useNavigate()
+  const location = useLocation()
+
+  // Detect if hero section is in view
+  useEffect(() => {
+    const checkHeroInView = () => {
+      const currentPath = location.pathname
+      const scrollY = window.scrollY
+      const windowHeight = window.innerHeight
+      let heroSection = null
+      let isVisible = false
+      
+      // Determine hero section based on current page
+      if (currentPath === '/') {
+        // Home page - check .hero-three
+        heroSection = document.querySelector('.hero-three')
+      } else if (currentPath.startsWith('/work/')) {
+        // Project Detail pages - check for project-hero
+        heroSection = document.querySelector('.project-hero')
+      } else if (currentPath === '/work') {
+        // Work page - check for work-hero or use scroll position
+        heroSection = document.querySelector('.work-hero')
+        // If no work-hero found, use scroll position
+        if (!heroSection) {
+          isVisible = scrollY < windowHeight * 0.3
+          setIsHeroInView(isVisible)
+          return
+        }
+      } else if (currentPath === '/our-team') {
+        // Our Team page - check .team-hero
+        heroSection = document.querySelector('.team-hero')
+      } else if (currentPath === '/contact') {
+        // Contact page - use scroll position since .contact-page-dark is entire page
+        isVisible = scrollY < windowHeight * 0.3
+        setIsHeroInView(isVisible)
+        return
+      } else if (currentPath === '/our-service' || currentPath === '/our-feed') {
+        // Pages without specific hero sections - use scroll position
+        // Show hamburger when at top of page (within first viewport)
+        isVisible = scrollY < windowHeight * 0.3
+        setIsHeroInView(isVisible)
+        return
+      } else {
+        // For other pages, check for any hero section
+        heroSection = document.querySelector('.hero-three, .team-hero, .work-hero, .project-hero')
+      }
+      
+      if (heroSection) {
+        const rect = heroSection.getBoundingClientRect()
+        // Check if hero section is still in view
+        // Show hamburger when hero section is visible in viewport
+        // Hero is in view if bottom is below 20% of viewport and top is above 80% of viewport
+        isVisible = rect.bottom > windowHeight * 0.2 && rect.top < windowHeight * 0.8
+        setIsHeroInView(isVisible)
+      } else {
+        // If no hero section found, use scroll position as fallback
+        // Show hamburger when at top of page
+        isVisible = scrollY < windowHeight * 0.3
+        setIsHeroInView(isVisible)
+      }
+    }
+
+    // Check on mount, scroll, and resize
+    checkHeroInView()
+    window.addEventListener('scroll', checkHeroInView, { passive: true })
+    window.addEventListener('resize', checkHeroInView, { passive: true })
+    
+    // Small delay to ensure DOM is ready after route change
+    const timeoutId = setTimeout(checkHeroInView, 100)
+    const timeoutId2 = setTimeout(checkHeroInView, 300)
+    
+    return () => {
+      window.removeEventListener('scroll', checkHeroInView)
+      window.removeEventListener('resize', checkHeroInView)
+      clearTimeout(timeoutId)
+      clearTimeout(timeoutId2)
+    }
+  }, [location.pathname])
 
   useEffect(() => {
     const { body } = document
@@ -74,7 +152,11 @@ const Header = ({ logoSrc, menuItems }) => {
           </Link>
         </div>
         <div className="nav-actions">
-          <button className="nav-circle-btn" onClick={toggleMenu} aria-label="Toggle menu">
+          <button 
+            className={`nav-circle-btn ${isHeroInView ? 'hero-in-view' : 'hero-out-of-view'}`} 
+            onClick={toggleMenu} 
+            aria-label="Toggle menu"
+          >
             <span className={`hamburger-icon ${isMenuOpen ? 'active' : ''}`}>
               <span className="hamburger-line"></span>
               <span className="hamburger-line"></span>
