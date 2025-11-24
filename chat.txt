@@ -622,4 +622,59 @@ Code changes:
 - In `src/pages/OurService.jsx`: Updated service carousel cards with comprehensive redesign for contemporary creative studio vibe. Changed card background from dark colors (`#111` on desktop, `#808080` on mobile) to dark white (`#f5f5f5`) for modern, clean aesthetic. Enhanced drop shadows with layered multi-shadow approach (4px, 10px, 20px, 30px depth layers) using rgba(0,0,0,0.08-0.15) for sophisticated depth and modular feel. Updated typography for high contrast: changed text colors from white to dark (`#1a1a1a` for keywords, `#4a4a4a` for copyright), improved font weights (700 for keywords, 500 for copyright), enhanced letter spacing (1.2px for keywords, 0.4px for copyright), added system font stack (`system-ui, -apple-system, "Segoe UI", sans-serif`), added subtle text shadows for clarity on images. Updated VLogo component fill from white to `#1a1a1a` for visibility on light background. Adjusted image styling: changed filter from `brightness(0.85)` to `brightness(1.02) saturate(1.05)` for enhanced visuals on light background, updated overlay gradient from dark (rgba(0,0,0,0.15-0.3)) to subtle light gradient (rgba(255,255,255,0.03) to rgba(0,0,0,0.06)) maintaining image clarity. Added radial gradient backdrop for VLogo visibility on varied images. Improved spacing: increased bottom padding from 18px to 24px, left/right padding from 26/22px to 32/28px, increased gap between keywords from 2px to 4px. Added `pointerEvents: 'none'` to overlay, `display: 'block'` to keyword spans, responsive font sizing for mobile breakpoints.
 Decisions: Dark white background (#f5f5f5) provides modern, clean foundation for creative studio aesthetic. Layered drop shadows create depth and modular, engaging design with contemporary feel. High-contrast dark text on light background ensures excellent readability and visual hierarchy. Clean typography with system fonts and refined spacing creates professional, modern look. Subtle image enhancements and overlays maintain image quality while working with light background. Overall design achieves high-contrast visuals, clean typography, clear section hierarchy, and modern layered aesthetic with drop shadows for depth as requested.
 Next steps: Verify service cards render correctly across all breakpoints (desktop, tablet, mobile); test 3D carousel rotation with new light background; confirm text readability on all images; verify drop shadows provide appropriate depth without being too heavy; test on various browsers for consistency.
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Project showcase pendulum stack animation
+Code changes: Rebuilt `src/components/ProjectSection.jsx` to move six project cards through a five-slot queue so one card stays just off-screen and swings in from alternating sides. Added slot presets, swing timers, and per-card delay variables to create the requested pendulum-style hits. Updated `src/styles/projectShowcase.css` with the new stacked layout (narrower stage width, deeper shadows, scale-aware transforms, sequential transition delays, and refreshed image wrapper styling).
+Decisions: Keep the project data array as-is but let JS control positions dynamically for responsiveness. Let the pendulum loop automatically with CSS delays providing the one-by-one impact feel; no manual controls for now.
+Next steps: Manually verify the new animation timing and overlaps across desktop and small breakpoints; tweak slot presets if any card clips the viewport edges.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Mobile hamburger icon offset
+Code changes: In `src/styles/main.css`, added breakpoint-specific `margin-top`/`margin-right` offsets for `.nav-circle-btn` at max-width 768px, 576px, and 420px so the hamburger button sits slightly higher and closer to the screen edge on phones while leaving desktop/tablet placement untouched.
+Decisions: Keep the button positioned relative to the header (no transforms) and rely on negative margins for subtle positional tweaks that respect the existing “moves with the logo” requirement.
+Next steps: Verify the new offsets on common mobile widths (768, 576, 420) to ensure the button remains fully visible and doesn’t collide with other header elements.
+
+Date: 2025-11-24
+Time: 16:34:33
+Topics: Mobile hamburger additional lift
+Code changes: Increased the negative `margin-top`/`margin-right` adjustments for `.nav-circle-btn` inside the <=768px, <=576px, and <=420px media queries in `src/styles/main.css` so the hamburger icon rides even higher and slightly more to the right on smaller screens while keeping desktop/tablet unaffected.
+Decisions: Maintain relative positioning tied to the header; use progressively larger offsets on narrower breakpoints for consistent visual spacing near the viewport edge.
+Next steps: Spot-check header alignment on 768px, 576px, and 420px widths to confirm the icon remains fully visible and doesn’t overlap adjacent UI elements.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Mobile hamburger pure vertical lift
+Code changes: Adjusted `src/styles/main.css` so `.nav-circle-btn` uses stronger negative `margin-top` values (−18px, −22px, −24px across the ≤768px/≤576px/≤420px breakpoints) while resetting `margin-right` to 0, keeping the icon centered horizontally but moved higher on mobile.
+Decisions: Preserve the “moves with the header” requirement and remove horizontal nudges so only the requested upward shift remains.
+Next steps: Recheck the header on common phone widths to ensure the higher position doesn’t collide with the top edge or other elements.
+
+Date: 2025-11-24
+Time: 16:43:24
+Topics: Mobile hamburger further lift
+Code changes: In `src/styles/main.css`, increased the negative `margin-top` for `.nav-circle-btn` to −24px (≤768px), −28px (≤576px), and −32px (≤420px) so the icon sits even closer to the top edge on smaller screens while keeping horizontal alignment unchanged.
+Decisions: Continue using relative positioning with zero right margin to keep the button aligned with the header while satisfying the stronger upward offset request.
+Next steps: Verify on devices around 768px/576px/420px to confirm the icon stays visible and doesn’t overlap the viewport edge or header content.
+
+Date: 2025-11-24
+Time: 16:44:43
+Topics: Mobile hamburger extreme lift
+Code changes: Updated `src/styles/main.css` once more so `.nav-circle-btn` now uses `margin-top` values of −30px (≤768px), −34px (≤576px), and −38px (≤420px), keeping `margin-right: 0` while pushing the icon even closer to the top edge on mobile screens.
+Decisions: Maintain the same relative positioning strategy; continue scaling the offset with smaller breakpoints for consistency.
+Next steps: Re-test on representative mobile widths to ensure the icon doesn’t clip against the viewport edge or overlap header content.
+
+Date: 2025-11-24
+Time: 16:46:12
+Topics: Mobile hamburger ultra lift
+Code changes: Further increased the negative `margin-top` values for `.nav-circle-btn` in `src/styles/main.css` to −36px (≤768px), −40px (≤576px), and −44px (≤420px), leaving `margin-right: 0` so the icon continues moving straight upward on smaller screens.
+Decisions: Keep scales consistent per breakpoint and maintain relative positioning to avoid layout shifts elsewhere.
+Next steps: Validate on phones/tablets to be sure the icon still renders fully without clipping at the very top edge.
+
+Date: 2025-11-24
+Time: 16:49:26
+Topics: Mobile header logo downward offset
+Code changes: Added positive `margin-top` values for `.logo-image` within the ≤768px, ≤576px, ≤420px, ≤374px, and 375–479px media queries in `src/styles/main.css` so the header logo sits slightly lower on mobile; tweaks scale from +6px down to +10px depending on breakpoint.
+Decisions: Keep desktop/tablet untouched and use simple margin offsets to avoid structural layout changes.
+Next steps: Spot-check the header on common phone widths (768/576/420/375) to ensure the new spacing feels balanced and doesn’t crowd the nav circle button.
 

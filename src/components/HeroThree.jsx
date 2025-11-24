@@ -169,10 +169,13 @@ const HeroThree = () => {
       </div>
 
       <div className="hero-content-bottom">
-        <h1 className="hero-title">Experience Excellence with Vulturelines </h1>
-        <p className="hero-description">
-        With strategic design and Webflow development.
-        </p>
+        <div className="hero-content-wrapper">
+          <div className="hero-label"></div>
+          <h1 className="hero-title">Experience Excellence with Vulturelines</h1>
+          <p className="hero-description">
+            With strategic design and Webflow development.
+          </p>
+        </div>
       </div>
 
       <div className="hero-sidebar">
