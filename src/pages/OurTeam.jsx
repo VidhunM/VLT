@@ -166,8 +166,9 @@ const OurTeam = () => {
           // On mobile, cards are full-width with no gap
           // On desktop, include gap for translation calculation
           if (isMobileDevice) {
-            // On mobile, card width is viewport width (cards are full-width)
-            const newCardWidth = window.innerWidth
+            // On mobile, card width matches slider viewport width for full-width cards
+            const sliderWidth = sliderRef.current.getBoundingClientRect().width || window.innerWidth
+            const newCardWidth = sliderWidth
             if (newCardWidth > 0) {
               setCardWidth(prev => {
                 if (prev !== newCardWidth) {
@@ -226,8 +227,9 @@ const OurTeam = () => {
           // On mobile, cards are full-width with no gap
           // On desktop, include gap for translation calculation
           if (isMobileDevice) {
-            // On mobile, card width is viewport width (cards are full-width)
-            const newCardWidth = window.innerWidth
+            // On mobile, card width matches slider viewport width for full-width cards
+            const sliderWidth = sliderRef.current.getBoundingClientRect().width || window.innerWidth
+            const newCardWidth = sliderWidth
             if (newCardWidth > 0) {
               setCardWidth(prev => prev !== newCardWidth ? newCardWidth : prev)
             }
@@ -382,6 +384,22 @@ const OurTeam = () => {
     setSelectedDirector(null)
   }
 
+  const getMobileCardStyle = (index) => {
+    if (!isMobile) return {}
+
+    const diff = Math.abs(index - scrollProgress)
+    const clamped = Math.min(diff, 1)
+    const opacity = 1 - clamped * 0.65
+    const translateY = clamped * 24
+    const scale = 1 - clamped * 0.04
+
+    return {
+      opacity,
+      transform: `translateY(${translateY}px) scale(${scale})`,
+      transition: 'opacity 0.45s ease, transform 0.45s ease'
+    }
+  }
+
   return (
     <div className="page our-team">
       <Header logoSrc={'/assets/Images/Vlt_logo1.png'} />
@@ -419,11 +437,19 @@ const OurTeam = () => {
                 // No transition for seamless scroll-driven animation
                 transform: `translateX(-${scrollProgress * cardWidth}px)`,
                 transition: 'none',
-                willChange: 'transform'
+                willChange: 'transform',
+                opacity: isSectionInView ? 1 : 0,
+                maxWidth: isMobile ? '100%' : 'none',
+                padding: isMobile ? '0 8px' : undefined,
+                alignItems: isMobile ? 'stretch' : 'center'
               }}
             >
               {boardMembers.map((member, index) => (
-                <div key={index} className="board-member-card">
+                <div
+                  key={index}
+                  className="board-member-card"
+                  style={getMobileCardStyle(index)}
+                >
                   <div 
                     className="board-member-image"
                     onClick={() => handleDirectorClick(member)}

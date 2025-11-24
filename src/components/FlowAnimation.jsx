@@ -200,6 +200,55 @@ const FlowAnimation = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const container = containerRef.current
+    const body = document.body
+    const hideHeaderClass = 'hide-header-in-flow'
+
+    if (!container) return
+
+    const dispatchVisibility = (visible) => {
+      window.dispatchEvent(
+        new CustomEvent('flowAnimationVisibility', {
+          detail: { visible }
+        })
+      )
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const isVisible = entry?.isIntersecting ?? false
+        const isMobileViewport = window.innerWidth <= 768
+
+        dispatchVisibility(isVisible)
+
+        if (isVisible && isMobileViewport) {
+          body.classList.add(hideHeaderClass)
+        } else if (!isVisible) {
+          body.classList.remove(hideHeaderClass)
+        }
+      },
+      { threshold: 0.2 }
+    )
+
+    observer.observe(container)
+
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        body.classList.remove(hideHeaderClass)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', handleResize)
+      body.classList.remove(hideHeaderClass)
+      dispatchVisibility(false)
+    }
+  }, [])
+
   return (
     <div
       className="flow-animation-wrapper"

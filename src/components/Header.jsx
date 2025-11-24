@@ -11,6 +11,11 @@ const Header = ({ logoSrc, menuItems }) => {
   // Detect if hero section is in view
   useEffect(() => {
     const checkHeroInView = () => {
+      if (window.innerWidth <= 768) {
+        setIsHeroInView(true)
+        return
+      }
+
       const currentPath = location.pathname
       const scrollY = window.scrollY
       const windowHeight = window.innerHeight

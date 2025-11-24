@@ -678,3 +678,38 @@ Code changes: Added positive `margin-top` values for `.logo-image` within the �
 Decisions: Keep desktop/tablet untouched and use simple margin offsets to avoid structural layout changes.
 Next steps: Spot-check the header on common phone widths (768/576/420/375) to ensure the new spacing feels balanced and doesn’t crowd the nav circle button.
 
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Mobile hamburger visibility
+Code changes: Updated `src/components/Header.jsx` so `checkHeroInView` immediately returns true on viewports ≤768px, ensuring the hamburger button remains visible across all pages once the site is viewed on mobile, regardless of hero visibility.
+Decisions: Leave tablet/desktop behavior unchanged; only short-circuit the hero check for small screens to keep the icon accessible.
+Next steps: Verify on actual devices that the hamburger now stays visible after scrolling past the hero on mobile routes.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Hide header on mobile when FlowAnimation/footer is visible
+Code changes: In `src/pages/Home.jsx`, extended the FlowAnimation visibility effect to track viewport width, continue hiding `MinimalistNav`, and toggle a `body.hide-header-in-flow` class whenever the footer enters view on ≤768px screens (also cleans up on resize/unmount). Added a mobile-only CSS rule in `src/styles/main.css` so `.header` fades out and becomes non-interactive while that class is present.
+Decisions: Keep the nav hiding behavior for all breakpoints; scope header suppression to mobile to match the request while leaving desktop header unchanged.
+Next steps: Verify on devices/emulators that both the header and MinimalistNav reappear immediately after scrolling above the FlowAnimation section; adjust thresholds if further tuning is needed.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Global FlowAnimation visibility handling across navigation pages
+Code changes: Updated `src/components/FlowAnimation.jsx` to observe its viewport visibility, dispatch a `flowAnimationVisibility` custom event, and toggle the `body.hide-header-in-flow` class automatically on mobile. `MinimalistNav.jsx` now listens for this event to add a `flow-hidden` state so the nav hides on any page when the footer is in view, eliminating the Home-specific show/hide state. `src/pages/Home.jsx` now always renders `MinimalistNav` and relies on the shared event, and `src/styles/main.css` gained `.minimalist-nav.flow-hidden` styling to fade the nav out cleanly.
+Decisions: Centralize FlowAnimation detection so every page with the footer automatically hides both header (mobile) and MinimalistNav, reducing duplicated scroll logic.
+Next steps: Smoke test Work/Team/Contact/Feed pages in mobile view to confirm both the header and bottom nav disappear while the FlowAnimation section is on screen and return immediately afterward.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Our Team board slider text visibility on mobile
+Code changes: Set the inline `opacity` of the `.board-members-slider` in `src/pages/OurTeam.jsx` based on `isSectionInView`, overriding the mobile breakpoint default that kept the slider at 0 opacity. Once the Board section enters the viewport, the slider (images + text) now fades in on phones just like desktop.
+Decisions: Keep the CSS fade-in behavior but control visibility from React so content is never stuck invisible when the section is in view.
+Next steps: Scroll through the Board of Directors section on a phone/emulator to confirm both portraits and their text appear as soon as the section intersects the viewport.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Mobile-responsive Board of Directors animation enhancements
+Code changes: Updated `src/pages/OurTeam.jsx` so the slider width on mobile matches the viewport, added per-card animation styles via `getMobileCardStyle`, and set the slider’s inline layout (padding/align) when `isMobile` is true. In `src/styles/main.css`, the board container now hides overflow while the ≤768px/≤480px breakpoints give the slider full width, remove gaps, and let each card occupy 100% width with smoother transitions.
+Decisions: Preserve the existing scroll-driven timeline but layer on mobile-friendly animations and layout logic so portraits/text stay fully visible while still animating card-by-card.
+Next steps: Review the Board section on devices/emulators to confirm each card fills the screen, animates smoothly, and that desktop layout remains unaffected.
+

@@ -7,6 +7,7 @@ const MinimalistNav = () => {
   const [activeSection, setActiveSection] = useState('HOME')
   const [scrollDirection, setScrollDirection] = useState('down')
   const [lastScrollY, setLastScrollY] = useState(0)
+  const [isFlowFooterVisible, setIsFlowFooterVisible] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -137,6 +138,18 @@ const MinimalistNav = () => {
     }
   }, [location.pathname])
 
+  useEffect(() => {
+    const handleFlowVisibility = (event) => {
+      setIsFlowFooterVisible(Boolean(event.detail?.visible))
+    }
+
+    window.addEventListener('flowAnimationVisibility', handleFlowVisibility)
+
+    return () => {
+      window.removeEventListener('flowAnimationVisibility', handleFlowVisibility)
+    }
+  }, [])
+
   const handleNavClick = (event, item) => {
     // Handle navigation
     if (item.href.startsWith('/')) {
@@ -175,8 +188,17 @@ const MinimalistNav = () => {
     }
   }
 
+  const navClasses = [
+    'minimalist-nav',
+    isVisible ? 'visible' : '',
+    scrollDirection === 'up' ? 'slide-up' : 'slide-down',
+    isFlowFooterVisible ? 'flow-hidden' : ''
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className={`minimalist-nav ${isVisible ? 'visible' : ''} ${scrollDirection === 'up' ? 'slide-up' : 'slide-down'}`}>
+    <div className={navClasses}>
       <div className="minimalist-nav-container">
         {menuItems.map((item, index) => (
           <button

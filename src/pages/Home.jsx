@@ -62,8 +62,6 @@ const Home = () => {
   const [textOpacity, setTextOpacity] = useState(1)
   const contactRef = useRef(null)
   const [textFillProgress, setTextFillProgress] = useState(0)
-  const flowAnimationRef = useRef(null)
-  const [showNav, setShowNav] = useState(true)
   const navigate = useNavigate()
 
   const handleNavigationClick = (event, path) => {
@@ -723,33 +721,9 @@ const Home = () => {
     }
   }, [isServicesMobile])
 
-  // Hide nav when FlowAnimation footer is in view
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!flowAnimationRef.current) return
-
-      const rect = flowAnimationRef.current.getBoundingClientRect()
-      const windowHeight = window.innerHeight
-      
-      // Hide nav when footer is visible in viewport
-      if (rect.top < windowHeight) {
-        setShowNav(false)
-      } else {
-        setShowNav(true)
-      }
-    }
-    
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [])
-
   return (
     <div className="page home">
-      {showNav && <MinimalistNav />}
+      <MinimalistNav />
       <HeroThree />
       
       <div className="excellence-wrapper" ref={excellenceWrapperRef}>
@@ -1113,9 +1087,7 @@ Our team comprises highly skilled IT professionals whose target is to provide to
       </section>
 
       {/* Flow Animation */}
-      <div ref={flowAnimationRef}>
       <FlowAnimation />
-      </div>
           </div>
   )
 }
