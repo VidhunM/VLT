@@ -908,3 +908,10 @@ Topics: Our Service carousel imagery text removal
 Code changes: Removed the keyword stack and copyright label from each 3D carousel card in `src/pages/OurService.jsx` so only the imagery (and optional V-logo overlay) remains visible across desktop and mobile.
 Decisions: Keep the carousel structure and lighting overlays unchanged while stripping textual elements as requested.
 Next steps: Manually verify the carousel on both desktop and mobile breakpoints to confirm the cards now render imagery-only without layout shifts.
+
+Date: 2025-11-27
+Time: 19:43:17
+Topics: Our Service carousel V-logo removal
+Code changes: Deleted the inline `VLogo` SVG component and its conditional overlay block inside `src/pages/OurService.jsx`, leaving the rotating cards as pure imagery without additional graphics.
+Decisions: Maintain the same image/overlay styling while removing the brand mark entirely per request.
+Next steps: Review the carousel on desktop and mobile to ensure removal doesn’t affect card spacing or lighting.

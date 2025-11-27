@@ -55,13 +55,6 @@ const PROJECTS = [
   }
 ];
 
-const VLogo = () => (
-  <svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="90" height="90" fill="transparent" />
-    <path d="M20 25L35 65H45L60 25H48L38 55L28 25H20Z" fill="#1a1a1a" />
-  </svg>
-);
-
 const OurService = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoRotate, setAutoRotate] = useState(true);
@@ -278,29 +271,6 @@ const OurService = () => {
                     }}
                   />
                 </div>
-                {!s.img.includes('Vlt_logo') && (
-                  <div
-                    style={{
-                      position: 'relative',
-                      zIndex: 2,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: '100%',
-                      // Subtle backdrop for logo visibility on varied images
-                      background: 'radial-gradient(circle at center, rgba(245, 245, 245, 0.3) 0%, transparent 70%)',
-                    }}
-                  >
-                    <div style={{ 
-                      marginTop: 36, 
-                      marginBottom: 26,
-                      filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
-                    }}>
-                      <VLogo />
-                    </div>
-                  </div>
-                )}
               </div>
             );
           })}
