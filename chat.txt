@@ -915,3 +915,10 @@ Topics: Our Service carousel V-logo removal
 Code changes: Deleted the inline `VLogo` SVG component and its conditional overlay block inside `src/pages/OurService.jsx`, leaving the rotating cards as pure imagery without additional graphics.
 Decisions: Maintain the same image/overlay styling while removing the brand mark entirely per request.
 Next steps: Review the carousel on desktop and mobile to ensure removal doesn’t affect card spacing or lighting.
+
+Date: 2025-11-27
+Time: 19:52:11
+Topics: Mobile services arrows visibility
+Code changes: Updated `.service-mobile-actions`, `.service-nav-arrows`, and `.service-arrow-btn` styles in `src/styles/main.css` to force fixed circular sizing (with `!important` padding resets), add contrasty white backgrounds, borders, and shadows, and tweak the small-mobile overrides so the arrow buttons sit above content and stay visible against any backdrop.
+Decisions: Keep HTML untouched while ensuring the arrows remain legible and tappable across all mobile breakpoints by resolving conflicting global button rules.
+Next steps: Smoke-test the Home page on ≤768px viewports to confirm the arrows now display as white circles with green icons and continue to advance the services carousel.

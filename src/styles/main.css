@@ -2365,42 +2365,54 @@ a.btn-our-people {
     align-items: center;
     gap: 1rem;
     margin-top: 2rem;
+    flex-wrap: wrap;
   }
 
   .service-nav-arrows {
     display: flex;
-    gap: 0.5rem;
-  }
-
-  .service-arrow-btn {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 2px solid #4a7c59;
-    background: white;
-    color: #4a7c59;
-    display: flex;
+    gap: 0.75rem;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0;
+    position: relative;
+    z-index: 3;
     flex-shrink: 0;
   }
 
+  .service-arrow-btn {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(16, 50, 34, 0.35);
+    background: rgba(255, 255, 255, 0.98);
+    color: #0f3d2d;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    padding: 0 !important;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
   .service-arrow-btn:hover {
-    background: #4a7c59;
-    color: white;
-    transform: scale(1.05);
+    background: #0f3d2d;
+    color: #ffffff;
+    border-color: rgba(15, 61, 45, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
   }
 
   .service-arrow-btn:active {
     transform: scale(0.95);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
   }
 
   .service-arrow-btn svg {
     width: 20px;
     height: 20px;
+    stroke: currentColor;
   }
 
   /* Our Service 3D Carousel Mobile - Full structure visible */
@@ -2813,13 +2825,15 @@ a.btn-our-people {
   }
 
   .service-arrow-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px !important;
+    height: 44px !important;
+    border-width: 1.5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
   }
 
   .service-arrow-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   .service-cta-btn {
