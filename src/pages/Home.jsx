@@ -993,7 +993,6 @@ Our team comprises highly skilled IT professionals whose target is to provide to
                         />
                         <div className="client-showcase-caption">
                           <h3>{clients[selectedClient].name}</h3>
-                          <p>{clients[selectedClient].description || 'Selected client highlight'}</p>
                         </div>
                       </div>
                     </div>
