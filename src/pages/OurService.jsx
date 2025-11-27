@@ -301,48 +301,6 @@ const OurService = () => {
                     </div>
                   </div>
                 )}
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: 24,
-                    left: 32,
-                    zIndex: 2,
-                    color: '#1a1a1a', // High contrast dark text on light background
-                    fontWeight: 700,
-                    letterSpacing: '1.2px',
-                    fontSize: isSmallMobile ? '0.85em' : isMobile ? '0.95em' : '1.1em',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 4,
-                    fontFamily: 'system-ui, -apple-system, "Segoe UI", sans-serif',
-                    textShadow: '0 1px 3px rgba(255, 255, 255, 0.9)', // Subtle text shadow for clarity on images
-                  }}
-                >
-                  {s.keywords.map((str) => (
-                    <span key={str} style={{ 
-                      lineHeight: '1.5',
-                      textTransform: 'uppercase',
-                      display: 'block',
-                    }}>{str}</span>
-                  ))}
-                </div>
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: 24,
-                    right: 28,
-                    zIndex: 2,
-                    fontSize: isSmallMobile ? '10px' : '12px',
-                    color: '#4a4a4a', // High contrast dark text
-                    opacity: 0.9,
-                    fontWeight: 500,
-                    fontFamily: 'system-ui, -apple-system, "Segoe UI", sans-serif',
-                    letterSpacing: '0.4px',
-                    textShadow: '0 1px 3px rgba(255, 255, 255, 0.9)',
-                  }}
-                >
-                  © 2025 VLT CONCEPTS, LLC.
-                </div>
               </div>
             );
           })}
