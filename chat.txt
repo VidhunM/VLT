@@ -744,7 +744,161 @@ Next steps: Verify on mobile devices/emulators that the MinimalistNav no longer 
 Date: 2025-11-24
 Time: N/A (timestamp command unavailable)
 Topics: Our Team hero mobile layout fix
-Code changes: Adjusted `src/styles/main.css` so `.team-hero` on ≤768px uses `height: auto` with `min-height: calc(100vh - 72px)` and top padding to clear the header, and aligned `.team-hero-overlay` to the bottom. Simplified the small-screen hero padding to keep the “We are Vulture Lines.” title fully visible and comfortably placed on mobile.
+Code changes: Adjusted `src/styles/main.css` so `.team-hero` on ≤768px uses `height: auto` with `min-height: calc(100vh - 72px)` and top padding to clear the header, and aligned `.team-hero-overlay` to the bottom. Simplified the small-screen hero padding to keep the "We are Vulture Lines." title fully visible and comfortably placed on mobile.
 Decisions: Keep the full-screen feel while preventing the header from overlapping or cropping the hero content on phones.
 Next steps: Check the Our Team hero on several mobile widths to ensure the background image fills the viewport and the heading sits clearly above the fold.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile responsive home page services section redesign - content first, then image with carousel navigation
+Code changes: 
+- In `src/pages/Home.jsx`: Added `mobileServiceIndex` state for carousel navigation. Created separate mobile layout structure that displays: "Our Services" heading → service title → description → "Find More" button with left/right arrow buttons → image carousel. Added `handleMobileServicePrev` and `handleMobileServiceNext` functions for arrow navigation. Mobile layout conditionally renders when `isServicesMobile` is true (≤768px breakpoint). Updated mobile detection from 1024px to 768px to match CSS breakpoint. Mobile image carousel uses `translateX` transform with smooth transitions to slide between services.
+- In `src/styles/main.css`: Added comprehensive mobile-specific styles for services section including `.services-mobile-content`, `.services-mobile-image-container`, `.services-mobile-image-track`, `.service-mobile-image-item` for proper layout ordering (content first, image second). Added `.service-mobile-actions` flex container for button and arrows. Styled `.service-arrow-btn` with circular design, hover effects, and proper touch targets (44px on mobile, 40px on small mobile). Added responsive styles for ≤480px breakpoint with adjusted padding and arrow button sizes. Mobile layout uses flexbox ordering to ensure content appears before image.
+Decisions: Mobile-first approach with carousel navigation provides better UX on mobile devices. Content-first layout ensures users see service information before images. Arrow buttons positioned next to "Find More" button for easy navigation. Smooth sliding transitions create polished carousel experience. Desktop layout remains unchanged with scroll-based elevator animation.
+Next steps: Test mobile services section on actual devices; verify arrow navigation works smoothly; check image carousel sliding animation; verify layout order (heading → title → content → button/arrows → image) on various mobile screen sizes.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile services section scroll fix and spacing reduction
+Code changes: 
+- In `src/styles/main.css`: Fixed mobile services section to prevent unwanted scroll by setting `height: auto !important`, `min-height: auto !important`, and `overflow: visible` on mobile breakpoint (≤768px). Disabled scroll animation classes on mobile (`.services-section.is-fixed` set to `position: relative !important`). Reduced mobile services section padding from `2rem 0` to `1.5rem 0 0.5rem 0` (reduced bottom padding). Reduced mobile content padding from `2rem 1.5rem` to `1.5rem 1.5rem 1rem 1.5rem` (reduced bottom padding). Added `margin-top: 0 !important` and `padding-top: 0 !important` to `.client-experience-section` on mobile to eliminate gap between services and client experience sections. Ensured services container is always visible on mobile with `opacity: 1 !important`, `pointer-events: auto !important`, and `visibility: visible !important`.
+Decisions: Mobile services section now uses static carousel navigation instead of scroll-based animation to prevent unwanted scrolling. Reduced spacing creates tighter flow between services and client experience sections. No scroll animation on mobile provides better UX with arrow-based navigation.
+Next steps: Test on mobile devices to verify no unwanted scrolling; check spacing between sections looks balanced; verify carousel navigation works smoothly without scroll interference.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile excellence section scroll fix and spacing reduction
+Code changes:
+- In `src/pages/Home.jsx`: Disabled excellence section pinning animation on mobile (≤768px) by checking `window.innerWidth` in `handleExcellencePin` and returning early with `isExcellencePinned` and `isExcellencePast` set to false. Disabled excellence scroll-based size increase animation on mobile by checking `window.innerWidth <= 768` in `handleExcellenceScroll` and returning early with `progress` set to 0. Added resize event listener to excellence scroll handler for proper mobile detection.
+- In `src/styles/main.css`: Fixed excellence wrapper height on mobile by setting `height: auto !important` and `min-height: auto !important` to prevent unwanted scroll from `200vh` desktop height. Disabled excellence section pinning on mobile by forcing `.excellence-section.is-pinned` to `position: relative !important` with auto positioning. Disabled excellence section past state on mobile by forcing `.excellence-section.is-past` to `position: relative !important`. Reduced excellence section padding from `1.5rem 0` to `1.5rem 0 0.25rem 0` (reduced bottom padding). Added `margin-bottom: 0 !important` and `padding-bottom: 0 !important` to excellence wrapper and section on mobile. Reduced services section top padding from `1.5rem 0` to `0.5rem 0` on mobile to minimize gap between excellence and services sections. Added `margin-top: 0 !important` to services section on mobile.
+Decisions: Excellence section now uses static layout on mobile instead of scroll-based pinning animation to prevent unwanted scrolling. Reduced spacing creates tighter flow between excellence and services sections. No scroll animations on mobile provide better UX with natural scrolling behavior.
+Next steps: Test on mobile devices to verify no unwanted scrolling in excellence section; check spacing between excellence and services sections looks balanced; verify natural scroll behavior works smoothly without animation interference.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Remove excellence section content disappear animation on scroll
+Code changes:
+- In `src/styles/main.css`: Removed all initial `opacity: 0` states from excellence section elements that caused content to disappear. Changed `.excellence-title span` from `opacity: 0` and `transform: translateX(-50px)` to `opacity: 1` and `transform: translateX(0)` so title is always visible. Changed `.excellence-subtitle` from `opacity: 0` and `transform: translateY(30px)` to `opacity: 1` and `transform: translateY(0)` so subtitle is always visible. Changed `.excellence-description` from `opacity: 0` and `transform: translateY(30px)` to `opacity: 1` and `transform: translateY(0)` so description is always visible. Changed `.excellence-buttons` from `opacity: 0` and `transform: translateY(30px)` to `opacity: 1` and `transform: translateY(0)` so buttons are always visible. Changed `.emblem-number` from `opacity: 0` and `transform: scale(0.5) translateX(40px)` to `opacity: 1` and `transform: scale(1) translateX(40px)` so number is always visible. Changed `.emblem-text` from `opacity: 0` and `transform: translateY(20px) translateX(40px)` to `opacity: 1` and `transform: translateY(0) translateX(40px)` so text is always visible. Changed `.rotating-group` from `opacity: 0` to `opacity: 1` so circular text is always visible.
+Decisions: All excellence section content now remains visible at all times without disappearing animations. Content appears immediately without waiting for scroll-triggered animations. Removed fade-in animations that caused content to disappear during scroll.
+Next steps: Test excellence section to verify all content remains visible during scroll; verify no content disappears when scrolling through the section; check that all elements (title, subtitle, description, buttons, emblem) are always visible.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Mobile responsive section order - Client Experience before Projects
+Code changes:
+- In `src/styles/main.css`: Ensured Client Experience section appears before Projects section on mobile by maintaining natural HTML order (no flexbox reordering). Added `margin-bottom: 0 !important` and `padding-bottom: 0.5rem !important` to `.client-experience-section` on mobile for proper spacing. Added `margin-top: 0 !important` and `padding-top: 0.5rem !important` to `#projects` section on mobile to create minimal gap between Client Experience and Projects sections. Removed any flexbox ordering rules that would reorder sections on mobile.
+Decisions: Mobile section order now matches desktop order: Services → Client Experience → Projects. Natural HTML order is maintained without CSS flexbox reordering. Minimal spacing (0.5rem) between Client Experience and Projects sections provides clean flow.
+Next steps: Test on mobile devices to verify Client Experience appears before Projects; verify section order matches desktop layout; check spacing between sections looks balanced.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience logos hidden by Projects on mobile
+Code changes:
+- In `src/styles/main.css`: Restored the mobile stacking context so Client Experience images/logos sit above Projects. Reapplied `min-height: 100vh !important`, extra bottom padding, `position: relative`, `z-index: 2`, and `overflow: visible` to `.client-experience-section` plus the nested containers (`.client-experience-split`, `.client-experience-left`, `.client-experience-right`, `.laptop-image-container`, `.client-logos-grid`, `.client-logo`, `.client-overlay`). Added a 2rem top padding and lower z-index to `#projects` so it only begins after the Client Experience content finishes. Set `.client-experience-right` to minimum 320px height (50vh) so the laptop image has room on small screens.
+Decisions: Client Experience section now fully displays before Projects on phones, preventing logos/images from being clipped or overlapped. Users see the entire client block before Projects enters the viewport.
+Next steps: Re-test at 768px and 480px widths to ensure the spacing feels natural and no overlap reappears.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Our Projects heading overlapped by Client Experience imagery on mobile
+Code changes:
+- In `src/styles/main.css`: Increased the spacing between the Client Experience and Projects sections on mobile by bumping `.client-experience-section` bottom padding/margin to `3rem` and raising `#projects` top padding to `3rem`. This ensures the “OUR PROJECTS” heading appears after a clear gap so the remaining Client Experience logos no longer sit on top of it.
+Decisions: Creating a larger handoff buffer between the two sections prevents visual overlap without changing the scroll order or z-index behavior.
+Next steps: Verify on devices/emulators (≤768px) that the heading now renders with clear whitespace and no client logos covering it; adjust spacing further if additional breathing room is desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience z-index cleanup so Our Projects title renders above imagery
+Code changes:
+- In `src/styles/main.css`: Removed the elevated z-indices from the Client Experience stack and instead raised the `#projects` z-index to 3 (with a white background). `.client-experience-section` and its nested containers now rely on the natural DOM stacking order, preventing their logos/laptop image from overlaying the “OUR PROJECTS” title as it enters the viewport.
+Decisions: Restoring default stacking order ensures the Projects heading always sits on top while still letting Client Experience content display fully within its own section.
+Next steps: Recheck on small devices to confirm the heading is no longer obscured and that no additional z-index adjustments are required.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Responsive spacing between Client Experience and Projects sections
+Code changes:
+- In `src/styles/main.css`: Replaced the fixed 3rem buffer with responsive `clamp` values so the gap scales with viewport height. `.client-experience-section` now ends with `margin-bottom: clamp(3rem, 12vh, 6rem)` and `padding-bottom: clamp(2.5rem, 10vh, 5rem)`, while `#projects` begins with `padding-top: clamp(3rem, 12vh, 6rem)`. This guarantees taller devices get a larger handoff while smaller phones keep a compact spacing.
+Decisions: Dynamic spacing ensures the “OUR PROJECTS” heading always appears below the Client Experience block without overlap across various screen heights.
+Next steps: Spot-check at 768px, 600px, and 480px widths to confirm the gap looks natural; tweak clamp ranges if more/less space is desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Increase Client Experience → Projects gap further for tall displays
+Code changes:
+- In `src/styles/main.css`: Expanded the responsive gap by using `clamp(4rem, 16vh, 8rem)` for the Client Experience bottom margin and Projects top padding (with slightly larger padding-bottom on Client Experience). Added an explicit white background to both sections to guarantee a clean transition even if underlying imagery extends beyond its container.
+Decisions: Larger, height-aware spacing plus matching backgrounds ensures the Projects heading can never be covered by lingering client images on taller devices.
+Next steps: Re-test on very tall phones/tablets (e.g., 896px+ viewport height) to verify the separation feels balanced; adjust clamp maximums if additional space is still required.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Final buffer + heading z-index for Our Projects
+Code changes:
+- In `src/styles/main.css`: Increased the Client Experience bottom margin/padding to `clamp(5rem, 18vh, 10rem)`/`clamp(3.5rem, 14vh, 6.5rem)` and matched `#projects` top padding (`clamp(5rem, 18vh, 10rem)`). Also forced the projects header elements to `position: relative; z-index: 4` so the “OUR PROJECTS” title always renders above any lingering imagery.
+Decisions: Combining a larger responsive gap with an explicit z-index on the heading guarantees no overlap across tall or short devices.
+Next steps: Confirm on multiple breakpoints that the heading remains clear; tweak clamp values if a smaller/larger gap is preferred.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience mobile layout cleanup
+Code changes:
+- In `src/styles/main.css`: Redesigned the ≤768px Client Experience layout—removed forced 100vh sizing, added a padded/rounded container, stacked the split content vertically with larger gaps, refreshed the logo grid cards, and reworked the laptop image block so it uses a dedicated gradient card with proper padding. The section now reads as logos grid → showcase image with centered caption, each with breathing room.
+Decisions: The mobile view no longer looks like a squashed desktop split; it now feels like a purpose-built block with clear hierarchy and spacing.
+Next steps: Review across common phone widths to confirm the new spacing feels balanced; tweak card sizes if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience mobile polish (logo cards + hero image)
+Code changes:
+- In `src/styles/main.css`: Fine-tuned the ≤768px Client Experience styles with centered heading text, card shadows, a fixed aspect-ratio hero image, and a tighter caption overlay so the showcase block no longer overlaps the logo grid. The section now stacks cleanly with consistent spacing before the Projects area.
+Decisions: The refreshed styling makes the mobile Client Experience feel deliberate and prevents the hero image from intruding on the logos.
+Next steps: Verify on small phones (≤420px) that the card grid and hero block still have enough breathing room; tweak gaps if needed.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience vs Projects overlap fix
+Code changes:
+- In `src/styles/main.css`: Raised the Client Experience section z-index, expanded its bottom margin, lowered `#projects` stacking context, removed the dark overlay from the hero caption, and ensured the logos grid uses a proper grid layout. These tweaks stop the projects card from overlaying the client block while keeping the heading readable.
+Decisions: Separation between the two sections is now purely structural (spacing + stacking), eliminating the double overlay seen on phones.
+Next steps: Recheck at 768px/600px/480px to confirm there’s no remaining overlap; adjust spacing if additional breathing room is desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience mobile layout – logos then image
+Code changes:
+- In `src/styles/main.css`: Centered the heading block, limited the logos grid width, added auto margins, and ensured the showcase image uses a fixed aspect ratio with the caption placed below it. Tapping a logo now simply swaps the image in the reserved area without any overlap because the image card sits in its own column under the grid.
+Decisions: The mobile Client Experience section now reads sequentially (heading → logos → selected image). There’s no longer a double overlay, and the image always displays fully beneath the icons.
+Next steps: Verify interaction on devices to confirm the image swaps smoothly; fine-tune card spacing if desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience image spacing on mobile
+Code changes:
+- In `src/styles/main.css`: Increased the logo grid’s bottom margin and the showcase block’s top margin so the selected client image sits farther below the last icon (margin-bottom `clamp(2rem, 6vw, 3rem)` on the grid and margin-top `clamp(2.5rem, 7vw, 3.5rem)` on `.client-experience-right`).
+Decisions: Extra spacing prevents the hero image from hiding the final row of logos on phones.
+Next steps: Review on target devices; tweak margins if you’d like even more separation.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience spacing bump (round 2)
+Code changes:
+- In `src/styles/main.css`: Added even more space between the logos and the image (`margin-bottom: clamp(2.5rem, 8vw, 4rem)` on `.client-logos-grid` and `margin-top: clamp(3.5rem, 9vw, 4.5rem)` on `.client-experience-right`) so the hero card clears the last icon row completely.
+Decisions: The increased buffer guarantees the image never overlaps the final logo, even on short devices.
+Next steps: Spot-check on 375px/414px widths; adjust the clamps if more/less space is desired.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Final client-image spacing increase
+Code changes:
+- In `src/styles/main.css`: Raised the logos grid bottom margin to `clamp(3.5rem, 10vw, 5rem)` and the image block top margin to `clamp(4.5rem, 11vw, 5.5rem)` so there’s a very clear gap between the last icon and the hero image on small screens.
+Decisions: This ensures the image never hides the final card, even on the shortest viewports.
+Next steps: Re-test on target devices; if it now feels too wide, we can dial the clamps back.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Client Experience image spacing – final bump
+Code changes:
+- In `src/styles/main.css`: Pushed the logos grid bottom margin to `clamp(4.5rem, 12vw, 6rem)` and the showcase block top margin to `clamp(5.5rem, 13vw, 6.5rem)` so the hero image sits even farther below the icons.
+Decisions: The larger buffer guarantees the image won’t overlap the last icon row on any phone height.
+Next steps: Validate on target devices; reduce the spacing later if desired.
 

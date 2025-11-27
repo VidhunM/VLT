@@ -50,6 +50,7 @@ const Home = () => {
   const [serviceProgress, setServiceProgress] = useState(0)
   const [serviceRelease, setServiceRelease] = useState(0)
   const [isServicesMobile, setIsServicesMobile] = useState(false)
+  const [mobileServiceIndex, setMobileServiceIndex] = useState(0)
   const [selectedClient, setSelectedClient] = useState(0)
   const [activeCapability, setActiveCapability] = useState(0)
   const [scrollDirection, setScrollDirection] = useState('down')
@@ -68,6 +69,14 @@ const Home = () => {
     navigateWithCircle(event, path, () => {
       navigate(path)
     })
+  }
+
+  const handleMobileServicePrev = () => {
+    setMobileServiceIndex((prev) => (prev > 0 ? prev - 1 : totalServices - 1))
+  }
+
+  const handleMobileServiceNext = () => {
+    setMobileServiceIndex((prev) => (prev < totalServices - 1 ? prev + 1 : 0))
   }
 
   const floatingIcons = [
@@ -452,17 +461,23 @@ const Home = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsServicesMobile(window.innerWidth <= 1024)
+      setIsServicesMobile(window.innerWidth <= 768)
     }
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Excellence section scroll-based size increase
+  // Excellence section scroll-based size increase (desktop only)
   useEffect(() => {
     const handleExcellenceScroll = () => {
       if (excellenceRef.current) {
+        // Disable scroll animation on mobile
+        if (window.innerWidth <= 768) {
+          setExcellenceScrollProgress(0)
+          return
+        }
+        
         const rect = excellenceRef.current.getBoundingClientRect()
         const windowHeight = window.innerHeight
         
@@ -491,17 +506,25 @@ const Home = () => {
     }
     
     window.addEventListener('scroll', handleExcellenceScroll, { passive: true })
+    window.addEventListener('resize', handleExcellenceScroll)
     handleExcellenceScroll()
     
     return () => {
       window.removeEventListener('scroll', handleExcellenceScroll)
+      window.removeEventListener('resize', handleExcellenceScroll)
     }
   }, [])
 
-  // Pin excellence section for full-screen experience
+  // Pin excellence section for full-screen experience (desktop only)
   useEffect(() => {
     const handleExcellencePin = () => {
       if (!excellenceWrapperRef.current) return
+      // Disable pinning on mobile
+      if (window.innerWidth <= 768) {
+        setIsExcellencePinned(false)
+        setIsExcellencePast(false)
+        return
+      }
       const rect = excellenceWrapperRef.current.getBoundingClientRect()
       const windowHeight = window.innerHeight
       const shouldPin = rect.top <= 0 && rect.bottom >= windowHeight
@@ -808,60 +831,130 @@ Our team comprises highly skilled IT professionals whose target is to provide to
         style={serviceSectionStyle}
       >
         <div className="services-container" style={servicesContainerStyle}>
-          {/* Fixed Image Container on Left - Images Overlay */}
-          <div className="services-image-container">
-            {servicesData.map((service, index) => (
-              <div
-                key={service.title}
-                className={`service-image-overlay service-image-${index + 1}`}
-                style={{
-                  opacity: getImageOpacity(index),
-                  zIndex: index + 1,
-                  transition: 'opacity 0.3s ease-out'
-                }}
-              >
-                <img src={service.image} alt={service.title} />
-              </div>
-            ))}
-          </div>
+          {/* Desktop Layout: Fixed Image Container on Left - Images Overlay */}
+          {!isServicesMobile && (
+            <div className="services-image-container">
+              {servicesData.map((service, index) => (
+                <div
+                  key={service.title}
+                  className={`service-image-overlay service-image-${index + 1}`}
+                  style={{
+                    opacity: getImageOpacity(index),
+                    zIndex: index + 1,
+                    transition: 'opacity 0.3s ease-out'
+                  }}
+                >
+                  <img src={service.image} alt={service.title} />
+                </div>
+              ))}
+            </div>
+          )}
 
-          {/* Scrollable Content Container on Right - Elevator Motion */}
-          <div className="services-content-container">
-            <div className="services-content-track" style={contentTrackStyle}>
-              {servicesData.map((service, index) => {
-                const isLast = index === totalServices - 1
-                const releaseStyles =
-                  isReleasingPhase && isLast
-                    ? { opacity: Math.max(0, 1 - serviceRelease) }
-                    : undefined
-                return (
-                  <div className="service-content-item" key={service.title} style={releaseStyles}>
-                    <div className="service-content-section">
-                      <div className="service-label">{service.label}</div>
-                      <h2 className="service-main-title">{service.title}</h2>
-                      <p className="service-description">{service.description}</p>
+          {/* Desktop Layout: Scrollable Content Container on Right - Elevator Motion */}
+          {!isServicesMobile && (
+            <div className="services-content-container">
+              <div className="services-content-track" style={contentTrackStyle}>
+                {servicesData.map((service, index) => {
+                  const isLast = index === totalServices - 1
+                  const releaseStyles =
+                    isReleasingPhase && isLast
+                      ? { opacity: Math.max(0, 1 - serviceRelease) }
+                      : undefined
+                  return (
+                    <div className="service-content-item" key={service.title} style={releaseStyles}>
+                      <div className="service-content-section">
+                        <div className="service-label">{service.label}</div>
+                        <h2 className="service-main-title">{service.title}</h2>
+                        <p className="service-description">{service.description}</p>
+                        <button 
+                          className="service-cta-btn"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            try {
+                              handleNavigationClick(e, '/our-service')
+                            } catch (error) {
+                              console.error('Navigation error:', error)
+                              navigate('/our-service')
+                            }
+                          }}
+                        >
+                          <span>Find Out More</span>
+                          <div className="btn-icon orange-dots"></div>
+                        </button>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Mobile Layout: Content First, Then Image */}
+          {isServicesMobile && (
+            <>
+              <div className="services-mobile-content">
+                <div className="service-content-section">
+                  <div className="service-label">{servicesData[mobileServiceIndex].label}</div>
+                  <h2 className="service-main-title">{servicesData[mobileServiceIndex].title}</h2>
+                  <p className="service-description">{servicesData[mobileServiceIndex].description}</p>
+                  <div className="service-mobile-actions">
+                    <button 
+                      className="service-cta-btn"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        try {
+                          handleNavigationClick(e, '/our-service')
+                        } catch (error) {
+                          console.error('Navigation error:', error)
+                          navigate('/our-service')
+                        }
+                      }}
+                    >
+                      <span>Find More</span>
+                      <div className="btn-icon orange-dots"></div>
+                    </button>
+                    <div className="service-nav-arrows">
                       <button 
-                        className="service-cta-btn"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                          try {
-                            handleNavigationClick(e, '/our-service')
-                          } catch (error) {
-                            console.error('Navigation error:', error)
-                            navigate('/our-service')
-                          }
-                        }}
+                        className="service-arrow-btn service-arrow-left"
+                        onClick={handleMobileServicePrev}
+                        aria-label="Previous service"
                       >
-                        <span>Find Out More</span>
-                        <div className="btn-icon orange-dots"></div>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </button>
+                      <button 
+                        className="service-arrow-btn service-arrow-right"
+                        onClick={handleMobileServiceNext}
+                        aria-label="Next service"
+                      >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
                       </button>
                     </div>
                   </div>
-                )
-              })}
-            </div>
-          </div>
+                </div>
+              </div>
+              <div className="services-mobile-image-container">
+                <div 
+                  className="services-mobile-image-track"
+                  style={{
+                    transform: `translateX(-${mobileServiceIndex * 100}%)`,
+                    transition: 'transform 0.4s ease-in-out'
+                  }}
+                >
+                  {servicesData.map((service, index) => (
+                    <div key={service.title} className="service-mobile-image-item">
+                      <img src={service.image} alt={service.title} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -889,18 +982,21 @@ Our team comprises highly skilled IT professionals whose target is to provide to
             </div>
 
             {/* Right Side - Client Image */}
-            <div className="client-experience-right">
-              <div className="laptop-image-container">
-                <img 
-                  src={clients[selectedClient].image} 
-                  alt={`${clients[selectedClient].name} project`} 
-                  className="laptop-image"
-                />
-                <div className="client-overlay">
-                  <h3 className="client-name">{clients[selectedClient].name}</h3>
-                </div>
-              </div>
-            </div>
+                    <div className="client-experience-right" aria-live="polite" aria-atomic="true">
+                      <div className="client-showcase-card">
+                        <img
+                          key={selectedClient}
+                          src={clients[selectedClient].image}
+                          alt={`${clients[selectedClient].name} showcase`}
+                          className="client-showcase-image"
+                          loading="lazy"
+                        />
+                        <div className="client-showcase-caption">
+                          <h3>{clients[selectedClient].name}</h3>
+                          <p>{clients[selectedClient].description || 'Selected client highlight'}</p>
+                        </div>
+                      </div>
+                    </div>
           </div>
         </div>
       </section>
