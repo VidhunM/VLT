@@ -16,6 +16,7 @@ const OurTeam = () => {
   const [isSectionInView, setIsSectionInView] = useState(false)
   const [isSectionPinned, setIsSectionPinned] = useState(false)
   const [cardWidth, setCardWidth] = useState(520) // Default desktop width
+  const [sliderDisplayIndex, setSliderDisplayIndex] = useState(0)
 
   const boardMembers = [
     {
@@ -257,8 +258,21 @@ const OurTeam = () => {
         
         // Check if mobile device
         const isMobileDevice = window.innerWidth <= 768
+
+        // On mobile, keep section visible but do not drive slider via scroll
+        if (isMobileDevice) {
+          const sectionTop = rect.top
+          const sectionBottom = rect.bottom
+          if (sectionTop < windowHeight && sectionBottom > 0) {
+            setIsSectionInView(true)
+          } else {
+            setIsSectionInView(false)
+          }
+          setIsSectionPinned(false)
+          return
+        }
         
-        // Simple scroll progress calculation that works for both desktop and mobile
+        // Desktop: scroll progress drives slider
         // Calculate when section is in viewport
         const sectionTop = rect.top
         const sectionBottom = rect.bottom
@@ -300,34 +314,9 @@ const OurTeam = () => {
             progress = 0
           }
           
-          let adjustedProgress = 0
-          
-          // Seamless image-by-image scrolling based on scroll progress
-          // Direct mapping from scroll progress (0-1) to card index (0 to totalCards-1)
-          // Smooth, linear progression for seamless transitions
-          
-          if (isMobileDevice) {
-            // Mobile: Smooth transitions with slight hold at start and end
-            const startHold = 0.15  // Hold first image briefly
-            const endHold = 0.15    // Hold last image briefly
-            const animationRange = 1 - startHold - endHold
-            
-            if (progress < startHold) {
-              // Hold at first image
-              adjustedProgress = 0
-            } else if (progress < 1 - endHold) {
-              // Smooth animation through all images
-              const animationProgress = (progress - startHold) / animationRange
-              adjustedProgress = animationProgress * (totalCards - 1)
-            } else {
-              // Hold at last image
-              adjustedProgress = totalCards - 1
-            }
-          } else {
-            // Desktop: Seamless linear progression
-            // Direct mapping: scroll progress directly controls image position
-            adjustedProgress = Math.min(progress * (totalCards - 1), totalCards - 1)
-          }
+          // Desktop: Seamless linear progression
+          // Direct mapping: scroll progress directly controls image position
+          const adjustedProgress = Math.min(progress * (totalCards - 1), totalCards - 1)
           
           // Pin section when animation is in progress
           // Pin only after: header has scrolled past AND animation is active (not at last image yet)
@@ -384,14 +373,20 @@ const OurTeam = () => {
     setSelectedDirector(null)
   }
 
+  const handleDotClick = (index) => {
+    if (!isMobile) return
+    setSliderDisplayIndex(index)
+    setScrollProgress(index)
+  }
+
   const getMobileCardStyle = (index) => {
     if (!isMobile) return {}
 
-    const diff = Math.abs(index - scrollProgress)
+    const diff = Math.abs(index - sliderDisplayIndex)
     const clamped = Math.min(diff, 1)
-    const opacity = 1 - clamped * 0.65
-    const translateY = clamped * 24
-    const scale = 1 - clamped * 0.04
+    const opacity = 1 // keep all cards fully visible on mobile
+    const translateY = clamped * 16
+    const scale = 1 - clamped * 0.03
 
     return {
       opacity,
@@ -431,16 +426,14 @@ const OurTeam = () => {
               ref={sliderRef}
               className="board-members-slider"
               style={{
-                // Calculate translateX based on scroll progress
-                // scrollProgress: 0 = first image stuck, 0 to (totalCards-1) = card index to show
-                // Translate by card index * cardWidth (including gap) to show images one by one
-                // No transition for seamless scroll-driven animation
-                transform: `translateX(-${scrollProgress * cardWidth}px)`,
-                transition: 'none',
+                transform: isMobile
+                  ? `translateX(-${sliderDisplayIndex * cardWidth}px)`
+                  : `translateX(-${scrollProgress * cardWidth}px)`,
+                transition: isMobile ? 'transform 0.4s ease-out' : 'none',
                 willChange: 'transform',
                 opacity: isSectionInView ? 1 : 0,
                 maxWidth: isMobile ? '100%' : 'none',
-                padding: isMobile ? '0 8px' : undefined,
+                padding: isMobile ? '0' : undefined,
                 alignItems: isMobile ? 'stretch' : 'center'
               }}
             >
@@ -468,6 +461,19 @@ const OurTeam = () => {
                 </div>
               ))}
             </div>
+            {isMobile && (
+              <div className="board-slider-dots">
+                {boardMembers.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={`board-slider-dot ${sliderDisplayIndex === index ? 'active' : ''}`}
+                    onClick={() => handleDotClick(index)}
+                    aria-label={`Show director ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>

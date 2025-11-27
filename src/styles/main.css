@@ -3098,6 +3098,11 @@ a.btn-our-people {
 
 /* Responsive Design for Minimalist Nav */
 @media (max-width: 768px) {
+  /* Hide minimalist nav entirely on mobile */
+  .minimalist-nav {
+    display: none !important;
+  }
+
   .minimalist-nav-container {
     padding: 5px 12px;
     gap: 8px;
@@ -3933,6 +3938,7 @@ a.btn-our-people {
   display: flex;
   align-items: center;
   padding: clamp(24px, 6vh, 48px) 0;
+  flex-direction: column;
 }
 
 .board-members-slider {
@@ -3943,6 +3949,43 @@ a.btn-our-people {
   width: max-content;
   align-items: stretch;
   will-change: transform;
+}
+
+.board-slider-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.board-slider-dot {
+  width: 4px !important;
+  height: 4px !important;
+  min-width: 4px !important;
+  min-height: 4px !important;
+  max-width: 4px !important;
+  max-height: 4px !important;
+  border-radius: 999px !important;
+  border: none !important;
+  background: rgba(255, 255, 255, 0.35) !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-block !important;
+  line-height: 0 !important;
+  flex-shrink: 0 !important;
+  transition: all 0.25s ease !important;
+}
+
+.board-slider-dot.active {
+  width: 4px !important;
+  height: 4px !important;
+  min-width: 4px !important;
+  min-height: 4px !important;
+  max-width: 4px !important;
+  max-height: 4px !important;
+  background: #ffffff !important;
 }
 
 /* Smooth transition on mobile - only opacity for initial fade-in */
@@ -4554,21 +4597,58 @@ a.btn-our-people {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .team-hero {
+    position: relative;
+    height: auto;
+    min-height: auto;
+    display: block;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+
+  .team-hero-background {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  .team-hero-background img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    display: block;
+  }
+
+  .team-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+  }
+
   .team-hero-content {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-end;
-    padding-bottom: 4rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0 1.1rem;
+    max-width: 100%;
+    text-align: center;
+    pointer-events: auto;
   }
   
   .team-hero-title {
-    font-size: 3rem;
-    margin-bottom: 2rem;
+    font-size: clamp(2.0rem, 6vw, 2.8rem);
+    margin-bottom: 0;
   }
   
   .board-section {
-    padding: 48px 0 64px;
+    padding: 0 0 40px;
     min-height: auto;
+    margin-top: -60px; /* pull board up to fully remove gap */
   }
   
   .board-header {
@@ -4585,12 +4665,20 @@ a.btn-our-people {
     height: auto;
     padding: 0;
     overflow: hidden;
+    flex-direction: column;
   }
   
   .board-members-slider {
     gap: 0;
     width: 100%;
     padding: 0;
+    overflow: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .board-members-slider::-webkit-scrollbar {
+    display: none;
   }
   
   .board-member-card {
@@ -4604,8 +4692,8 @@ a.btn-our-people {
   }
   
   .board-member-image {
-    width: clamp(180px, 48vw, 240px);
-    height: clamp(180px, 48vw, 240px);
+    width: clamp(170px, 44vw, 220px);
+    height: clamp(170px, 44vw, 220px);
   }
   
   .board-member-image:hover .hover-dot {
@@ -4652,12 +4740,11 @@ a.btn-our-people {
 
 @media (max-width: 480px) {
   .team-hero-title {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
   }
   
   .team-hero-content {
-    padding: 0 1rem;
-    padding-bottom: 3rem;
+    padding: 0 0.9rem;
   }
   
   .btn-join-team-hero {
@@ -4665,9 +4752,9 @@ a.btn-our-people {
     font-size: 0.9rem;
   }
   
-  .board-section {
-    padding: 40px 0 56px;
-    min-height: auto;
+  .board-member-image {
+    width: clamp(150px, 48vw, 200px);
+    height: clamp(150px, 48vw, 200px);
   }
   
   .board-header {
@@ -4709,6 +4796,13 @@ a.btn-our-people {
   .board-members-slider {
     gap: 0;
     width: 100%;
+    overflow: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .board-members-slider::-webkit-scrollbar {
+    display: none;
   }
   
   .team-section-title {
@@ -5712,8 +5806,8 @@ a.btn-our-people {
   }
   
   .board-member-image {
-    width: clamp(180px, 40vw, 220px);
-    height: clamp(180px, 40vw, 220px);
+    width: clamp(190px, 44vw, 240px);
+    height: clamp(190px, 44vw, 240px);
   }
   
   .board-member-name {
@@ -6003,8 +6097,8 @@ a.btn-our-people {
   }
 
   .board-member-image {
-    width: 160px;
-    height: 160px;
+    width: 190px;
+    height: 190px;
   }
 
   .board-member-name {
@@ -6238,8 +6332,8 @@ a.btn-our-people {
   }
 
   .board-member-image {
-    width: 140px;
-    height: 140px;
+    width: 170px;
+    height: 170px;
   }
 
   .board-member-name {

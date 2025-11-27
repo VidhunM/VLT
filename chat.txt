@@ -713,3 +713,38 @@ Code changes: Updated `src/pages/OurTeam.jsx` so the slider width on mobile matc
 Decisions: Preserve the existing scroll-driven timeline but layer on mobile-friendly animations and layout logic so portraits/text stay fully visible while still animating card-by-card.
 Next steps: Review the Board section on devices/emulators to confirm each card fills the screen, animates smoothly, and that desktop layout remains unaffected.
 
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Hide Board slider scrollbars on mobile
+Code changes: Within the ≤768px/≤480px breakpoints of `src/styles/main.css`, set `.board-members-slider` to hide overflow and applied cross-browser scrollbar suppression (`scrollbar-width: none`, `-ms-overflow-style: none`, `::-webkit-scrollbar { display: none; }`) so the right/bottom scrollbars no longer appear on phones.
+Decisions: Keep the slider scrollable via JS but remove the visual scrollbars for a cleaner mobile presentation.
+Next steps: Spot-check the Board section on iOS/Android browsers to ensure the scrollbars are gone while the animation still operates normally.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Board mobile card centering (2nd–5th images)
+Code changes: In `src/pages/OurTeam.jsx`, added `sliderDisplayIndex` that rounds `scrollProgress` on mobile, uses it for `translateX`, and feeds it into `getMobileCardStyle()` so each portrait snaps into a centered, full-opacity state after the first card.
+Decisions: Keep the scroll timeline intact but discretize mobile steps so all cards get the same focused view.
+Next steps: Scroll the Board section on phones to confirm each of the later cards now appears as clearly as the first; adjust the rounding logic if needed.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Board slider percentage translation on mobile
+Code changes: Switched the mobile slider transform in `src/pages/OurTeam.jsx` from pixel-based widths to percentage steps (`translateX(-index * 100%)`) with a smooth transition, ensuring each full-width card aligns perfectly in view regardless of device width.
+Decisions: Keep desktop translation tied to measured pixel widths while letting mobile rely on percentage-based snapping for consistent framing.
+Next steps: Recheck the Board section on a range of phone widths to confirm every card now fills the viewport without partial clipping.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Hide MinimalistNav on mobile across all pages
+Code changes: In `src/styles/main.css`, added a `@media (max-width: 768px)` rule that sets `.minimalist-nav` to `display: none !important`, removing the bottom mini navigation bar on phones/tablets while leaving desktop/tablet behavior unchanged.
+Decisions: Use a CSS-only approach to keep existing JS scroll/visibility logic intact but visually suppress the mini nav on mobile as requested.
+Next steps: Verify on mobile devices/emulators that the MinimalistNav no longer appears on any route, and that desktop layouts remain unaffected.
+
+Date: 2025-11-24
+Time: N/A (timestamp command unavailable)
+Topics: Our Team hero mobile layout fix
+Code changes: Adjusted `src/styles/main.css` so `.team-hero` on ≤768px uses `height: auto` with `min-height: calc(100vh - 72px)` and top padding to clear the header, and aligned `.team-hero-overlay` to the bottom. Simplified the small-screen hero padding to keep the “We are Vulture Lines.” title fully visible and comfortably placed on mobile.
+Decisions: Keep the full-screen feel while preventing the header from overlapping or cropping the hero content on phones.
+Next steps: Check the Our Team hero on several mobile widths to ensure the background image fills the viewport and the heading sits clearly above the fold.
+
