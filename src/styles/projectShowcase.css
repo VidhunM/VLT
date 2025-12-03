@@ -1428,9 +1428,9 @@
 
   .projects-showcase-stage {
 
-    height: 600px;
+    height: clamp(500px, 70vw, 700px);
 
-    perspective: 500px;
+    perspective: clamp(800px, 120vw, 2000px);
 
     overflow: visible !important;
 
@@ -1454,9 +1454,9 @@
 
   .project-mockup {
 
-    width: 180px;
+    width: clamp(140px, 18vw, 200px);
 
-    height: 257px;
+    height: clamp(200px, 26vw, 280px);
 
   }
 
@@ -1466,11 +1466,13 @@
 
   .project-far-left {
 
-    --card-base-translate-x: -260px;
+    --card-base-translate-x: clamp(-200px, -35vw, -120px);
 
-    --card-base-translate-y: 20px;
+    --card-base-translate-y: clamp(30px, 6vw, 60px);
 
-    --card-base-rotate: -30deg;
+    --card-base-rotate: -18deg;
+
+    --card-base-scale: 0.85;
 
   }
 
@@ -1480,11 +1482,13 @@
 
   .project-left {
 
-    --card-base-translate-x: -140px;
+    --card-base-translate-x: clamp(-100px, -20vw, -50px);
 
-    --card-base-translate-y: -30px;
+    --card-base-translate-y: clamp(20px, 4vw, 40px);
 
-    --card-base-rotate: -15deg;
+    --card-base-rotate: -8deg;
+
+    --card-base-scale: 0.9;
 
   }
 
@@ -1492,13 +1496,30 @@
 
 
 
-  .project-center {
+  .project-center-left {
 
-    --card-base-translate-x: 0px;
+    --card-base-translate-x: clamp(-50px, -12vw, -20px);
 
-    --card-base-translate-y: -110px;
+    --card-base-translate-y: clamp(-10px, -2vw, 10px);
 
-    --card-base-rotate: 0deg;
+    --card-base-rotate: -4deg;
+
+    --card-base-scale: 0.95;
+
+  }
+
+
+
+
+  .project-center-right {
+
+    --card-base-translate-x: clamp(30px, 12vw, 60px);
+
+    --card-base-translate-y: clamp(-10px, -2vw, 10px);
+
+    --card-base-rotate: 4deg;
+
+    --card-base-scale: 0.95;
 
   }
 
@@ -1508,11 +1529,13 @@
 
   .project-right {
 
-    --card-base-translate-x: 140px;
+    --card-base-translate-x: clamp(100px, 20vw, 150px);
 
-    --card-base-translate-y: -30px;
+    --card-base-translate-y: clamp(20px, 4vw, 40px);
 
-    --card-base-rotate: 15deg;
+    --card-base-rotate: 8deg;
+
+    --card-base-scale: 0.9;
 
   }
 
@@ -1522,11 +1545,13 @@
 
   .project-far-right {
 
-    --card-base-translate-x: 260px;
+    --card-base-translate-x: clamp(200px, 35vw, 280px);
 
-    --card-base-translate-y: 20px;
+    --card-base-translate-y: clamp(30px, 6vw, 60px);
 
-    --card-base-rotate: 30deg;
+    --card-base-rotate: 14deg;
+
+    --card-base-scale: 0.85;
 
   }
 
@@ -1636,9 +1661,9 @@
 
   .projects-showcase-stage {
 
-    height: 580px;
+    height: clamp(480px, 75vw, 650px);
 
-    perspective: 550px;
+    perspective: clamp(700px, 110vw, 1800px);
 
     overflow: visible !important;
 
@@ -1850,9 +1875,9 @@
 
   .projects-showcase-stage {
 
-    height: 550px;
+    height: clamp(450px, 80vw, 600px);
 
-    perspective: 450px;
+    perspective: clamp(600px, 100vw, 1500px);
 
     overflow: visible !important;
 
@@ -2030,9 +2055,9 @@
 
   .projects-showcase-stage {
 
-    height: 520px;
+    height: clamp(420px, 85vw, 550px);
 
-    perspective: 480px;
+    perspective: clamp(550px, 95vw, 1300px);
 
     overflow: visible !important;
 
@@ -2168,9 +2193,9 @@
 
   .projects-showcase-stage {
 
-    height: 500px;
+    height: clamp(400px, 90vw, 500px);
 
-    perspective: 400px;
+    perspective: clamp(500px, 90vw, 1200px);
 
     overflow: visible !important;
 

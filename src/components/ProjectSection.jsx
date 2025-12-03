@@ -171,25 +171,10 @@ const ProjectSection = () => {
   const [isVisible, setIsVisible] = useState(false)
   const [slotMap, setSlotMap] = useState(() => initializeSlots(projects.length))
   const [swingDirection, setSwingDirection] = useState('left')
-  const [isMobile, setIsMobile] = useState(false)
 
   const sectionRef = useRef(null)
   const directionRef = useRef('left')
   const swingTimeoutRef = useRef(null)
-
-  // Check if device is mobile
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
-    
-    checkIsMobile()
-    window.addEventListener('resize', checkIsMobile)
-    
-    return () => {
-      window.removeEventListener('resize', checkIsMobile)
-    }
-  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -213,7 +198,7 @@ const ProjectSection = () => {
   }, [])
 
   useEffect(() => {
-    if (!isVisible || isMobile) {
+    if (!isVisible) {
       if (swingTimeoutRef.current) {
         clearTimeout(swingTimeoutRef.current)
         swingTimeoutRef.current = null
@@ -240,7 +225,7 @@ const ProjectSection = () => {
         swingTimeoutRef.current = null
       }
     }
-  }, [isVisible, projects.length, isMobile])
+  }, [isVisible, projects.length])
 
   const renderAnimatedProject = (project, index) => {
     const baseClasses = `project-mockup project-${project.type} project-${project.theme} project-${project.position}`
@@ -286,30 +271,6 @@ const ProjectSection = () => {
     )
   }
 
-  const renderGridProject = (project, index) => {
-    const baseClasses = `project-mockup project-${project.type} project-${project.theme} project-${project.position}`
-    
-    const imageUrl = project.image
-    const altText = project.title ? `${project.title} visual` : 'Project visual'
-
-    return (
-      <div
-        key={project.id}
-        className={`${baseClasses} grid-view`}
-      >
-        <div className="project-image-wrapper">
-          {imageUrl ? (
-            <img src={imageUrl} alt={altText} loading="lazy" />
-          ) : (
-            <div className="project-image-placeholder">
-              {project.title && <span>{project.title}</span>}
-            </div>
-          )}
-        </div>
-      </div>
-    )
-  }
-
   return (
     <section ref={sectionRef} className="projects-showcase-section">
       <div className="projects-showcase-container">
@@ -321,9 +282,7 @@ const ProjectSection = () => {
         </div>
 
         <div className="projects-showcase-stage">
-          {isMobile 
-            ? projects.map((project, index) => renderGridProject(project, index))
-            : projects.map((project, index) => renderAnimatedProject(project, index))}
+          {projects.map((project, index) => renderAnimatedProject(project, index))}
         </div>
       </div>
     </section>
