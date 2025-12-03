@@ -922,3 +922,10 @@ Topics: Mobile services arrows visibility
 Code changes: Updated `.service-mobile-actions`, `.service-nav-arrows`, and `.service-arrow-btn` styles in `src/styles/main.css` to force fixed circular sizing (with `!important` padding resets), add contrasty white backgrounds, borders, and shadows, and tweak the small-mobile overrides so the arrow buttons sit above content and stay visible against any backdrop.
 Decisions: Keep HTML untouched while ensuring the arrows remain legible and tappable across all mobile breakpoints by resolving conflicting global button rules.
 Next steps: Smoke-test the Home page on ≤768px viewports to confirm the arrows now display as white circles with green icons and continue to advance the services carousel.
+
+Date: 2025-01-27
+Time: N/A
+Topics: Custom cursor dot circle size reduction
+Code changes: In `src/styles/main.css`, reduced `.custom-cursor` size from 20px to 16px (width and height). In `src/components/CustomCursor.jsx`, adjusted positioning offset from 10px to 8px to keep cursor centered (half of new 16px size).
+Decisions: Slightly smaller cursor provides more subtle visual presence while maintaining visibility and functionality. Positioning offset adjusted proportionally to maintain proper centering.
+Next steps: Verify cursor appears correctly centered on mouse position; test hover states and client section cursor behavior.

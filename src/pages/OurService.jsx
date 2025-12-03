@@ -147,7 +147,7 @@ const OurService = () => {
       <div style={{ 
         padding: '2em 0', 
         textAlign: 'center',
-        paddingTop: isMobile ? '6em' : '2em',
+        paddingTop: isMobile ? '10em' : '6em',
         paddingBottom: isMobile ? '0' : '2em',
         marginBottom: isMobile ? '-2em' : '0'
       }}>
@@ -167,7 +167,7 @@ const OurService = () => {
           justifyContent: 'center',
           alignItems: 'center',
           minHeight: '85vh',
-          marginTop: isMobile ? '-3em' : '0',
+          marginTop: isMobile ? '4em' : '4em',
           marginBottom: isMobile ? '-4em' : '0'
         }}
       >
